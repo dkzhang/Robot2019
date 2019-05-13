@@ -4,63 +4,92 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
 )
 
-func SocketReceive(conn *net.TCPConn, resultChan chan CommandResultStruct, errorChan chan error) {
+func SocketReceive(conn *net.TCPConn, resultChan chan CommandResultStruct, errorChan chan error, pwg *sync.WaitGroup) {
+	defer pwg.Done()
+
 	buff := make([]byte, 1024*10)
 
 	for {
 		counts, err := conn.Read(buff)
 		if err != nil {
-			errorChan <- fmt.Errorf("SocketReceive write wrong bytes: %v", err)
-			if err = conn.Close(); err != nil {
-				log.Fatalf("conn.Close() in SocketSend error: %v", err)
-			}
+			errorChan <- fmt.Errorf("SocketReceive conn.Read error: %v", err)
 			return
 		}
 		cs := CommandResultStruct{}
 		cs.strJSON = string(buff[:(counts - 1)])
 		resultChan <- cs
+
+		select {
+		case errMsg := <-errorChan:
+			log.Fatalf("SocketReceive will return because of revicing message from errorChan: %v .", errMsg)
+			return
+		default:
+			continue
+		}
 	}
 }
+func SocketSend(conn *net.TCPConn, commandChan chan CommandStruct,
+	errorChan chan error, cancelChan chan interface{},
+	pCommand *CommandStruct) (*CommandStruct, error) {
 
-func SocketSend(conn *net.TCPConn, commandChan chan string, errorChan chan error, rCommand *string) {
-	var command string
-	for {
-		if *rCommand != "" {
-			//*rCommand 保存着最近一次未发送成功的命令
-			//因此如果*rCommand不为空，则优先发送该命令
-			command = *rCommand
-		} else {
-			command = <-commandChan
+	if pCommand == nil {
+		//没有上次未发送成功的命令
+		select {
+		case errMsg := <-errorChan:
+			return nil, fmt.Errorf("SocketSend will return because of revicing message from errorChan: %v .", errMsg)
+		case <-cancelChan:
+			return nil, fmt.Errorf("cancel")
+		case commandStruct := <-commandChan:
+			counts, err := conn.Write([]byte(commandStruct.Command))
+			if err != nil {
+				//网络发送错误
+				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
+				return &commandStruct, fmt.Errorf("SocketSend will return because of Socket write error: %v.", err)
+			} else if counts != len([]byte(commandStruct.Command)) {
+				//发送的字节数错误
+				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
+				return &commandStruct, fmt.Errorf("SocketSend will return because of Socket wrong bytes.")
+			} else {
+				//发送成功
+				return nil, nil
+			}
 		}
-	}
-	counts, err := conn.Write([]byte(command))
-	if err != nil {
-		//网络发送错误
-		*rCommand = command
-		errorChan <- fmt.Errorf("Socket write wrong bytes: %v", err)
-		if err = conn.Close(); err != nil {
-			log.Fatalf("conn.Close() in SocketSend error: %v", err)
-		}
-		return
-	} else if counts != len([]byte(command)) {
-		//发送的字节数错误
-		*rCommand = command
-		errorChan <- fmt.Errorf("Socket write wrong bytes: %v", err)
-		if err = conn.Close(); err != nil {
-			log.Fatalf("conn.Close() in SocketSend error: %v", err)
-		}
-		return
 	} else {
-		//发送成功
-		*rCommand = ""
+		//上次的命令没有发送成功，先不从commandChan中取命令，继续尝试发送上次未发送成功的命令
+		select {
+		case errMsg := <-errorChan:
+			return nil, fmt.Errorf("SocketSend will return because of revicing message from errorChan: %v .", errMsg)
+		case <-cancelChan:
+			return nil, fmt.Errorf("cancel")
+		default:
+			counts, err := conn.Write([]byte(pCommand.Command))
+			if err != nil {
+				//网络发送错误
+				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
+				return pCommand, fmt.Errorf("SocketSend will return because of Socket write error: %v.", err)
+			} else if counts != len([]byte(pCommand.Command)) {
+				//发送的字节数错误
+				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
+				return pCommand, fmt.Errorf("SocketSend will return because of Socket wrong bytes.")
+			} else {
+				//发送成功
+				return nil, nil
+			}
+		}
 	}
 }
 
-func SocketManagement(serverIP string, commandChan chan string, resultChan chan CommandResultStruct) {
-	errorChan := make(chan error, 2)
-	command := ""
+func SocketManagement(serverIP string, commandChan chan CommandStruct, resultChan chan CommandResultStruct, cancelChan chan interface{}) {
+	//SocketManagement 管理着两个go routine，分别用于发送和接收
+	//如果发送或接收时网络出错，则使用errorChan通知另外一个go routine退出
+	//当两个go routine都退出时，SocketManagement尝试重新连接
+	errorChan := make(chan error, 1)
+	var wg sync.WaitGroup
+
+	var pcs *CommandStruct = nil
 
 	for {
 		tcpAddr, err := net.ResolveTCPAddr("tcp4", serverIP)
@@ -75,13 +104,26 @@ func SocketManagement(serverIP string, commandChan chan string, resultChan chan 
 			continue
 		}
 
-		go SocketSend(conn, commandChan, errorChan, &command)
-		go SocketReceive(conn, resultChan, errorChan)
+		wg.Add(1)
+		go SocketReceive(conn, resultChan, errorChan, &wg)
 
-		//wait if there is a socket error
-		err1 := <-errorChan
-		log.Fatalf("SocketManagement get error1: %v", err1)
-		err2 := <-errorChan
-		log.Fatalf("SocketManagement get error1: %v", err2)
+		//发送不用go routine
+		for {
+			pcs, err = SocketSend(conn, commandChan, errorChan, cancelChan, pcs)
+			if err != nil {
+				log.Fatalf("SocketSend error: %v", err)
+				if errClose := conn.Close(); err != nil {
+					log.Fatalf("conn.Close() in SocketSend error: %v", errClose)
+				}
+
+				if err.Error() == "cancel" {
+					return
+				} else {
+					break
+				}
+
+			}
+		}
+		wg.Wait()
 	}
 }
