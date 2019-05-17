@@ -1,4 +1,4 @@
-package chassisDriverForRobot
+package socketCommunication
 
 type BasicStructReturn struct {
 	Type         string `json:"type"`

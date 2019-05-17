@@ -1,4 +1,4 @@
-package chassisDriverForRobot
+package socketCommunication
 
 import (
 	"log"

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.routeguide";
+option java_outer_classname = "RouteGuideProto";
+
+package robotMove;
+
+service RobotMove {
+    rpc SinglePointMove (SinglePointInfo) returns (MoveResponse) {}
+}
+
+message SinglePointInfo {
+    //Mask value to indicate optional value
+    // marker   |   location    |    max_continuous_retries |   distance_tolerance  |   theta_tolerance
+    //  16      |      8        |               4           |           2           |           1
+    uint32 infoMask = 1;
+
+    string marker = 2;
+
+    float locationX = 3;
+    float locationY = 4;
+    float locationTheta = 5;
+
+    int32 max_continuous_retries = 6;
+    float distance_tolerance = 7;
+    float theta_tolerance = 8;
+}
+
+message MultiplePointsInfo{
+    //Mask value to indicate optional value
+    uint32 infoMask = 1;
+
+
+}
+
+message MoveResponse {
+    string command = 1;
+    uint32 uuid = 2;
+    string status = 3;
+    string error_message = 4;
+    uint32 task_id = 5;
+}
