@@ -1,0 +1,32 @@
+2019/05/28 14:51:19 CommandResultStruct.strJSON =
+{"command":"/api/markers/query_list",
+ "error_message":"",
+ "results":
+    {"1":
+        {"avatar":"默认",
+         "floor":2,
+          "key":0,
+          "marker_name":"1",
+          "pose":{"orientation":{"w":-1,"x":0,"y":0,"z":0.02},
+                  "position":{"x":-5.45,"y":-6.24,"z":0}}
+        },
+     "2":
+        {"avatar":"默认",
+        "floor":2,
+        "key":0,
+        "marker_name":"2",
+        "pose":{"orientation":{"w":-0.99,"x":0,"y":0,"z":-0.15},
+                "position":{"x":0.79,"y":-5.97,"z":0}}
+        },
+     "Charger":
+        {"avatar":"默认",
+        "floor":2,"key":11,
+        "marker_name":"Charger",
+        "pose":{"orientation":{"w":-0.72,"x":0,"y":0,"z":-0.7},
+                "position":{"x":-0.35,"y":-7.41,"z":0}}
+        }
+    },
+ "status":"OK",
+ "type":"response",
+ "uuid":""
+}

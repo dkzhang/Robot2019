@@ -7,7 +7,8 @@ import (
 )
 
 func TestSocketManagement(t *testing.T) {
-	serverIP := ":7777"
+	//serverIP := ":7777"
+	serverIP := "192.168.10.10:31001"
 
 	chanSize := 1024
 	var commandChan chan CommandStruct = make(chan CommandStruct, chanSize)
@@ -18,10 +19,30 @@ func TestSocketManagement(t *testing.T) {
 
 	go PrintResultChan(resultChan)
 
-	sleepTime := time.Second * 10
+	sleepTime := time.Second * 120
 
 	commandChan <- CommandStruct{
-		Command: time.Now().String(),
+		Command: "/api/robot_info",
+	}
+
+	commandChan <- CommandStruct{
+		Command: "/api/markers/query_list",
+	}
+
+	//commandChan <- CommandStruct{
+	//	Command: "/api/move?marker=1",
+	//}
+	//
+	//commandChan <- CommandStruct{
+	//	Command: "/api/move?marker=2",
+	//}
+
+	commandChan <- CommandStruct{
+		Command: "/api/move?marker=3",
+	}
+
+	commandChan <- CommandStruct{
+		Command: "/api/move?marker=Charger",
 	}
 
 	time.Sleep(sleepTime)
