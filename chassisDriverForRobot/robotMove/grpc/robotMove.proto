@@ -16,12 +16,14 @@ message SinglePointInfo {
     //  16      |      8        |               4           |           2           |           1
     uint32 infoMask = 1;
 
+    //either marker or location
     string marker = 2;
 
     float locationX = 3;
     float locationY = 4;
     float locationTheta = 5;
 
+    //optional
     int32 max_continuous_retries = 6;
     float distance_tolerance = 7;
     float theta_tolerance = 8;
@@ -31,7 +33,13 @@ message MultiplePointsInfo{
     //Mask value to indicate optional value
     uint32 infoMask = 1;
 
+    //required
+    repeated string marker =2;
 
+    //optional
+    int32 count = 3;
+    float distance_tolerance = 4;
+    float max_continuous_retries = 5;
 }
 
 message MoveResponse {
