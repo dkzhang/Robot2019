@@ -19,7 +19,7 @@ func TestSocketManagement(t *testing.T) {
 
 	go PrintResultChan(resultChan)
 
-	sleepTime := time.Second * 120
+	sleepTime := time.Second * 180
 
 	commandChan <- CommandStruct{
 		Command: "/api/robot_info",
@@ -37,12 +37,12 @@ func TestSocketManagement(t *testing.T) {
 	//	Command: "/api/move?marker=2",
 	//}
 
-	commandChan <- CommandStruct{
-		Command: "/api/move?marker=3",
-	}
+	//commandChan <- CommandStruct{
+	//	Command: "/api/move?marker=3",
+	//}
 
 	commandChan <- CommandStruct{
-		Command: "/api/move?marker=Charger",
+		Command: "/api/move?markers=1,2,3,4,1,Charger",
 	}
 
 	time.Sleep(sleepTime)
