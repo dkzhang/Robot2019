@@ -20,7 +20,7 @@ type Result struct {
 
 	CurrentPose  RobotPose `json:"current_pose"`
 	CurrentFloor int       `json:"current_floor"`
-	ErrorCode    uint64    `json:"error_code"`
+	ErrorCode    string    `json:"error_code"`
 	//`json:" "`
 }
 
