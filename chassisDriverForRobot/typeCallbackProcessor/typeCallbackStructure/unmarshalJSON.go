@@ -1,4 +1,4 @@
-package typeCallbackProcessor
+package typeCallbackStructure
 
 import (
 	"encoding/json"

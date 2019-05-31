@@ -2,6 +2,7 @@ package typeCallbackProcessor
 
 import (
 	"Robot2019/chassisDriverForRobot/typeCallbackProcessor/robotStatus"
+	"Robot2019/chassisDriverForRobot/typeCallbackProcessor/typeCallbackStructure"
 	"fmt"
 	"log"
 	"sync"
@@ -35,7 +36,7 @@ func (proc *TypeCallbackProcessor) run() {
 		topicMessage := <-proc.inChan
 		log.Printf("Recive callback topic: %s", topicMessage)
 
-		ct, err := UnmarshalJSON(topicMessage)
+		ct, err := typeCallbackStructure.UnmarshalJSON(topicMessage)
 		if err != nil {
 			log.Fatalf("UnmarshalJSON Callback Topic error: %v", err)
 			continue

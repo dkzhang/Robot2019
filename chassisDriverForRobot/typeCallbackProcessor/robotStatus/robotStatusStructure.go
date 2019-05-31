@@ -1,9 +1,14 @@
 package robotStatus
 
+import (
+	"Robot2019/chassisDriverForRobot/typeCallbackProcessor/typeCallbackStructure"
+)
+
 type CallbackTopic struct {
-	Type    string `json:"type"`
-	Topic   string `json:"topic"`
+	typeCallbackStructure.CallbackTopic
 	Results Result `json:"results"`
+
+	OriginalMessage string
 }
 
 type Result struct {

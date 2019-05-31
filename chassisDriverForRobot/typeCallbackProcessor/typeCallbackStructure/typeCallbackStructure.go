@@ -1,4 +1,4 @@
-package typeCallbackProcessor
+package typeCallbackStructure
 
 type CallbackTopic struct {
 	Type  string `json:"type"`
