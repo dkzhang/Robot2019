@@ -1,4 +1,4 @@
-package typeNotificationProcessor
+package notificationDetails
 
 import "testing"
 
@@ -10,7 +10,7 @@ func TestUnmarshalJSON(t *testing.T) {
    	 	"level": "info",
     	"description": "The move task is started.",
     	"data":{"target":"room_205",
-			"markers”:["m1","m2"],
+			"markers":["m1","m2"],
 			"distance_tolerance":1}
 	}
 	`

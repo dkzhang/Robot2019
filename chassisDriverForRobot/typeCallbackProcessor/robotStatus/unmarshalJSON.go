@@ -11,6 +11,7 @@ func UnmarshalJSON(strJSON string) (ct CallbackTopic, err error) {
 	if err != nil {
 		return ct, fmt.Errorf("json.Unmarshal error: %v", err)
 	} else {
+		ct.OriginalMessage = strJSON
 		return ct, nil
 	}
 }

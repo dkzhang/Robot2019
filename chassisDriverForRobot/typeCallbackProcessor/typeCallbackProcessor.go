@@ -52,7 +52,8 @@ func (proc *TypeCallbackProcessor) run() {
 			} else {
 				log.Printf("UnmarshalJSON Callback Topic RobotStatus success: %v", ctrs)
 
-				//
+				//把消息发个已注册监听的各个channel
+				//如果某个channel超时，则跳过进行下一个
 				for name, theChan := range proc.robotStatusListenerMap {
 					select {
 					case theChan <- ctrs:
