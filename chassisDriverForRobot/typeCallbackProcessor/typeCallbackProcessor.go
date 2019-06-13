@@ -12,6 +12,9 @@ import (
 type TypeCallbackProcessor struct {
 	robotStatusListenerMap map[string](chan robotStatus.CallbackTopic)
 	inChan                 chan string
+	cancelChan             chan interface{}
+
+	runOnce sync.Once
 }
 
 func (proc *TypeCallbackProcessor) RegisterRobotStatusListener(name string, topicChan chan robotStatus.CallbackTopic) (err error) {
@@ -33,8 +36,14 @@ func (proc *TypeCallbackProcessor) GetInChan() chan string {
 
 func (proc *TypeCallbackProcessor) run() {
 	for {
-		topicMessage := <-proc.inChan
-		log.Printf("Recive callback topic: %s", topicMessage)
+		var topicMessage string
+
+		select {
+		case topicMessage = <-proc.inChan:
+			log.Printf("Recive callback topic: %s", topicMessage)
+		case <-proc.cancelChan:
+			return
+		}
 
 		ct, err := typeCallbackStructure.UnmarshalJSON(topicMessage)
 		if err != nil {
@@ -68,18 +77,30 @@ func (proc *TypeCallbackProcessor) run() {
 	}
 }
 
+func (proc *TypeCallbackProcessor) IsRunning() bool {
+	select {
+	case <-proc.cancelChan:
+		return false
+	default:
+		return true
+	}
+}
+
+func (proc *TypeCallbackProcessor) GoRun() {
+	proc.runOnce.Do(func() {
+		go proc.run()
+	})
+}
+
 var ptr *TypeCallbackProcessor = nil
-var once sync.Once
 var inChanSize = 1024
 var timeout = 10 * time.Second
 
 func TypeCallbackProcessorFactory() *TypeCallbackProcessor {
-	once.Do(func() {
-		ptr = &TypeCallbackProcessor{
-			robotStatusListenerMap: make(map[string](chan robotStatus.CallbackTopic)),
-			inChan:                 make(chan string, inChanSize),
-		}
-		go ptr.run()
-	})
+	ptr = &TypeCallbackProcessor{
+		robotStatusListenerMap: make(map[string](chan robotStatus.CallbackTopic)),
+		inChan:                 make(chan string, inChanSize),
+		cancelChan:             make(chan interface{}),
+	}
 	return ptr
 }
