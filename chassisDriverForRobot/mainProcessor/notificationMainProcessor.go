@@ -10,10 +10,11 @@ import (
 )
 
 type NotificationMainProcessor struct {
-	serverIPandPort string
-
+	serverIPandPort  string
+	commandChan      chan socketCommunication.CommandStruct
 	cancelChan       chan interface{}
 	notificationProc *typeNotificationProcessor.TypeNotificationProcessor
+	socketManagement *socketCommunication.SocketManagement
 
 	runOnce sync.Once
 }
@@ -21,12 +22,13 @@ type NotificationMainProcessor struct {
 var commandChanSize = 1
 
 func (nmp *NotificationMainProcessor) run() {
-
-	var commandChan chan socketCommunication.CommandStruct = make(chan socketCommunication.CommandStruct, commandChanSize)
-
-	psm := socketCommunication.SocketManagementFactory(nmp.serverIPandPort, commandChan)
-	resultChan, _ := psm.GetResultAndFeedbackChan()
+	resultChan, _ := nmp.socketManagement.GetResultAndFeedbackChan()
 	notificationOutputChan := nmp.notificationProc.GetInChan()
+
+	//启动socket收发goroutine
+	nmp.socketManagement.GoRun()
+	//启动notification分发goroutine
+	nmp.GoRun()
 
 	for {
 		var resultMsg string
@@ -82,8 +84,10 @@ func (nmp *NotificationMainProcessor) GoRun() {
 func notificationMainProcessorFactory(serverIPandPort string) *NotificationMainProcessor {
 	ptr := &NotificationMainProcessor{
 		serverIPandPort:  serverIPandPort,
+		commandChan:      make(chan socketCommunication.CommandStruct, commandChanSize),
 		cancelChan:       make(chan interface{}),
 		notificationProc: typeNotificationProcessor.TypeNotificationProcessorFactory(),
 	}
+	ptr.socketManagement = socketCommunication.SocketManagementFactory(ptr.serverIPandPort, ptr.commandChan)
 	return ptr
 }
