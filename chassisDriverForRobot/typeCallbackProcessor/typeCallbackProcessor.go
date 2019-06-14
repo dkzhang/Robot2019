@@ -86,6 +86,10 @@ func (proc *TypeCallbackProcessor) IsRunning() bool {
 	}
 }
 
+func (proc *TypeCallbackProcessor) Cancel() {
+	close(proc.cancelChan)
+}
+
 func (proc *TypeCallbackProcessor) GoRun() {
 	proc.runOnce.Do(func() {
 		go proc.run()

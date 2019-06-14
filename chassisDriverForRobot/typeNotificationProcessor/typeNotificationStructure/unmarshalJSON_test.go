@@ -1,4 +1,4 @@
-package notificationDetails
+package typeNotificationStructure
 
 import "testing"
 
