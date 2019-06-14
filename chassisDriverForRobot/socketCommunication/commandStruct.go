@@ -10,3 +10,9 @@ type CommandResultStruct struct {
 	basicInfo BasicStructReturn
 	strJSON   string
 }
+
+type CommandFeedback struct {
+	Name    string
+	Command string
+	Msg     string
+}

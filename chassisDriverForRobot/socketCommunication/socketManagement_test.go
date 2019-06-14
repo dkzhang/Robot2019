@@ -7,15 +7,15 @@ import (
 )
 
 func TestSocketManagement(t *testing.T) {
-	//serverIP := ":7777"
 	serverIP := "192.168.10.10:31001"
 
 	chanSize := 1024
 	var commandChan chan CommandStruct = make(chan CommandStruct, chanSize)
-	var resultChan chan CommandResultStruct = make(chan CommandResultStruct, chanSize)
-	var cancelChan chan interface{} = make(chan interface{})
 
-	go SocketManagement(serverIP, commandChan, resultChan, cancelChan)
+	psm := SocketManagementFactory(serverIP, commandChan)
+	resultChan, _ := psm.GetResultAndFeedbackChan()
+
+	psm.GoRun()
 
 	go PrintResultChan(resultChan)
 
@@ -46,7 +46,7 @@ func TestSocketManagement(t *testing.T) {
 	}
 
 	time.Sleep(sleepTime)
-	close(cancelChan)
+	psm.Cancel()
 }
 
 func PrintResultChan(resultChan chan CommandResultStruct) {
