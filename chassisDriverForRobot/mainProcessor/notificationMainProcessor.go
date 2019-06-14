@@ -19,8 +19,6 @@ type NotificationMainProcessor struct {
 	runOnce sync.Once
 }
 
-var commandChanSize = 1
-
 func (nmp *NotificationMainProcessor) run() {
 	resultChan, _ := nmp.socketManagement.GetResultAndFeedbackChan()
 	notificationOutputChan := nmp.notificationProc.GetInChan()
@@ -54,12 +52,12 @@ func (nmp *NotificationMainProcessor) run() {
 
 }
 
-func (nmp *NotificationMainProcessor) RegisterRobotStatusListener(name string, notificationChan chan typeNotificationStructure.Notification) (err error) {
-	return nmp.notificationProc.RegisterRobotStatusListener(name, notificationChan)
+func (nmp *NotificationMainProcessor) RegisterNotificationListener(name string, notificationChan chan typeNotificationStructure.Notification) (err error) {
+	return nmp.notificationProc.RegisterListener(name, notificationChan)
 }
 
-func (nmp *NotificationMainProcessor) UnregisterRobotStatusListener(name string) {
-	nmp.notificationProc.UnregisterRobotStatusListener(name)
+func (nmp *NotificationMainProcessor) UnregisterNotificationListener(name string) {
+	nmp.notificationProc.UnregisterListener(name)
 }
 
 func (nmp *NotificationMainProcessor) IsRunning() bool {
@@ -82,6 +80,8 @@ func (nmp *NotificationMainProcessor) GoRun() {
 }
 
 func notificationMainProcessorFactory(serverIPandPort string) *NotificationMainProcessor {
+	commandChanSize := 1
+
 	ptr := &NotificationMainProcessor{
 		serverIPandPort:  serverIPandPort,
 		commandChan:      make(chan socketCommunication.CommandStruct, commandChanSize),

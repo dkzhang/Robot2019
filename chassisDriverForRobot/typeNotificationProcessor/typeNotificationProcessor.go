@@ -18,7 +18,7 @@ type TypeNotificationProcessor struct {
 
 // 由于消息收到后都是从这里分发出去，因此这里是一个消息汇聚点
 // 为避免瓶颈效应，这里不对消息进行filter，各个goroutine收到所有notification后进行filter
-func (proc *TypeNotificationProcessor) RegisterRobotStatusListener(name string, notificationChan chan typeNotificationStructure.Notification) (err error) {
+func (proc *TypeNotificationProcessor) RegisterListener(name string, notificationChan chan typeNotificationStructure.Notification) (err error) {
 	if _, ok := proc.ListenerMap[name]; !ok {
 		proc.ListenerMap[name] = notificationChan
 		return nil
@@ -27,7 +27,7 @@ func (proc *TypeNotificationProcessor) RegisterRobotStatusListener(name string, 
 	}
 }
 
-func (proc *TypeNotificationProcessor) UnregisterRobotStatusListener(name string) {
+func (proc *TypeNotificationProcessor) UnregisterListener(name string) {
 	delete(proc.ListenerMap, name)
 }
 

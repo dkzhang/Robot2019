@@ -1,9 +1,9 @@
 package socketCommunication
 
 type CommandStruct struct {
-	Name       string
-	Command    string
-	ChanResult chan CommandResult
+	Name    string
+	Command string
+	UUID    string
 }
 
 type CommandFeedback struct {
