@@ -92,12 +92,11 @@ func (proc *TypeCallbackProcessor) GoRun() {
 	})
 }
 
-var ptr *TypeCallbackProcessor = nil
 var inChanSize = 1024
-var timeout = 10 * time.Second
+var timeout = 1 * time.Second
 
 func TypeCallbackProcessorFactory() *TypeCallbackProcessor {
-	ptr = &TypeCallbackProcessor{
+	ptr := &TypeCallbackProcessor{
 		robotStatusListenerMap: make(map[string](chan robotStatus.CallbackTopic)),
 		inChan:                 make(chan string, inChanSize),
 		cancelChan:             make(chan interface{}),

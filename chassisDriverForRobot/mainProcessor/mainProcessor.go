@@ -17,7 +17,7 @@ type MainProcessor struct {
 }
 
 func (mp *MainProcessor) run() {
-	go socketCommunication.SocketManagement(mp.serverIP, mp.commandChan, mp.resultChan, mp.cancelChan)
+	go socketCommunication.SocketManagementRun(mp.serverIP, mp.commandChan, mp.resultChan, mp.cancelChan)
 
 	//go PrintResultChan(resultChan)
 }
