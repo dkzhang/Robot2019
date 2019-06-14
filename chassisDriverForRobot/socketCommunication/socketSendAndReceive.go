@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-func SocketReceive(conn *net.TCPConn, resultChan chan CommandResultStruct, errorChan chan error, pwg *sync.WaitGroup) {
+func SocketReceive(conn *net.TCPConn, resultChan chan string, errorChan chan error, pwg *sync.WaitGroup) {
 	defer pwg.Done()
 
 	buff := make([]byte, 1024*10)
@@ -18,9 +18,9 @@ func SocketReceive(conn *net.TCPConn, resultChan chan CommandResultStruct, error
 			errorChan <- fmt.Errorf("SocketReceive conn.Read error: %v", err)
 			return
 		}
-		cs := CommandResultStruct{}
-		cs.strJSON = string(buff[:(counts - 1)])
-		resultChan <- cs
+
+		strJSON := string(buff[:(counts - 1)])
+		resultChan <- strJSON
 
 		select {
 		case errMsg := <-errorChan:

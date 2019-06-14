@@ -9,9 +9,9 @@ import (
 // SocketManagement一般情况下会一直运行，即使网络中断也会自动重连
 // 因此设计为Run Once，如果结束运行，则该实例无法再次运行
 type SocketManagement struct {
-	serverIP    string
-	commandChan chan CommandStruct
-	resultChan  chan CommandResultStruct
+	serverIPandPort string
+	commandChan     chan CommandStruct
+	resultChan      chan string
 
 	feedbackChan chan CommandFeedback
 	cancelChan   chan interface{}
@@ -22,12 +22,12 @@ type SocketManagement struct {
 var resultChanSize = 1024
 var feedbackChanSize = 64
 
-func SocketManagementFactory(serverIP string, commandChan chan CommandStruct) *SocketManagement {
+func SocketManagementFactory(serverIPandPort string, commandChan chan CommandStruct) *SocketManagement {
 	ptr := &SocketManagement{
-		serverIP:    serverIP,
-		commandChan: commandChan,
+		serverIPandPort: serverIPandPort,
+		commandChan:     commandChan,
 
-		resultChan:   make(chan CommandResultStruct, resultChanSize),
+		resultChan:   make(chan string, resultChanSize),
 		feedbackChan: make(chan CommandFeedback, feedbackChanSize),
 
 		cancelChan: make(chan interface{}),
@@ -48,7 +48,7 @@ func (sm *SocketManagement) Cancel() {
 	close(sm.cancelChan)
 }
 
-func (sm *SocketManagement) GetResultAndFeedbackChan() (chan CommandResultStruct, chan CommandFeedback) {
+func (sm *SocketManagement) GetResultAndFeedbackChan() (chan string, chan CommandFeedback) {
 	return sm.resultChan, sm.feedbackChan
 }
 
@@ -74,7 +74,7 @@ func (sm *SocketManagement) run() {
 	var pcs *CommandStruct = nil
 
 	for {
-		tcpAddr, err := net.ResolveTCPAddr("tcp4", sm.serverIP)
+		tcpAddr, err := net.ResolveTCPAddr("tcp4", sm.serverIPandPort)
 		if err != nil {
 			log.Fatalf("net.ResolveTCPAddr error: %v", err)
 			continue

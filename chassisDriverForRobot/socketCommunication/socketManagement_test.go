@@ -7,12 +7,12 @@ import (
 )
 
 func TestSocketManagement(t *testing.T) {
-	serverIP := "192.168.10.10:31001"
+	serverIPandPort := "192.168.10.10:31001"
 
 	chanSize := 1024
 	var commandChan chan CommandStruct = make(chan CommandStruct, chanSize)
 
-	psm := SocketManagementFactory(serverIP, commandChan)
+	psm := SocketManagementFactory(serverIPandPort, commandChan)
 	resultChan, _ := psm.GetResultAndFeedbackChan()
 
 	psm.GoRun()

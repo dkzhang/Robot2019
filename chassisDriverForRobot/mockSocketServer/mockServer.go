@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	serverIP := ":7777"
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", serverIP)
+	serverIPandPort := ":7777"
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", serverIPandPort)
 	if err != nil {
 		fmt.Errorf("net.ResolveTCPAddr error: %v", err)
 		return

@@ -9,7 +9,7 @@ import (
 type MainProcessor struct {
 	//robotStatusListenerMap map[string](chan robotStatus.CallbackTopic)
 	//inChan                 chan string
-	serverIP string
+	serverIPandPort string
 
 	commandChan chan socketCommunication.CommandStruct
 	resultChan  chan socketCommunication.CommandResultStruct
@@ -17,7 +17,7 @@ type MainProcessor struct {
 }
 
 func (mp *MainProcessor) run() {
-	go socketCommunication.SocketManagementRun(mp.serverIP, mp.commandChan, mp.resultChan, mp.cancelChan)
+	go socketCommunication.SocketManagementRun(mp.serverIPandPort, mp.commandChan, mp.resultChan, mp.cancelChan)
 
 	//go PrintResultChan(resultChan)
 }
@@ -32,10 +32,10 @@ func TypeCallbackProcessorFactory() *MainProcessor {
 		ptr = &MainProcessor{
 			//robotStatusListenerMap: make(map[string](chan robotStatus.CallbackTopic)),
 			//inChan:                 make(chan string, inChanSize),
-			serverIP:    "192.168.10.10:31001",
-			commandChan: make(chan socketCommunication.CommandStruct, chanSize),
-			resultChan:  make(chan socketCommunication.CommandResultStruct, chanSize),
-			cancelChan:  make(chan interface{}),
+			serverIPandPort: "192.168.10.10:31001",
+			commandChan:     make(chan socketCommunication.CommandStruct, chanSize),
+			resultChan:      make(chan socketCommunication.CommandResultStruct, chanSize),
+			cancelChan:      make(chan interface{}),
 		}
 		go ptr.run()
 	})
