@@ -29,15 +29,15 @@ func TestSocketManagement(t *testing.T) {
 		Command: "/api/markers/query_list",
 	}
 
-	//commandChan <- CommandStruct{
+	//CommandChan <- CommandStruct{
 	//	Command: "/api/move?marker=1",
 	//}
 	//
-	//commandChan <- CommandStruct{
+	//CommandChan <- CommandStruct{
 	//	Command: "/api/move?marker=2",
 	//}
 
-	//commandChan <- CommandStruct{
+	//CommandChan <- CommandStruct{
 	//	Command: "/api/move?marker=3",
 	//}
 
