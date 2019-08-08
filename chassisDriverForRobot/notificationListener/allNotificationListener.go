@@ -12,7 +12,7 @@ type AllNotificationListener struct {
 }
 
 func (nl *AllNotificationListener) Init(p generalCommandTransceiver.GeneralCommandTransceiver,
-	s socketCommunication.SocketManagement) {
+	s socketCommunication.SocketManagement) chan Notification {
 	//1. 先配置收发器和socket
 	nl.Processor = p
 	nl.SocketComm = s
@@ -49,5 +49,5 @@ func (nl *AllNotificationListener) Init(p generalCommandTransceiver.GeneralComma
 			return false, nil
 		}
 	}
-
+	return NotificationProcessChan
 }
