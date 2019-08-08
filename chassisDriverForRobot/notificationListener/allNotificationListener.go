@@ -7,12 +7,13 @@ import (
 )
 
 type AllNotificationListener struct {
-	Processor  generalCommandTransceiver.GeneralCommandTransceiver
-	SocketComm socketCommunication.SocketManagement
+	Processor               generalCommandTransceiver.GeneralCommandTransceiver
+	SocketComm              socketCommunication.SocketManagement
+	NotificationProcessChan chan Notification
 }
 
 func (nl *AllNotificationListener) Init(p generalCommandTransceiver.GeneralCommandTransceiver,
-	s socketCommunication.SocketManagement) chan Notification {
+	s socketCommunication.SocketManagement) {
 	//1. 先配置收发器和socket
 	nl.Processor = p
 	nl.SocketComm = s
@@ -39,15 +40,14 @@ func (nl *AllNotificationListener) Init(p generalCommandTransceiver.GeneralComma
 
 	//定义Callback函数
 	var NotificationProcessChanSize = 16
-	NotificationProcessChan := make(chan Notification, NotificationProcessChanSize)
+	nl.NotificationProcessChan = make(chan Notification, NotificationProcessChanSize)
 	reg.Callback = func(strJSON string) (b bool, e error) {
 		notification, err := UnmarshalJSON(strJSON)
 		if err != nil {
 			return false, err
 		} else {
-			NotificationProcessChan <- notification
+			nl.NotificationProcessChan <- notification
 			return false, nil
 		}
 	}
-	return NotificationProcessChan
 }
