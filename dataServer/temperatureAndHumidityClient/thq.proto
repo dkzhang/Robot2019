@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package temperatureAndHumidityQuery;
+
+// The greeting service definition.
+service TemperatureAndHumidityQueryService {
+    // Sends a greeting
+    rpc GetTemperatureAndHumidity (TemperatureAndHumidityRequest) returns (TemperatureAndHumidityReply) {
+    }
+    //    rpc GetTemperatureAndHumidity() returns (TemperatureAndHumidityResponse){}
+}
+
+message TemperatureAndHumidityRequest {
+}
+
+message TemperatureAndHumidityInfo {
+    double temperature = 1;
+    double humidity = 2;
+    string datetime = 3;
+}
+
+message TemperatureAndHumidityReply {
+    repeated TemperatureAndHumidityInfo thInfo = 1;
+    string errorMessage = 2;
+}
+
