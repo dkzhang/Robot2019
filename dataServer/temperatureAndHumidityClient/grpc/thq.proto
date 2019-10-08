@@ -5,22 +5,22 @@ package temperatureAndHumidityQuery;
 // The greeting service definition.
 service TemperatureAndHumidityQueryService {
     // Sends a greeting
-    rpc GetTemperatureAndHumidity (TemperatureAndHumidityRequest) returns (TemperatureAndHumidityReply) {
-    }
-    //    rpc GetTemperatureAndHumidity() returns (TemperatureAndHumidityResponse){}
+    rpc GetTemperatureAndHumidity (TemperatureAndHumidityRequest) returns (TemperatureAndHumidityReply) {}
 }
 
+// The request message containing the user's name.
 message TemperatureAndHumidityRequest {
+    string datetime = 1;
 }
 
-message TemperatureAndHumidityInfo {
+message TemperatureAndHumidityInfo{
     double temperature = 1;
     double humidity = 2;
     string datetime = 3;
 }
 
+// The response message containing the greetings
 message TemperatureAndHumidityReply {
     repeated TemperatureAndHumidityInfo thInfo = 1;
     string errorMessage = 2;
 }
-
