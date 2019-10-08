@@ -1,4 +1,4 @@
-package robotMove
+package basicStructure
 
 import "testing"
 

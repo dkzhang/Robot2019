@@ -31,7 +31,7 @@ func SocketReceive(conn *net.TCPConn, resultChan chan string, errorChan chan err
 		}
 	}
 }
-func SocketSend(conn *net.TCPConn, commandChan chan CommandStruct,
+func SocketSend(conn *net.TCPConn, commandChan chan *CommandStruct,
 	errorChan chan error, cancelChan chan interface{},
 	pCommand *CommandStruct) (*CommandStruct, error) {
 
@@ -47,11 +47,11 @@ func SocketSend(conn *net.TCPConn, commandChan chan CommandStruct,
 			if err != nil {
 				//网络发送错误
 				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
-				return &commandStruct, fmt.Errorf("SocketSend will return because of Socket write error: %v.", err)
+				return commandStruct, fmt.Errorf("SocketSend will return because of Socket write error: %v.", err)
 			} else if counts != len([]byte(commandStruct.Command)) {
 				//发送的字节数错误
 				//取出命令后发送错误，需要返回当前发送出错的命令以备重发
-				return &commandStruct, fmt.Errorf("SocketSend will return because of Socket wrong bytes.")
+				return commandStruct, fmt.Errorf("SocketSend will return because of Socket wrong bytes.")
 			} else {
 				//发送成功
 				return nil, nil

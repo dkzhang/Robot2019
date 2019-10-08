@@ -7,32 +7,40 @@ import (
 )
 
 // SocketManagement一般情况下会一直运行，即使网络中断也会自动重连
-// 因此设计为Run Once，如果结束运行，则该实例无法再次运行
+// 设计为插件结构被注入到各个消息处理模块中，因此可以有多个SocketManagement的goroutine存在
 type SocketManagement struct {
-	serverIPandPort string
-	commandChan     chan CommandStruct
-	resultChan      chan string
+	ServerIPandPort string
+	CommandChan     chan *CommandStruct
+	ResultChan      chan string
+	FeedbackChan    chan *CommandFeedback
 
-	feedbackChan chan CommandFeedback
-	cancelChan   chan interface{}
+	cancelChan chan interface{}
 
 	runOnce sync.Once
 }
 
+var commandChanSize = 1024
 var resultChanSize = 1024
 var feedbackChanSize = 64
 
-func SocketManagementFactory(serverIPandPort string, commandChan chan CommandStruct) *SocketManagement {
-	ptr := &SocketManagement{
-		serverIPandPort: serverIPandPort,
-		commandChan:     commandChan,
+func SocketManagementFactory(serverIPandPort string) *SocketManagement {
+	//创建
+	psm := &SocketManagement{
+		ServerIPandPort: serverIPandPort,
+		CommandChan:     make(chan *CommandStruct, commandChanSize),
 
-		resultChan:   make(chan string, resultChanSize),
-		feedbackChan: make(chan CommandFeedback, feedbackChanSize),
+		ResultChan:   make(chan string, resultChanSize),
+		FeedbackChan: make(chan *CommandFeedback, feedbackChanSize),
 
 		cancelChan: make(chan interface{}),
 	}
-	return ptr
+
+	//一个实例只能运行一次
+	psm.runOnce.Do(func() {
+		go psm.run()
+	})
+
+	return psm
 }
 
 func (sm *SocketManagement) IsRunning() bool {
@@ -48,24 +56,14 @@ func (sm *SocketManagement) Cancel() {
 	close(sm.cancelChan)
 }
 
-func (sm *SocketManagement) GetResultAndFeedbackChan() (chan string, chan CommandFeedback) {
-	return sm.resultChan, sm.feedbackChan
-}
-
-func (sm *SocketManagement) GoRun() {
-	sm.runOnce.Do(func() {
-		go sm.run()
-	})
-}
-
 func (sm *SocketManagement) run() {
 	//SocketManagementRun 管理着两个go routine，分别用于发送和接收
 	//发送为主goroutine，接收则另起一个goroutine
 	//如果发送或接收时网络出错，则使用errorChan通知另外一个go routine退出
 	//当两个go routine都退出时，SocketManagement尝试重新连接
 	defer func() {
-		close(sm.resultChan)
-		close(sm.feedbackChan)
+		close(sm.ResultChan)
+		close(sm.FeedbackChan)
 	}()
 
 	errorChan := make(chan error, 1)
@@ -74,7 +72,7 @@ func (sm *SocketManagement) run() {
 	var pcs *CommandStruct = nil
 
 	for {
-		tcpAddr, err := net.ResolveTCPAddr("tcp4", sm.serverIPandPort)
+		tcpAddr, err := net.ResolveTCPAddr("tcp4", sm.ServerIPandPort)
 		if err != nil {
 			log.Fatalf("net.ResolveTCPAddr error: %v", err)
 			continue
@@ -87,11 +85,11 @@ func (sm *SocketManagement) run() {
 		}
 
 		wg.Add(1)
-		go SocketReceive(conn, sm.resultChan, errorChan, &wg)
+		go SocketReceive(conn, sm.ResultChan, errorChan, &wg)
 
 		//发送不用go routine
 		for {
-			pcs, err = SocketSend(conn, sm.commandChan, errorChan, sm.cancelChan, pcs)
+			pcs, err = SocketSend(conn, sm.CommandChan, errorChan, sm.cancelChan, pcs)
 			if err != nil {
 				log.Fatalf("SocketSend error: %v", err)
 				if errClose := conn.Close(); errClose != nil {
