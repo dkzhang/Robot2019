@@ -7,8 +7,25 @@ import (
 	"log"
 	"math/rand"
 	"net"
+	"testing"
 	"time"
 )
+
+func TestGetTemperatureAndHumidity(t *testing.T) {
+	go mockServer()
+
+	for i := 0; i < 10; i++ {
+		time.Sleep(time.Second * 3)
+		ths, err := GetTemperatureAndHumidity()
+		if err != nil {
+			t.Fatalf("GetTemperatureAndHumidity error: %v", err)
+		}
+
+		for i := 0; i < len(ths); i++ {
+			t.Logf("GetTemperatureAndHumidity result [%d]: %v", i, *(ths[i]))
+		}
+	}
+}
 
 const (
 	port = ":50051"
@@ -37,7 +54,7 @@ func (s *server) GetTemperatureAndHumidity(ctx context.Context, in *pb.Temperatu
 	return &reply, nil
 }
 
-func main() {
+func mockServer() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -48,20 +65,4 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-}
-
-func GetTemperatureAndHumidity() ([]TemperatureAndHumidityInfo, error) {
-	const address = "localhost:50051"
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-
-}
-
-type TemperatureAndHumidityInfo struct {
-	Temperature float64
-	Humidity    float64
-	Datetime    string
 }
