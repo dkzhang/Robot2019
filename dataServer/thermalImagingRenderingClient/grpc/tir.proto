@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package thermalImagingRendering;
+
+// The ThermalImagingRendering service definition.
+service ThermalImagingRenderingService {
+    // Using a dataArray to render a ThermalImaging file
+    rpc ThermalImagingRender (ThermalImagingRenderingRequest) returns (ThermalImagingRenderingReply) {}
+}
+
+// The request message containing the dataArray for the server to render.
+// The ThermalImaging file with given name will be generated at the given path.
+message ThermalImagingRenderingRequest {
+    repeated double dataArray = 1;
+    string filepath = 2;
+    string filename = 3;
+}
+
+// The response message containing the errorMesage if any.
+message ThermalImagingRenderingReply {
+    string errorMessage = 1;
+}
