@@ -8,9 +8,9 @@ service TemperatureAndHumidityQueryService {
     rpc GetTemperatureAndHumidity (TemperatureAndHumidityRequest) returns (TemperatureAndHumidityReply) {}
 }
 
-// The request message containing the user's name.
+// The request message containing the tag for the server to log, not to query.
 message TemperatureAndHumidityRequest {
-    string datetime = 1;
+    string tag = 1;
 }
 
 message TemperatureAndHumidityInfo{
@@ -19,7 +19,7 @@ message TemperatureAndHumidityInfo{
     string datetime = 3;
 }
 
-// The response message containing the greetings
+// The response message containing the last three Temperature & Humidity & Datetime, and errorMesage if any.
 message TemperatureAndHumidityReply {
     repeated TemperatureAndHumidityInfo thInfo = 1;
     string errorMessage = 2;
