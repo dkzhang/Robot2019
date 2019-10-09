@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package ThermalImagingDataCollection;
+
+// The ThermalImagingDataCollection service definition.
+service ThermalImagingDataCollectionService {
+    // Using a dataArray to render a ThermalImaging file
+    rpc ThermalImagingDataCollect (ThermalImagingDataCollectionRequest) returns (ThermalImagingDataCollectionReply) {}
+}
+
+// The request message containing a tag for the server to log.
+message ThermalImagingDataCollectionRequest {
+    string tag = 1;
+}
+
+// The response message containing the dataArray, and the errorMesage if any.
+message ThermalImagingDataCollectionReply {
+    repeated double dataArray = 1;
+    string errorMessage = 2;
+}
