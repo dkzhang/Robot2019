@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package robotStatus;
+
+// The RobotStatus service definition.
+service RobotStatusService {
+    // Sends a greeting
+    rpc GetRobotStatus (RobotStatusRequest) returns (RobotStatusReply) {}
+}
+
+// The request message containing the tag for the server to log, not to query.
+message RobotStatusRequest {
+    string tag = 1;
+}
+
+// The response message containing the last RobotStatus, datetime, and errorMesage if any.
+message RobotStatusReply {
+    string moveStatus = 1;
+    bool chargeStatus = 2;
+    bool softEstopStatus = 3;
+    bool hardEstopStatus = 4;
+    int64 powerPercent = 5;
+
+    double x = 6;
+    double y = 7;
+    double theta = 8;
+
+    string datetime = 9;
+    string errorMessage = 10;
+}

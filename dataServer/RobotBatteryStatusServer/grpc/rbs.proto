@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package robotBatteryStatus;
+
+// The RobotBatteryStatus service definition.
+service RobotBatteryStatusService {
+    // Sends a greeting
+    rpc GetRobotBatteryStatus (RobotBatteryStatusRequest) returns (RobotBatteryStatusReply) {}
+}
+
+// The request message containing the tag for the server to log, not to query.
+message RobotBatteryStatusRequest {
+    string tag = 1;
+}
+
+// The response message containing the last RobotBatteryStatus, datetime, and errorMesage if any.
+message RobotBatteryStatusReply {
+    int64 batteryCapacity = 1;
+    double batteryCurrent = 2;
+    double batteryVoltage = 3;
+    double chargeVoltage = 4;
+    bool chargerConnectedStatus = 5;
+    double headCurrent = 6;
+
+    string datetime = 7;
+    string errorMessage = 8;
+}
