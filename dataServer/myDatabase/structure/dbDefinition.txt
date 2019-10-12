@@ -1,0 +1,36 @@
+PostgreSQL
+
+CREATE TABLE INSPECTION_LOG_RECORD(
+   INSPECTION_ID         BIGINT          NOT NULL,
+   RECORD_ID             BIGINT          NOT NULL,
+   RECORD_LEVEL          TEXT            NOT NULL,
+   RECORD_DATETIME       TIMESTAMPTZ     NOT NULL,
+   TEXT_CONTENT          TEXT            NOT NULL,
+   IMAGE_URL             TEXT            NOT NULL,
+   PRIMARY KEY(INSPECTION_ID, RECORD_ID)
+);
+
+CREATE TABLE INSPECTION_LOG(
+   INSPECTION_ID         BIGINT          NOT NULL,
+   DATETIME_BEGIN        TIMESTAMPTZ     NOT NULL,
+   DATETIME_END          TIMESTAMPTZ     NOT NULL,
+   INSPECTION_CONCLUSION TEXT            NOT NULL,
+   PRIMARY KEY(INSPECTION_ID)
+);
+
+
+
+Redis
+只存储实时巡检日志
+InspectionID
+CurrentRecordID
+
+InspectionLogRecord_123_456{
+InspectionID   string
+RecordID       string
+RecordLevel    string
+RecordDateTime string
+TextContent    string
+ImageUrl       string
+}
+
