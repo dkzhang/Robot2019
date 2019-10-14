@@ -1,4 +1,4 @@
-FROM dkzhang007/my-grpc-golang
+FROM dkzhang007/my-grpc-golang:my1.0
 
 WORKDIR /go/src
 RUN git clone https://github.com/dkzhang/Robot2019.git
