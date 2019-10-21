@@ -2,6 +2,7 @@ package temperatureAndHumidityClient
 
 import (
 	pb "Robot2019/dataServer/temperatureAndHumidityClient/grpc"
+	"Robot2019/myUtil"
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
@@ -22,7 +23,7 @@ func GetTemperatureAndHumidity() ([]*TemperatureAndHumidityInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.GetTemperatureAndHumidity(ctx,
-		&pb.TemperatureAndHumidityRequest{Datetime: time.Now().Format("2006-01-02 15:04:05")})
+		&pb.TemperatureAndHumidityRequest{Datetime: myUtil.FormatTime(time.Now())})
 	if err != nil {
 		log.Fatalf("could not get correct reply: %v", err)
 		return nil, err
