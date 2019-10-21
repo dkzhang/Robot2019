@@ -19,6 +19,7 @@ type server struct {
 
 func (s *server) GetRobotStatus(ctx context.Context, in *pb.RobotStatusRequest) (*pb.RobotStatusReply, error) {
 	log.Printf("Received: %v", in.GetTag())
+	//TODO: 连接redis容器，读取相关状态信息
 	return &pb.RobotStatusReply{}, nil
 }
 
