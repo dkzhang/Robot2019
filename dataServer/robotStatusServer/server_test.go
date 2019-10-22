@@ -2,15 +2,15 @@ package main
 
 import (
 	"Robot2019/myUtil"
-	"context"
+	_ "context"
 	"encoding/json"
-	"log"
+	_ "log"
 	"testing"
 	"time"
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	"github.com/gomodule/redigo/redis"
-	"google.golang.org/grpc"
+	_ "google.golang.org/grpc"
 )
 
 func TestServer_GetRobotStatus(t *testing.T) {
