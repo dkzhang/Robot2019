@@ -1,11 +1,13 @@
 package main
 
 import (
+	"Robot2019/myUtil"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	"google.golang.org/grpc"
@@ -51,6 +53,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterRobotStatusServiceServer(s, &server{})
+	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
