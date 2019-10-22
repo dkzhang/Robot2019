@@ -3,18 +3,18 @@ package main
 import (
 	"Robot2019/myUtil"
 	"context"
-	_ "context"
-	"encoding/json"
+
+	_ "encoding/json"
 	"log"
-	_ "log"
 	"testing"
 	"time"
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
-	"github.com/gomodule/redigo/redis"
+	_ "github.com/gomodule/redigo/redis"
 	"google.golang.org/grpc"
 )
 
+/*
 func TestServer_GetRobotStatus(t *testing.T) {
 	//连接redis容器，读取相关状态信息
 	redisConn, err := redis.Dial("tcp", "myRedis001:6379")
@@ -49,31 +49,33 @@ func TestServer_GetRobotStatus(t *testing.T) {
 	}
 	t.Logf("SET result = %v", result)
 
-	for i := 0; i < 20; i++ {
-		t.Logf("sleep: %d \n", i)
-	}
 
+}*/
+
+func TestServer_GetRobotStatus2(t *testing.T) {
 	/////////////////////////////////
 	// Set up a connection to the server.
-	address := "localhost:50061"
+	//address := "localhost:50061"
+	address := "140.143.16.113:50061"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
+	t.Logf("grpc.Dial OK!")
 	defer conn.Close()
 
 	c := pb.NewRobotStatusServiceClient(conn)
 
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	t.Logf("context.WithTimeout() OK!")
 	defer cancel()
 	r, err := c.GetRobotStatus(ctx, &pb.RobotStatusRequest{Tag: myUtil.FormatTime(time.Now())})
 
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		t.Fatalf("could not reply: %v", err)
 	}
-	log.Printf("reply = %v", r)
-
+	t.Logf("reply = %v", r)
 }
