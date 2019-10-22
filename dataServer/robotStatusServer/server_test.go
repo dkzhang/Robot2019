@@ -2,16 +2,15 @@ package main
 
 import (
 	"Robot2019/myUtil"
+	"context"
 	"encoding/json"
-	"fmt"
-	grpc "grpc-go"
 	"log"
-	"os"
 	"testing"
 	"time"
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	"github.com/gomodule/redigo/redis"
+	"google.golang.org/grpc"
 )
 
 func TestServer_GetRobotStatus(t *testing.T) {
@@ -48,30 +47,32 @@ func TestServer_GetRobotStatus(t *testing.T) {
 	}
 	t.Logf("SET result = %v", result)
 
-	for i := 0; i < 20; i++ {
-		t.Logf("sleep: %d \n", i)
-	}
+	//for i := 0; i < 20; i++ {
+	//	t.Logf("sleep: %d \n", i)
+	//}
 
 	/////////////////////////////////
 	// Set up a connection to the server.
-	address := "localhost:50061"
-
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-	//c := pb.NewGreeterClient(conn)
-	c := pb.NewRobotStatusServiceClient(conn)
-
-	// Contact the server and print out its response.
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
-	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	//address := "localhost:50061"
+	//
+	//conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+	//if err != nil {
+	//	log.Fatalf("did not connect: %v", err)
+	//}
+	//defer conn.Close()
+	////c := pb.NewGreeterClient(conn)
+	//c := pb.NewRobotStatusServiceClient(conn)
+	//c := pb.NewRobotStatusServiceClient(conn)
+	//
+	//// Contact the server and print out its response.
+	//
+	//ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	//defer cancel()
+	//r, err := c.GetRobotStatus()
+	////r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
+	//if err != nil {
+	//	log.Fatalf("could not greet: %v", err)
+	//}
+	//log.Printf("Greeting: %s", r.GetMessage())
 
 }
