@@ -9,4 +9,6 @@ RUN go get github.com/gomodule/redigo/redis
 
 RUN go build Robot2019/dataServer/robotStatusServer/server.go
 
+EXPOSE 50061
+
 CMD ./server
