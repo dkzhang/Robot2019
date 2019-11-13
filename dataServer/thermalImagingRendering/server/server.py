@@ -8,12 +8,13 @@ import tir_pb2
 import tir_pb2_grpc
 
 
-class Greeter(helloworld_pb2_grpc.GreeterServicer):
+class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingServiceServicer):
+
     def ThermalImagingRender(self, request, context):
         if not os.path.exists(request.filepath):
             os.makedirs(request.filepath)
 
-        print(string(request.dataArray))
+        print(request.dataArray)
         print(request.height)
         print(request.width)
         print(request.filepath)
@@ -24,10 +25,11 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    tir_pb2_grpc.add_ThermalImagingRenderingServiceServicer_to_server(ThermalImagingRender(), server)
+    tir_pb2_grpc.add_ThermalImagingRenderingServiceServicer_to_server(ThermalImagingRenderingService(), server)
 
     server.add_insecure_port('[::]:50061')
     server.start()
+
     server.wait_for_termination()
 
 
