@@ -12,8 +12,10 @@ service ThermalImagingRenderingService {
 // The ThermalImaging file with given name will be generated at the given path.
 message ThermalImagingRenderingRequest {
     repeated double dataArray = 1;
-    string filepath = 2;
-    string filename = 3;
+    int32 height = 2;
+    int32 width = 3;
+    string filepath = 4;
+    string filename = 5;
 }
 
 // The response message containing the errorMesage if any.
