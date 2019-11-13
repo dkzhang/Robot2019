@@ -13,7 +13,7 @@ func main() {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "140.143.16.113:50061"
+	address := "localhost:50051"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 

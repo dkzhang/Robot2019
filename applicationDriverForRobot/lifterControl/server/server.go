@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"Robot2019/myUtil"
@@ -22,11 +22,11 @@ type server struct {
 	pb.UnimplementedLifterControlServiceServer
 }
 
-func (s *server) GetRobotStatus(ctx context.Context, in *pb.LifterControlRequest) (*pb.LifterControlReply, error) {
+func (s *server) ControlTheLifter(ctx context.Context, in *pb.LifterControlRequest) (*pb.LifterControlReply, error) {
 	log.Printf("Received: %v", in.GetPara())
 
 	//system call
-	cmd := exec.Command("python3", "")
+	cmd := exec.Command("dir", "")
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
 
