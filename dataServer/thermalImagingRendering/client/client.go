@@ -32,7 +32,7 @@ func main() {
 		DataArray: nil,
 		Height:    8,
 		Width:     32,
-		Filepath:  "~",
+		Filepath:  "~/testTir",
 		Filename:  "test001",
 	})
 
