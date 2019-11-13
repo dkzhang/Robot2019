@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
-	"os/exec"
+	//"os"
+	//"os/exec"
 	"time"
+
+	"github.com/stianeikeland/go-rpio"
 
 	pb "Robot2019/applicationDriverForRobot/lifterControl/grpc"
 	"google.golang.org/grpc"
@@ -26,16 +28,26 @@ func (s *server) ControlTheLifter(ctx context.Context, in *pb.LifterControlReque
 	log.Printf("Received: %v", in.GetPara())
 
 	//system call
-	cmd := exec.Command("dir", "")
-	cmd.Stdout = os.Stdout
-	err := cmd.Run()
+	//cmd := exec.Command("dir", "")
+	//cmd.Stdout = os.Stdout
+	//err := cmd.Run()
 
-	theReply := pb.LifterControlReply{}
+	//use go-rpio
+	err := rpio.Open()
 	if err != nil {
-		theReply.ErrorMessage = err.Error()
+		return &pb.LifterControlReply{
+			ErrorMessage: err.Error(),
+		}, nil
 	}
+	defer rpio.Close()
 
-	return &theReply, nil
+	pin := rpio.Pin(10)
+	pin.Output() // Output mode
+	pin.High()   // Set pin High
+	time.Sleep(time.Millisecond * 123)
+	pin.Low() // Set pin Low
+
+	return &pb.LifterControlReply{}, nil
 
 }
 

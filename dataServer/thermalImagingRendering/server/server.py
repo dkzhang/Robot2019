@@ -30,6 +30,9 @@ def serve():
     server.add_insecure_port('[::]:50061')
     server.start()
 
+    # Notice the version of grpc, wait_for_termination func not exists in early version.
+    # To update grpc use this command.
+    # python3 -m pip install --upgrade grpcio
     server.wait_for_termination()
 
 
