@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package lifterControl;
+
+// The RobotStatus service definition.
+service LifterControlService {
+    // Sends a greeting
+    rpc ControlTheLifter (LifterControlRequest) returns (LifterControlReply) {}
+}
+
+// The request message containing the tag for the server to log, not to query.
+message LifterControlRequest {
+    int64 para = 1;
+}
+
+// The response message containing the last RobotStatus, datetime, and errorMesage if any.
+message LifterControlReply {
+    string errorMessage = 1;
+}
+
+//protoc -I grpc/ grpc/lc.proto --go_out=plugins=grpc:grpc/
