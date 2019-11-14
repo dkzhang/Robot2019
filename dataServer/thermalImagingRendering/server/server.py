@@ -20,7 +20,8 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
             os.makedirs(request.filepath)
 
         # X-Y轴分为width*height的网格
-        y, x = np.mgrid[-1:1:1j * request.height, -1:1:1j * request.width]
+        y, x = np.mgrid[-1:1:1j * request.height, \
+               -1 * (request.width / request.height):1 * (request.width / request.height): 1j * request.width]
 
         z = np.array(request.dataArray).reshape((request.height, request.width))
 
@@ -52,7 +53,7 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
         print(request.width)
         print(request.filepath)
         print(request.filename)
-        
+
         return tir_pb2.ThermalImagingRenderingReply(errorMessage="")
 
 
