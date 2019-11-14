@@ -36,8 +36,8 @@ func main() {
 		DataArray: testDataArray,
 		Height:    8,
 		Width:     32,
-		Filepath:  "/home/dkzhang/testTir",
-		Filename:  "test001",
+		Filepath:  "/ThermalImages/testTir/",
+		Filename:  "test005",
 	})
 
 	if err != nil {
