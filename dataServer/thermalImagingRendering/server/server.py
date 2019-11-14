@@ -36,16 +36,16 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
         # 绘图
         # 为了更明显地比较插值前后的区别，使用关键字参数interpolation='nearest'
         # 关闭imshow()内置的插值运算。
-        cm = pl.cm.get_cmap('Spectral_r')
+        # cm = pl.cm.get_cmap('Spectral_r')
         pl.subplot(211)
         im1 = pl.imshow(z, extent=[-1 * (request.width / request.height), 1 * (request.width / request.height), -1, 1],
-                        cmap=cm, interpolation='nearest', origin="lower")
+                        cmap=mpl.cm.rainbow, interpolation='nearest', origin="lower")
         #               cmap = mpl.cm.hot,
         pl.colorbar(im1)
 
         pl.subplot(212)
         im2 = pl.imshow(fnew, extent=[-1 * (request.width / request.height), 1 * (request.width / request.height), -1, 1],
-                        cmap=cm, interpolation='nearest', origin="lower")
+                        cmap=mpl.cm.rainbow, interpolation='nearest', origin="lower")
         pl.colorbar(im2)
 
         pl.savefig(request.filepath + request.filename + '.png')
