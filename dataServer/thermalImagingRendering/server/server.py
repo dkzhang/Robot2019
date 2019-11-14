@@ -21,9 +21,8 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
 
         # X-Y轴分为width*height的网格
         y, x = np.mgrid[-1:1:1j * request.height, -1:1:1j * request.width]
-        i = 0
 
-        z = np.array(request.dataArray).reshape((8, 8))
+        z = np.array(request.dataArray).reshape((request.height, request.width))
 
         # 三次样条二维插值
         newfunc = interpolate.interp2d(x, y, z, kind='cubic')
