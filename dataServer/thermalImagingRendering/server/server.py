@@ -7,12 +7,46 @@ import grpc
 import tir_pb2
 import tir_pb2_grpc
 
+import numpy as np
+from scipy import interpolate
+import pylab as pl
+import matplotlib as mpl
+
 
 class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingServiceServicer):
 
     def ThermalImagingRender(self, request, context):
         if not os.path.exists(request.filepath):
             os.makedirs(request.filepath)
+
+        # X-Y轴分为width*height的网格
+        y, x = np.mgrid[-1:1:j * request.height, -1:1:j * request.width]
+        i = 0
+
+        z = np.array(request.dataArray).reshape((8, 8))
+
+        # 三次样条二维插值
+        newfunc = interpolate.interp2d(x, y, z, kind='cubic')
+
+        # 原来是计算100*100的网格上的插值，先改为放大20倍的网格
+        xnew = np.linspace(-1, 1, request.width * 20)  # x
+        ynew = np.linspace(-1, 1, request.height * 20)  # y
+        fnew = newfunc(xnew, ynew)
+
+        # 绘图
+        # 为了更明显地比较插值前后的区别，使用关键字参数interpolation='nearest'
+        # 关闭imshow()内置的插值运算。
+        pl.subplot(121)
+        im1 = pl.imshow(z, extent=[-1, 1, -1, 1], cmap=mpl.cm.hot, interpolation='nearest',
+                        origin="lower")
+        pl.colorbar(im1)
+
+        pl.subplot(122)
+        im2 = pl.imshow(fnew, extent=[-1, 1, -1, 1], cmap=mpl.cm.hot, interpolation='nearest', origin="lower")
+        pl.colorbar(im2)
+
+        pl.savefig(request.filepath + request.filename + '.png')
+        pl.clf()
 
         print(request.dataArray)
         print(request.height)
