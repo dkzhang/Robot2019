@@ -20,7 +20,7 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
             os.makedirs(request.filepath)
 
         # X-Y轴分为width*height的网格
-        y, x = np.mgrid[-1:1:j * request.height, -1:1:j * request.width]
+        y, x = np.mgrid[-1:1:1j * request.height, -1:1:1j * request.width]
         i = 0
 
         z = np.array(request.dataArray).reshape((8, 8))
@@ -62,6 +62,7 @@ def serve():
     tir_pb2_grpc.add_ThermalImagingRenderingServiceServicer_to_server(ThermalImagingRenderingService(), server)
 
     server.add_insecure_port('[::]:50061')
+    print("Server is running:")
     server.start()
 
     # Notice the version of grpc, wait_for_termination func not exists in early version.
