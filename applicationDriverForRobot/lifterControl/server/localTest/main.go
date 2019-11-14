@@ -1,4 +1,4 @@
-package localTest
+package main
 
 import (
 	"github.com/stianeikeland/go-rpio"
@@ -28,4 +28,10 @@ func UpOrDown(para int64) {
 		time.Sleep(time.Millisecond * time.Duration(-para))
 		pin.Low() // Set pin Low
 	}
+}
+
+func main() {
+	UpOrDown(2)
+	time.Sleep(time.Second * 5)
+	UpOrDown(-2)
 }
