@@ -2,7 +2,6 @@ FROM dkzhang007/grpc-python:latest
 
 RUN python -m pip install numpy
 RUN python -m pip install scipy
-RUN python -m pip install pylab
 RUN python -m pip install matplotlib
 
 WORKDIR /myApp
