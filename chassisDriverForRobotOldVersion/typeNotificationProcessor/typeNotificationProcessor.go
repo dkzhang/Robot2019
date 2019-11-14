@@ -1,7 +1,7 @@
 package typeNotificationProcessor
 
 import (
-	"Robot2019/chassisDriverForRobot/typeNotificationProcessor/typeNotificationStructure"
+	"Robot2019/chassisDriverForRobotOldVersion/typeNotificationProcessor/typeNotificationStructure"
 	"fmt"
 	"log"
 	"sync"

@@ -1,7 +1,7 @@
 package robotStatus
 
 import (
-	"Robot2019/chassisDriverForRobot/typeCallbackProcessor/typeCallbackStructure"
+	"Robot2019/chassisDriverForRobotOldVersion/typeCallbackProcessor/typeCallbackStructure"
 )
 
 type CallbackTopic struct {

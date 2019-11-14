@@ -18,7 +18,7 @@ message SinglePointInfo {
 
     //either marker or location
     string marker = 2;
-
+    //either marker or location
     float locationX = 3;
     float locationY = 4;
     float locationTheta = 5;

@@ -1,7 +1,7 @@
 package main
 
 import (
-	robotMove "Robot2019/chassisDriverForRobot/robotMove/grpc"
+	robotMove "Robot2019/chassisDriverForRobotOldVersion/robotMove/grpc"
 	"context"
 	"google.golang.org/grpc"
 	"log"

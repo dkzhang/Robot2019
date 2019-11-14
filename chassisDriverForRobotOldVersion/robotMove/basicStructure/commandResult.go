@@ -1,6 +1,6 @@
 package basicStructure
 
-import "Robot2019/chassisDriverForRobot/generalCommandTransceiver"
+import "Robot2019/chassisDriverForRobotOldVersion/generalCommandTransceiver"
 
 type CommandProcessResult struct {
 	generalCommandTransceiver.BasicCommandResult

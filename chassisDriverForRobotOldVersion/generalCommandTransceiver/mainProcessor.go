@@ -1,7 +1,7 @@
 package generalCommandTransceiver
 
 import (
-	"Robot2019/chassisDriverForRobot/socketCommunication"
+	"Robot2019/chassisDriverForRobotOldVersion/socketCommunication"
 	"log"
 	"sync"
 )

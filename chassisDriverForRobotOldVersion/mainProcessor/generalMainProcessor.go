@@ -1,10 +1,10 @@
 package mainProcessor
 
 import (
-	"Robot2019/chassisDriverForRobot/mainProcessor/auxiliary"
-	"Robot2019/chassisDriverForRobot/socketCommunication"
-	"Robot2019/chassisDriverForRobot/typeNotificationProcessor"
-	"Robot2019/chassisDriverForRobot/typeNotificationProcessor/typeNotificationStructure"
+	"Robot2019/chassisDriverForRobotOldVersion/mainProcessor/auxiliary"
+	"Robot2019/chassisDriverForRobotOldVersion/socketCommunication"
+	"Robot2019/chassisDriverForRobotOldVersion/typeNotificationProcessor"
+	"Robot2019/chassisDriverForRobotOldVersion/typeNotificationProcessor/typeNotificationStructure"
 
 	"log"
 	"sync"

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package robotSinglePointMove;
+
+service SinglePointMove {
+    rpc Move (SinglePointInfo) returns (MoveResponse) {}
+    rpc MoveAndWaitForArrival (SinglePointInfo) returns (MoveAndWaitForArrivalResponse) {}
+}
+
+message SinglePointInfo {
+    //Mask value to indicate optional value
+    // marker   |   location    |    max_continuous_retries |   distance_tolerance  |   theta_tolerance
+    //  16      |      8        |               4           |           2           |           1
+    uint32 infoMask = 1;
+
+    //either marker or location
+    string marker = 2;
+    //either marker or location
+    float locationX = 3;
+    float locationY = 4;
+    float locationTheta = 5;
+
+    //optional
+    int32 max_continuous_retries = 6;
+    float distance_tolerance = 7;
+    float theta_tolerance = 8;
+}
+
+message MultiplePointsInfo{
+    //Mask value to indicate optional value
+    uint32 infoMask = 1;
+
+    //required
+    repeated string marker =2;
+
+    //optional
+    int32 count = 3;
+    float distance_tolerance = 4;
+    float max_continuous_retries = 5;
+}
+
+message MoveResponse {
+    string command = 1;
+    uint32 uuid = 2;
+    string status = 3;
+    string error_message = 4;
+    uint32 task_id = 5;
+}
+
+message MoveAndWaitForArrivalResponse{
+    string errorMessage = 1;
+}
+
+//protoc -I grpc/ grpc/spm.proto --go_out=plugins=grpc:grpc/

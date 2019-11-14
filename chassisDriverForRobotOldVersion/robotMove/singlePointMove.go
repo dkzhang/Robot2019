@@ -1,8 +1,8 @@
 package robotMove
 
 import (
-	"Robot2019/chassisDriverForRobot/generalCommandTransceiver"
-	"Robot2019/chassisDriverForRobot/socketCommunication"
+	"Robot2019/chassisDriverForRobotOldVersion/generalCommandTransceiver"
+	"Robot2019/chassisDriverForRobotOldVersion/socketCommunication"
 )
 
 type SinglePointMove struct {
