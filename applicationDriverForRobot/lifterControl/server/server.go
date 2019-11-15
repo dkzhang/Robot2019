@@ -44,14 +44,14 @@ func (s *server) ControlTheLifter(ctx context.Context, in *pb.LifterControlReque
 	para := in.GetPara()
 	if para > 0 {
 		//上升
-		pin := rpio.Pin(5)
+		pin := rpio.Pin(6)
 		pin.Output() // Output mode
 		pin.High()   // Set pin High
 		time.Sleep(time.Millisecond * time.Duration(para))
 		pin.Low() // Set pin Low
 	} else {
 		//下降
-		pin := rpio.Pin(6)
+		pin := rpio.Pin(5)
 		pin.Output() // Output mode
 		pin.High()   // Set pin High
 		time.Sleep(time.Millisecond * time.Duration(-para))

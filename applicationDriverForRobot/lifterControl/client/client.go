@@ -29,8 +29,15 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
-	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: 1000})
+	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: 20000})
+	if err != nil {
+		log.Fatalf("could not reply: %v", err)
+	}
+	log.Printf("reply = %v", r)
 
+	time.Sleep(time.Second * 5)
+
+	r, err = c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: -20000})
 	if err != nil {
 		log.Fatalf("could not reply: %v", err)
 	}

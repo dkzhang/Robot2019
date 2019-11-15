@@ -15,14 +15,14 @@ func UpOrDown(para int64) {
 
 	if para > 0 {
 		//上升
-		pin := rpio.Pin(5)
+		pin := rpio.Pin(6)
 		pin.Output() // Output mode
 		pin.High()   // Set pin High
 		time.Sleep(time.Millisecond * time.Duration(para))
 		pin.Low() // Set pin Low
 	} else {
 		//下降
-		pin := rpio.Pin(6)
+		pin := rpio.Pin(5)
 		pin.Output() // Output mode
 		pin.High()   // Set pin High
 		time.Sleep(time.Millisecond * time.Duration(-para))
@@ -31,7 +31,7 @@ func UpOrDown(para int64) {
 }
 
 func main() {
-	UpOrDown(2)
+	UpOrDown(20000)
 	time.Sleep(time.Second * 5)
-	UpOrDown(-2)
+	UpOrDown(-20000)
 }
