@@ -80,7 +80,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterLifterControlServiceServer(s, &server{})
-	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
+	fmt.Printf("Begin to serve %s \n", myUtil.FormatTime(time.Now()))
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
