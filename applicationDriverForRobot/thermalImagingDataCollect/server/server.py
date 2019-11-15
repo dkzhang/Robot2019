@@ -4,25 +4,19 @@ import os
 
 import grpc
 
-import tir_pb2
-import tir_pb2_grpc
+import tidc_pb2
+import tidc_pb2_grpc
 
-import numpy as np
-from scipy import interpolate
-import pylab as pl
-import matplotlib as mpl
-
-
-class ThermalImagingDataCollectService(tir_pb2_grpc.ThermalImagingRenderingServiceServicer):
+class ThermalImagingDataCollectService(tidc_pb2_grpc.ThermalImagingDataCollectServiceServicer):
 
     def CollectThermalImagingData(self, request, context):
 
-        return tir_pb2.ThermalImagingRenderingReply(errorMessage="")
+        return tidc_pb2.ThermalImagingDataCollectReply(errorMessage="")
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    tir_pb2_grpc.add_ThermalImagingRenderingServiceServicer_to_server(ThermalImagingRenderingService(), server)
+    tidc_pb2_grpc.add_ThermalImagingDataCollectServiceServicer_to_server(ThermalImagingDataCollectService(), server)
 
     server.add_insecure_port('[::]:50061')
     print("Server is running:")
