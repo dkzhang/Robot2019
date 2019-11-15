@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"Robot2019/myUtil"
