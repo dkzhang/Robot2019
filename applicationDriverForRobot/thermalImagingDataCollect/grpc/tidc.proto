@@ -1,20 +1,20 @@
 syntax = "proto3";
 
-package ThermalImagingDataCollection;
+package thermalImagingDataCollect;
 
-// The ThermalImagingDataCollection service definition.
-service ThermalImagingDataCollectionService {
+// The ThermalImagingDataCollect service definition.
+service ThermalImagingDataCollectService {
     // Using a dataArray to render a ThermalImaging file
-    rpc ThermalImagingDataCollect (ThermalImagingDataCollectionRequest) returns (ThermalImagingDataCollectionReply) {}
+    rpc CollectThermalImagingData (ThermalImagingDataCollectRequest) returns (ThermalImagingDataCollectReply) {}
 }
 
 // The request message containing a tag for the server to log.
-message ThermalImagingDataCollectionRequest {
+message ThermalImagingDataCollectRequest {
     string tag = 1;
 }
 
 // The response message containing the dataArray, and the errorMesage if any.
-message ThermalImagingDataCollectionReply {
+message ThermalImagingDataCollectReply {
     repeated double dataArray = 1;
     string errorMessage = 2;
 }
