@@ -13,7 +13,7 @@ func main() {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "localhost:50051"
+	address := "192.168.1.109:50051"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
@@ -26,8 +26,9 @@ func main() {
 	c := pb.NewLifterControlServiceClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*3)
 	log.Printf("context.WithTimeout() OK!")
+
 	defer cancel()
 	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: 20000})
 	if err != nil {
