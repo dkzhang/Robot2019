@@ -28,10 +28,9 @@ message SinglePointInfo {
 
 message MoveResponse {
     string command = 1;
-    uint32 uuid = 2;
-    string status = 3;
-    string error_message = 4;
-    uint32 task_id = 5;
+    string status = 2;
+    string error_message = 3;
+    uint32 task_id = 4;
 }
 
 message MoveAndWaitForArrivalResponse{
