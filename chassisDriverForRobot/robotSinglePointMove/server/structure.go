@@ -12,7 +12,7 @@ type SingleMoveCommandResponse struct {
 }
 
 func (smcr *SingleMoveCommandResponse) UnmarshalJSON(strJSON string) (err error) {
-	err = json.Unmarshal([]byte(strJSON), &smcr)
+	err = json.Unmarshal([]byte(strJSON), smcr)
 	if err != nil {
 		return fmt.Errorf("SingleMoveCommandResponse json.Unmarshal error: %v", err)
 	} else {
