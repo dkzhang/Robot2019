@@ -43,27 +43,30 @@ func (s *server) Move(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveResp
 				if pcr != nil {
 					//是所发命令的回复,则进一步解析
 					smcr := SingleMoveCommandResponse{}
-					if smcr.UnmarshalJSON(result) != nil {
+					if smcr.UnmarshalJSON(result) == nil {
+						//如果解析成功，则用smcr填写，含TaskID
 						return &pb.MoveResponse{
-							Command:              "",
-							Uuid:                 0,
-							Status:               "",
-							ErrorMessage:         "",
-							TaskId:               0,
-							XXX_NoUnkeyedLiteral: struct{}{},
-							XXX_unrecognized:     nil,
-							XXX_sizecache:        0,
+							Command:      smcr.Command,
+							Status:       smcr.Status,
+							ErrorMessage: smcr.ErrorMessage,
+							TaskId:       smcr.TaskID,
+						}, nil
+					} else {
+						//如果未解析成功，也按成功返回，用pcr填写，不含TaskID
+						return &pb.MoveResponse{
+							Command:      pcr.Command,
+							Status:       pcr.Status,
+							ErrorMessage: pcr.ErrorMessage,
+							TaskId:       "",
 						}, nil
 					}
-
 				}
 			}
 
 		case feedback := <-psm.FeedbackChan:
 			log.Printf("socketCommunication feedback: %v", feedback)
 		}
-
 	}
 
-	return &pb.MoveResponse{}, nil
+	//return &pb.MoveResponse{}, nil
 }
