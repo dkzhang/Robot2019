@@ -1,7 +1,9 @@
-package main
+package client
 
 import (
+	"Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -9,15 +11,23 @@ import (
 	"google.golang.org/grpc"
 )
 
-func main() {
-	/////////////////////////////////
-	// Set up a connection to the server.
-	address := "localhost:50061"
-	testDataArray := []float64{23.75, 23.25, 22.75, 22.75, 23.25, 23.5, 23.75, 24.25, 20.5, 23.25, 24.75, 22.75, 26.0, 23.0, 10.75, 23.75, 22.5, 22.0, 23.0, 22.75, 23.0, 22.75, 23.25, 22.75, 22.0, 22.5, 22.25, 22.75, 22.75, 23.75, 23.25, 23.25, 22.0, 22.5, 22.5, 22.75, 23.0, 23.5, 23.5, 23.75, 22.0, 22.5, 22.75, 22.75, 22.75, 23.0, 22.5, 23.75, 22.25, 22.0, 22.5, 22.5, 23.0, 23.0, 23.25, 24.0, 22.0, 22.25, 22.0, 22.75, 23.5, 23.0, 23.5, 23.75,
-		22.75, 23.25, 22.75, 23.25, 23.0, 23.0, 23.75, 23.25, 22.5, 23.0, 22.5, 22.75, 23.0, 23.0, 23.25, 23.25, 22.75, 22.75, 22.5, 22.75, 22.75, 22.75, 23.25, 23.5, 22.0, 22.5, 23.25, 22.5, 22.75, 23.25, 24.0, 23.75, 22.25, 22.5, 22.25, 23.25, 23.25, 23.5, 23.75, 24.25, 22.5, 22.5, 23.0, 22.75, 23.0, 23.25, 23.25, 23.5, 22.75, 22.75, 22.5, 23.0, 23.0, 23.0, 23.0, 23.5, 23.5, 23.0, 22.25, 25.0, 26.0, 26.0, 24.0, 24.25,
-		26.0, 28.5, 27.25, 25.25, 25.0, 27.5, 30.5, 29.5, 25.0, 28.75, 29.5, 26.0, 25.0, 26.25, 30.25, 30.5, 26.0, 27.75, 30.25, 29.5, 25.25, 28.5, 30.0, 31.0, 27.25, 26.0, 30.5, 30.5, 27.25, 26.5, 29.0, 30.75, 29.25, 25.75, 29.75, 30.5, 30.0, 28.75, 29.75, 30.75, 30.0, 28.5, 26.75, 30.25, 30.75, 30.0, 29.25, 31.0, 30.0, 29.75, 27.5, 29.5, 30.75, 31.0, 30.5, 31.0, 28.0, 29.75, 29.25, 29.0, 30.75, 31.0, 30.75, 31.0,
-		27.75, 27.25, 27.25, 27.0, 27.5, 29.75, 29.25, 30.25, 26.25, 27.25, 28.0, 29.25, 28.75, 29.5, 30.25, 30.0, 24.25, 24.5, 25.5, 27.0, 28.5, 29.5, 29.5, 30.0, 27.25, 26.0, 26.75, 26.75, 26.75, 29.0, 30.25, 30.25, 28.0, 29.0, 29.0, 29.75, 29.5, 29.75, 30.0, 30.0, 24.25, 25.0, 25.25, 26.0, 28.5, 29.75, 30.0, 29.5, 24.75, 23.75, 24.5, 24.75, 27.75, 29.75, 29.75, 29.5, 23.5, 23.75, 25.0, 28.25, 27.75, 27.0, 28.75, 30.0}
+func ThermalImagingCollectAndRender() {
+	dataArray1, err := client.CollectThermalImagingData("")
+	dataArray2, err := client.CollectThermalImagingData("")
+	dataArray3, err := client.CollectThermalImagingData("")
+	dataArray4, err := client.CollectThermalImagingData("")
 
+	fmt.Printf("%v", err)
+
+	dataArray := append(dataArray1, dataArray2...)
+	dataArray = append(dataArray, dataArray3...)
+	dataArray = append(dataArray, dataArray4...)
+
+	ThermalImagingRender("", dataArray)
+
+}
+
+func ThermalImagingRender(address string, dataArray []float64) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
@@ -33,7 +43,7 @@ func main() {
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 	r, err := c.ThermalImagingRender(ctx, &pb.ThermalImagingRenderingRequest{
-		DataArray: testDataArray,
+		DataArray: dataArray,
 		Height:    8,
 		Width:     32,
 		Filepath:  "/ThermalImages/testTir/",
