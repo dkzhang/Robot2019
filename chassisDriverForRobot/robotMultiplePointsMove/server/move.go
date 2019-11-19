@@ -41,14 +41,14 @@ func (s *server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveR
 			} else {
 				if pcr != nil {
 					//是所发命令的回复,则进一步解析
-					smcr := SingleMoveCommandResponse{}
-					if smcr.UnmarshalJSON(result) == nil {
+					mmcr := MultipleMoveCommandResponse{}
+					if mmcr.UnmarshalJSON(result) == nil {
 						//如果解析成功，则用smcr填写，含TaskID
 						return &pb.MoveResponse{
-							Command:      smcr.Command,
-							Status:       smcr.Status,
-							ErrorMessage: smcr.ErrorMessage,
-							TaskId:       smcr.TaskID,
+							Command:      mmcr.Command,
+							Status:       mmcr.Status,
+							ErrorMessage: mmcr.ErrorMessage,
+							TaskId:       mmcr.TaskID,
 						}, nil
 					} else {
 						//如果未解析成功，也按成功返回，用pcr填写，不含TaskID

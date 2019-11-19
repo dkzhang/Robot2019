@@ -11,10 +11,10 @@ import (
 func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (cmd string, uuid string) {
 	cmd = "/api/move?"
 
-	cmd += mpi.Marker[0]
+	cmd += mpi.Markers[0]
 
-	for i := 1; i < len(mpi.Marker); i++ {
-		cmd += "," + mpi.Marker[i]
+	for i := 1; i < len(mpi.Markers); i++ {
+		cmd += "," + mpi.Markers[i]
 	}
 
 	// count
