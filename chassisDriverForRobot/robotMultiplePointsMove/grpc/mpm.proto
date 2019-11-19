@@ -14,12 +14,12 @@ message MultiplePointsInfo{
     uint32 infoMask = 1;
 
     //required
-    repeated string marker =2;
+    repeated string markers =2;
 
     //optional
     int32 count = 3;
     float distance_tolerance = 4;
-    float max_continuous_retries = 5;
+    int32 max_continuous_retries = 5;
 }
 
 message MoveResponse {
