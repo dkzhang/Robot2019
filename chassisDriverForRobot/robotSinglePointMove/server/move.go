@@ -16,8 +16,7 @@ func (s *server) Move(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveResp
 	//实例化一个通信模块
 	serverIPandPort := "192.168.10.10:31001"
 	psm := socketCommunication.SocketManagementFactory(serverIPandPort)
-	//test
-	fmt.Printf("%v", psm)
+	defer psm.Cancel()
 
 	//构造单点移动命令（附随机数）并发送
 	cmdStruct := socketCommunication.CommandStruct{Name: "Single Move"}
