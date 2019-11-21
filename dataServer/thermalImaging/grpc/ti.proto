@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package thermalImaging;
+
+// The thermalImaging service definition.
+service thermalImagingService {
+    // Using a dataArray to render a ThermalImaging file
+    rpc CollectRenderAnalyze (thermalImagingRequest) returns (thermalImagingReply) {}
+}
+
+// The request message containing a tag for the server to log.
+message thermalImagingRequest {
+    string tag = 1;
+}
+
+// The response message containing the dataArray, and the errorMesage if any.
+message thermalImagingReply {
+    string filepath = 1;
+    string filename = 2;
+    repeated double dataArray = 3;
+    string analysisReport = 4;
+    string errorMessage = 5;
+}
+
+// protoc -I grpc/ grpc/ti.proto --go_out=plugins=grpc:grpc/

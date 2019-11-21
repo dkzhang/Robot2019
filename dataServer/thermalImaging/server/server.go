@@ -9,7 +9,7 @@ import (
 	"net"
 	"time"
 
-	pb "Robot2019/dataServer/thermalImagingDataCollectAndRender/grpc"
+	pb "Robot2019/dataServer/thermalImaging/grpc"
 	"google.golang.org/grpc"
 
 	"github.com/gomodule/redigo/redis"
