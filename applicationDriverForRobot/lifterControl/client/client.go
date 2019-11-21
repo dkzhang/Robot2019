@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func main() {
+func LifterControl(para int64) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
@@ -30,15 +30,7 @@ func main() {
 	log.Printf("context.WithTimeout() OK!")
 
 	defer cancel()
-	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: 20000})
-	if err != nil {
-		log.Fatalf("could not reply: %v", err)
-	}
-	log.Printf("reply = %v", r)
-
-	time.Sleep(time.Second * 5)
-
-	r, err = c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: -20000})
+	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: para})
 	if err != nil {
 		log.Fatalf("could not reply: %v", err)
 	}

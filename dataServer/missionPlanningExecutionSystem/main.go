@@ -1,9 +1,13 @@
 package main
 
 import (
-	"Robot2019/chassisDriverForRobot/robotSinglePointMove/client"
+	lifter "Robot2019/applicationDriverForRobot/lifterControl/client"
+	singleMove "Robot2019/chassisDriverForRobot/robotSinglePointMove/client"
+
 	"Robot2019/dataServer/missionPlanningExecutionSystem/structure"
+
 	"log"
+	"strconv"
 )
 
 func main() {
@@ -16,16 +20,23 @@ func main() {
 	for i, mission := range mp.Missions {
 		log.Printf("Mission %d : %s is about to be executed!", i, mission.MoveMarker)
 
-		client.MoveAndWaitForArrival(mission.MoveMarker)
+		singleMove.MoveAndWaitForArrival(mission.MoveMarker)
 
 		for j, sm := range mission.SubMissions {
 			log.Printf("SubMission %d : %s is about to be executed!", j, mission.MoveMarker)
 
 			switch sm.Name {
 			case "Lifter":
-				//
+				para, err := strconv.ParseInt(sm.Para, 10, 64)
+				if err != nil {
+					log.Fatalf("ParseInt error: %v", err)
+				} else {
+					lifter.LifterControl(para)
+				}
 			case "Thermal":
-				//
+				//调用服务生成图像
+
+				//根据图像名，生成一条记录写入redis数据库
 
 			}
 
