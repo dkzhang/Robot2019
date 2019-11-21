@@ -50,7 +50,7 @@ type ThermalImagingResult struct {
 	filepath       string
 	filename       string
 	dataArray      []float64
-	height         int
-	width          int
+	height         int32
+	width          int32
 	analysisReport string
 }
