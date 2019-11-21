@@ -3,7 +3,6 @@ package server
 import (
 	"Robot2019/myUtil"
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -11,8 +10,6 @@ import (
 
 	pb "Robot2019/dataServer/thermalImaging/grpc"
 	"google.golang.org/grpc"
-
-	"github.com/gomodule/redigo/redis"
 )
 
 const (
@@ -20,30 +17,21 @@ const (
 )
 
 type server struct {
-	pb.UnimplementedThermalImagingDataCollectAndRenderServiceServer
+	pb.UnimplementedThermalImagingServiceServer
 }
 
-func (s *server) GetRobotStatus(ctx context.Context, in *pb.ThermalImagingDataCollectAndRenderRequest) (*pb.ThermalImagingDataCollectAndRenderReply, error) {
+func (s *server) CollectRenderAnalyze(ctx context.Context, in *pb.ThermalImagingRequest) (*pb.ThermalImagingReply, error) {
 	log.Printf("Received: %v", in.GetTag())
-	//连接redis容器，读取相关状态信息
-	c, err := redis.Dial("tcp", "myRedis001:6379")
-	if err != nil {
-		return nil, fmt.Errorf("redis dial error: %v", err)
-	}
-	defer c.Close()
 
-	result, err := redis.String(c.Do("GET", "CurrentRobotStatus"))
-	if err != nil {
-		return nil, fmt.Errorf("Get CurrentRobotStatus error: %v", err)
-	}
+	//分别从两个树莓派收集数据
 
-	theReply := pb.ThermalImagingDataCollectAndRenderReply{}
-	err = json.Unmarshal([]byte(result), &theReply)
-	if err != nil {
-		return nil, fmt.Errorf("json.Unmarshal error: %v", err)
-	} else {
-		return &theReply, nil
-	}
+	//合成数值数组
+
+	//调用绘图服务绘图
+
+	//调用分析服务进行热点分析
+
+	return &pb.ThermalImagingReply{}, nil
 }
 
 func main() {
@@ -52,7 +40,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterThermalImagingDataCollectAndRenderServiceServer(s, &server{})
+	pb.RegisterThermalImagingServiceServer(s, &server{})
 	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

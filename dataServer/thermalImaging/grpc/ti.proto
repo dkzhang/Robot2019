@@ -18,8 +18,10 @@ message thermalImagingReply {
     string filepath = 1;
     string filename = 2;
     repeated double dataArray = 3;
-    string analysisReport = 4;
-    string errorMessage = 5;
+    int32 height = 4;
+    int32 width = 5;
+    string analysisReport = 6;
+    string errorMessage = 7;
 }
 
 // protoc -I grpc/ grpc/ti.proto --go_out=plugins=grpc:grpc/
