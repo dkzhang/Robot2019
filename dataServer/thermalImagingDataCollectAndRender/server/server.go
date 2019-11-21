@@ -9,7 +9,7 @@ import (
 	"net"
 	"time"
 
-	pb "Robot2019/dataServer/robotStatusServer/grpc"
+	pb "Robot2019/dataServer/thermalImagingDataCollectAndRender/grpc"
 	"google.golang.org/grpc"
 
 	"github.com/gomodule/redigo/redis"
@@ -20,10 +20,10 @@ const (
 )
 
 type server struct {
-	pb.UnimplementedRobotStatusServiceServer
+	pb.UnimplementedThermalImagingDataCollectAndRenderServiceServer
 }
 
-func (s *server) GetRobotStatus(ctx context.Context, in *pb.RobotStatusRequest) (*pb.RobotStatusReply, error) {
+func (s *server) GetRobotStatus(ctx context.Context, in *pb.ThermalImagingDataCollectAndRenderRequest) (*pb.ThermalImagingDataCollectAndRenderReply, error) {
 	log.Printf("Received: %v", in.GetTag())
 	//连接redis容器，读取相关状态信息
 	c, err := redis.Dial("tcp", "myRedis001:6379")
@@ -37,7 +37,7 @@ func (s *server) GetRobotStatus(ctx context.Context, in *pb.RobotStatusRequest) 
 		return nil, fmt.Errorf("Get CurrentRobotStatus error: %v", err)
 	}
 
-	theReply := pb.RobotStatusReply{}
+	theReply := pb.ThermalImagingDataCollectAndRenderReply{}
 	err = json.Unmarshal([]byte(result), &theReply)
 	if err != nil {
 		return nil, fmt.Errorf("json.Unmarshal error: %v", err)
@@ -52,7 +52,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterRobotStatusServiceServer(s, &server{})
+	pb.RegisterThermalImagingDataCollectAndRenderServiceServer(s, &server{})
 	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
