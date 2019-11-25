@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package laserLight;
+
+// The LaserLightService service definition.
+service LaserLightService {
+    // switch the laser light
+    rpc SwitchLaserLight (LaserLightRequest) returns (LaserLightReply) {}
+}
+
+// Use true to Turn on the laser light, otherwise false.
+message LaserLightRequest {
+    bool TurnOn = 1;
+}
+
+// The response message containing the dataArray, and the errorMesage if any.
+message LaserLightReply {
+    string errorMessage = 1;
+}
+
+// protoc -I grpc/ grpc/ll.proto --go_out=plugins=grpc:grpc/
