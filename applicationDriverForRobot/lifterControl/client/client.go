@@ -13,7 +13,7 @@ func LifterControl(para int64) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "192.168.1.109:50051"
+	address := "192.168.1.106:50051"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
