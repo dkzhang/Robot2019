@@ -1,7 +1,6 @@
 package client
 
 import (
-	"Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
 	"context"
 	"fmt"
 	"log"
@@ -11,27 +10,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ThermalImagingCollectAndRender() {
-	dataArray1, err := client.CollectThermalImagingData("")
-	dataArray2, err := client.CollectThermalImagingData("")
-	dataArray3, err := client.CollectThermalImagingData("")
-	dataArray4, err := client.CollectThermalImagingData("")
-
-	fmt.Printf("%v", err)
-
-	dataArray := append(dataArray1, dataArray2...)
-	dataArray = append(dataArray, dataArray3...)
-	dataArray = append(dataArray, dataArray4...)
-
-	ThermalImagingRender("", dataArray)
-
-}
-
-func ThermalImagingRender(address string, dataArray []float64) {
+func ThermalImagingRender(address string, dataArray []float64) (filepath string, filename string, err error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
+		return "", "", fmt.Errorf("grpc.Dial error: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -52,6 +36,8 @@ func ThermalImagingRender(address string, dataArray []float64) {
 
 	if err != nil {
 		log.Fatalf("could not reply: %v", err)
+		return "", "", fmt.Errorf("ThermalImagingRender reply error: %v", err)
 	}
 	log.Printf("reply = %v", r)
+	return filepath, filename, nil
 }

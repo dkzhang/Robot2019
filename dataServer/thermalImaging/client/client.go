@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ThermalImaging(address string) (ptir *ThermalImagingResult, err error) {
+func ThermalImaging(address string) (ptis *ThermalImagingStruct, err error) {
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
@@ -36,21 +36,21 @@ func ThermalImaging(address string) (ptir *ThermalImagingResult, err error) {
 	}
 	log.Printf("reply = %v", r)
 
-	return &ThermalImagingResult{
-		filepath:       r.Filepath,
-		filename:       r.Filename,
-		dataArray:      r.DataArray,
-		height:         r.Height,
-		width:          r.Width,
-		analysisReport: r.AnalysisReport,
+	return &ThermalImagingStruct{
+		Filepath:       r.Filepath,
+		Filename:       r.Filename,
+		DataArray:      r.DataArray,
+		Height:         r.Height,
+		Width:          r.Width,
+		AnalysisReport: r.AnalysisReport,
 	}, nil
 }
 
-type ThermalImagingResult struct {
-	filepath       string
-	filename       string
-	dataArray      []float64
-	height         int32
-	width          int32
-	analysisReport string
+type ThermalImagingStruct struct {
+	Filepath       string
+	Filename       string
+	DataArray      []float64
+	Height         int32
+	Width          int32
+	AnalysisReport string
 }
