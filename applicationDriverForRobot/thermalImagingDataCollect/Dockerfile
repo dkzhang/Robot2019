@@ -1,4 +1,4 @@
-FROM dkzhang007/python_grpc-arm32v7
+FROM registry.cn-beijing.aliyuncs.com/dkzhang/python_grpc-arm32v7
 
 RUN pip3 install adafruit-circuitpython-amg88xx
 
