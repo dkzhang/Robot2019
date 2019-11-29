@@ -20,13 +20,11 @@ message ThermalImagingDataCollectReply {
 }
 
 message ModelData{
-    int32 name = 1;
-    repeated RowData rdata = 2;
+    int32 id = 1;
+    repeated double data = 2;
 }
 
-message RowData{
-    repeated double data = 1;
-}
+
 
 // protoc -I grpc/ grpc/tidc.proto --go_out=plugins=grpc:grpc/
 // python3 -m grpc_tools.protoc -I ./grpc/ --python_out=grpc --grpc_python_out=grpc ./grpc/tidc.proto

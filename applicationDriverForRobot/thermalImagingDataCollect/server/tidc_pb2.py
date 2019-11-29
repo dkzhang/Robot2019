@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='thermalImagingDataCollect',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ntidc.proto\x12\x19thermalImagingDataCollect\"/\n ThermalImagingDataCollectRequest\x12\x0b\n\x03tag\x18\x01 \x01(\t\"k\n\x1eThermalImagingDataCollectReply\x12\x33\n\x05mdata\x18\x01 \x03(\x0b\x32$.thermalImagingDataCollect.ModelData\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\"L\n\tModelData\x12\x0c\n\x04name\x18\x01 \x01(\x05\x12\x31\n\x05rdata\x18\x02 \x03(\x0b\x32\".thermalImagingDataCollect.RowData\"\x17\n\x07RowData\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\x01\x32\xba\x01\n ThermalImagingDataCollectService\x12\x95\x01\n\x19\x43ollectThermalImagingData\x12;.thermalImagingDataCollect.ThermalImagingDataCollectRequest\x1a\x39.thermalImagingDataCollect.ThermalImagingDataCollectReply\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ntidc.proto\x12\x19thermalImagingDataCollect\"/\n ThermalImagingDataCollectRequest\x12\x0b\n\x03tag\x18\x01 \x01(\t\"k\n\x1eThermalImagingDataCollectReply\x12\x33\n\x05mdata\x18\x01 \x03(\x0b\x32$.thermalImagingDataCollect.ModelData\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\"%\n\tModelData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04\x64\x61ta\x18\x02 \x03(\x01\x32\xba\x01\n ThermalImagingDataCollectService\x12\x95\x01\n\x19\x43ollectThermalImagingData\x12;.thermalImagingDataCollect.ThermalImagingDataCollectRequest\x1a\x39.thermalImagingDataCollect.ThermalImagingDataCollectReply\"\x00\x62\x06proto3')
 )
 
 
@@ -103,15 +103,15 @@ _MODELDATA = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='thermalImagingDataCollect.ModelData.name', index=0,
+      name='id', full_name='thermalImagingDataCollect.ModelData.id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rdata', full_name='thermalImagingDataCollect.ModelData.rdata', index=1,
-      number=2, type=11, cpp_type=10, label=3,
+      name='data', full_name='thermalImagingDataCollect.ModelData.data', index=1,
+      number=2, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -129,46 +129,13 @@ _MODELDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=199,
-  serialized_end=275,
-)
-
-
-_ROWDATA = _descriptor.Descriptor(
-  name='RowData',
-  full_name='thermalImagingDataCollect.RowData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='data', full_name='thermalImagingDataCollect.RowData.data', index=0,
-      number=1, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=277,
-  serialized_end=300,
+  serialized_end=236,
 )
 
 _THERMALIMAGINGDATACOLLECTREPLY.fields_by_name['mdata'].message_type = _MODELDATA
-_MODELDATA.fields_by_name['rdata'].message_type = _ROWDATA
 DESCRIPTOR.message_types_by_name['ThermalImagingDataCollectRequest'] = _THERMALIMAGINGDATACOLLECTREQUEST
 DESCRIPTOR.message_types_by_name['ThermalImagingDataCollectReply'] = _THERMALIMAGINGDATACOLLECTREPLY
 DESCRIPTOR.message_types_by_name['ModelData'] = _MODELDATA
-DESCRIPTOR.message_types_by_name['RowData'] = _ROWDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ThermalImagingDataCollectRequest = _reflection.GeneratedProtocolMessageType('ThermalImagingDataCollectRequest', (_message.Message,), {
@@ -192,13 +159,6 @@ ModelData = _reflection.GeneratedProtocolMessageType('ModelData', (_message.Mess
   })
 _sym_db.RegisterMessage(ModelData)
 
-RowData = _reflection.GeneratedProtocolMessageType('RowData', (_message.Message,), {
-  'DESCRIPTOR' : _ROWDATA,
-  '__module__' : 'tidc_pb2'
-  # @@protoc_insertion_point(class_scope:thermalImagingDataCollect.RowData)
-  })
-_sym_db.RegisterMessage(RowData)
-
 
 
 _THERMALIMAGINGDATACOLLECTSERVICE = _descriptor.ServiceDescriptor(
@@ -207,8 +167,8 @@ _THERMALIMAGINGDATACOLLECTSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=303,
-  serialized_end=489,
+  serialized_start=239,
+  serialized_end=425,
   methods=[
   _descriptor.MethodDescriptor(
     name='CollectThermalImagingData',
