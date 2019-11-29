@@ -39,7 +39,7 @@ func CollectThermalImagingData(address string) (data []ThermalModelData, err err
 	for _, m := range r.Mdata {
 		mds = append(mds, ThermalModelData{
 			Id:   int(m.Id),
-			data: m.Data,
+			Data: m.Data,
 		})
 	}
 
@@ -48,5 +48,5 @@ func CollectThermalImagingData(address string) (data []ThermalModelData, err err
 
 type ThermalModelData struct {
 	Id   int
-	data []float64
+	Data []float64
 }

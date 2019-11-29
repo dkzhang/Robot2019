@@ -1,6 +1,7 @@
 package client
 
 import (
+	"Robot2019/myUtil"
 	"context"
 	"fmt"
 	"log"
@@ -10,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ThermalImagingRender(address string, dataArray []float64) (filepath string, filename string, err error) {
+func ThermalImagingRender(address string, dataArray []float64, width, height int) (filepath string, filename string, err error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
@@ -28,10 +29,10 @@ func ThermalImagingRender(address string, dataArray []float64) (filepath string,
 	defer cancel()
 	r, err := c.ThermalImagingRender(ctx, &pb.ThermalImagingRenderingRequest{
 		DataArray: dataArray,
-		Height:    8,
-		Width:     32,
+		Height:    int32(height),
+		Width:     int32(width),
 		Filepath:  "/ThermalImages/testTir/",
-		Filename:  "test005",
+		Filename:  myUtil.FormatTime(time.Now()),
 	})
 
 	if err != nil {

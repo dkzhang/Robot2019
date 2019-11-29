@@ -8,16 +8,16 @@ import (
 	"net"
 	"time"
 
-	//dataCollect "Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
+	dataCollect "Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
 	pb "Robot2019/dataServer/thermalImaging/grpc"
 	//dataAnalysis "Robot2019/dataServer/thermalImagingAnalysis/client"
-	//imageRender "Robot2019/dataServer/thermalImagingRendering/client"
+	imageRender "Robot2019/dataServer/thermalImagingRendering/client"
 
 	"google.golang.org/grpc"
 )
 
 const (
-	port = ":50061"
+	port = ":50051"
 )
 
 type server struct {
@@ -27,28 +27,44 @@ type server struct {
 func (s *server) CollectRenderAnalyze(ctx context.Context, in *pb.ThermalImagingRequest) (*pb.ThermalImagingReply, error) {
 	log.Printf("Received: %v", in.GetTag())
 
+	//分别从两个树莓派收集数据
+	mdata1, err := dataCollect.CollectThermalImagingData("192.168.10.23:50061")
+	if err != nil {
+		return nil, fmt.Errorf("data collect 1 error: %v", err)
+	}
+	mdata2, err := dataCollect.CollectThermalImagingData("192.168.10.25:50061")
+	if err != nil {
+		return nil, fmt.Errorf("data collect 2 error: %v", err)
+	}
+
+	var a1, a2, a3, a4 []float64
+	const h, w = 8, 8
+	//根据热红外测温矩阵实际部署位置调整数组顺序
+	if mdata1[0].Id == 0x69 {
+		a1 = mdata1[0].Data
+		a2 = mdata1[1].Data
+	}
+	if mdata2[0].Id == 0x69 {
+		a3 = mdata2[0].Data
+		a4 = mdata2[1].Data
+	}
+
+	//合成数值数组
+	dataArray, newWidth, newHeight, err := MergeThermalArray(a1, a2, a3, a4, w, h)
+	if err != nil {
+		return nil, fmt.Errorf("MergeThermalArray error: %v", err)
+	}
+
+	//调用绘图服务绘图
+	filepath, filename, err := imageRender.ThermalImagingRender("localhost:50061", dataArray, newWidth, newHeight)
+	if err != nil {
+		return nil, fmt.Errorf("ThermalImagingRender error: %v", err)
+	}
+
+	fmt.Printf("%s \n", filepath)
+	fmt.Printf("%s \n", filename)
+
 	/*
-		//分别从两个树莓派收集数据
-		dataArray1, err := dataCollect.CollectThermalImagingData("")
-		if err != nil {
-			return nil, fmt.Errorf("data collect 1 error: %v", err)
-		}
-		dataArray2, err := dataCollect.CollectThermalImagingData("")
-		if err != nil {
-			return nil, fmt.Errorf("data collect 2 error: %v", err)
-		}
-
-		//合成数值数组
-		dataArray := append(dataArray1, dataArray2...)
-		const height = 8
-		const width = 32
-
-		//调用绘图服务绘图
-		filepath, filename, err := imageRender.ThermalImagingRender("", dataArray)
-		if err != nil {
-			return nil, fmt.Errorf("ThermalImagingRender error: %v", err)
-		}
-
 		//调用分析服务进行热点分析
 		analysisReport, err := dataAnalysis.ThermalImagingAnalyze("", &dataAnalysis.ThermalImagingDataStruct{
 			DataArray: dataArray,
