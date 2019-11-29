@@ -10,7 +10,6 @@ import (
 
 	dataCollect "Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
 	pb "Robot2019/dataServer/thermalImaging/grpc"
-	//dataAnalysis "Robot2019/dataServer/thermalImagingAnalysis/client"
 	imageRender "Robot2019/dataServer/thermalImagingRendering/client"
 
 	"google.golang.org/grpc"
@@ -48,10 +47,17 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 	if mdata1[0].Id == 0x69 {
 		a1 = mdata1[0].Data
 		a2 = mdata1[1].Data
+	}else{
+		a1 = mdata1[1].Data
+		a2 = mdata1[0].Data
 	}
+
 	if mdata2[0].Id == 0x69 {
 		a3 = mdata2[0].Data
 		a4 = mdata2[1].Data
+	}else{
+		a3 = mdata2[1].Data
+		a4 = mdata2[0].Data
 	}
 
 	//合成数值数组
@@ -60,6 +66,7 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 		return nil, fmt.Errorf("MergeThermalArray error: %v", err)
 	}
 
+	fmt.Printf("dataArray(%d,%d) = %v", newWidth, newHeight,dataArray)
 	//调用绘图服务绘图
 	filepath, filename, err := imageRender.ThermalImagingRender("localhost:50061", dataArray, newWidth, newHeight)
 	if err != nil {
@@ -91,7 +98,15 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 		}, nil
 
 	*/
-	return nil, nil
+	return &pb.ThermalImagingReply{
+		Filepath:       filepath,
+		Filename:       filename,
+		DataArray:      dataArray,
+		Height:         int32(newHeight),
+		Width:          int32(newWidth),
+		AnalysisReport: "analysisReport",
+		ErrorMessage:   "",
+	}, nil
 }
 
 func main() {
@@ -110,8 +125,11 @@ func main() {
 func MergeThermalArray(a1, a2, a3, a4 []float64, w, h int) (r []float64, newWidth, newHeight int, err error) {
 
 	if len(a1) != w*h || len(a1) != w*h || len(a1) != w*h || len(a1) != w*h {
-		return nil, -1, -1, fmt.Errorf("illegal array length")
+		return nil, -1, -1,
+			fmt.Errorf("illegal array length: %d,%d,%d,%d <=> %d, %d", len(a1), len(a2), len(a3), len(a4), w, h)
 	}
+
+	fmt.Printf("a1,a2,a3,a4: %d,%d,%d,%d <=> %d, %d \n", len(a1), len(a2), len(a3), len(a4), w, h)
 
 	r = make([]float64, w*h*4)
 	//横向合并
