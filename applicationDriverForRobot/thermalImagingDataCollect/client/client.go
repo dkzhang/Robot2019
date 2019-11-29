@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func CollectThermalImagingData(address string) (data []*pb.ModelData, err error) {
+func CollectThermalImagingData(address string) (data []ThermalModelData, err error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
@@ -35,5 +35,18 @@ func CollectThermalImagingData(address string) (data []*pb.ModelData, err error)
 	}
 	log.Printf("reply = %v", r)
 
-	return r.Mdata, nil
+	var mds []ThermalModelData
+	for _, m := range r.Mdata {
+		mds = append(mds, ThermalModelData{
+			Id:   int(m.Id),
+			data: m.Data,
+		})
+	}
+
+	return mds, nil
+}
+
+type ThermalModelData struct {
+	Id   int
+	data []float64
 }
