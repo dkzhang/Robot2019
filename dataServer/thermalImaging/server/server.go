@@ -27,6 +27,11 @@ type server struct {
 func (s *server) CollectRenderAnalyze(ctx context.Context, in *pb.ThermalImagingRequest) (*pb.ThermalImagingReply, error) {
 	log.Printf("Received: %v", in.GetTag())
 
+	return CollectRenderAnalyze()
+}
+
+func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
+
 	//分别从两个树莓派收集数据
 	mdata1, err := dataCollect.CollectThermalImagingData("192.168.10.23:50061")
 	if err != nil {

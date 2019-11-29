@@ -22,3 +22,12 @@ func TestMergeThermalArray(t *testing.T) {
 	a, nw, nh, err := MergeThermalArray(a1, a2, a3, a4, w, h)
 	t.Logf("%v \n nw = %d, nh = %d \n %v", a, nw, nh, err)
 }
+
+func TestCollectRenderAnalyze(t *testing.T) {
+	pReply, err := CollectRenderAnalyze()
+	if err != nil {
+		t.Errorf("CollectRenderAnalyze error: %v", err)
+	} else {
+		t.Logf("CollectRenderAnalyze reply: %v", *pReply)
+	}
+}
