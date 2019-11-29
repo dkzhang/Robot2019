@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func CollectThermalImagingData(address string) (dataArray []float64, err error) {
+func CollectThermalImagingData(address string) (data []*pb.ModelData, err error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
@@ -35,5 +35,5 @@ func CollectThermalImagingData(address string) (dataArray []float64, err error) 
 	}
 	log.Printf("reply = %v", r)
 
-	return r.DataArray, nil
+	return r.Mdata, nil
 }

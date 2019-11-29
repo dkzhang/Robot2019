@@ -18,9 +18,12 @@ amg69 = adafruit_amg88xx.AMG88XX(i2c, addr=0x69)
 class ThermalImagingDataCollectService(tidc_pb2_grpc.ThermalImagingDataCollectServiceServicer):
 
     def CollectThermalImagingData(self, request, context):
-
-        return tidc_pb2.ThermalImagingDataCollectReply(errorMessage="", dataArray = amg69.pixels + amg68.pixels)
-
+        reply = tidc_pb2.ThermalImagingDataCollectReply(errorMessage="", mdata=[])
+        md68 = tidc_pb2.ModelData(name = 0x68, rdata = amg68.pixels)
+        md69 = tidc_pb2.ModelData(name = 0x69, rdata = amg69.pixels)
+        reply.mdata.append(md68)
+        reply.mdata.append(md69)
+        return reply
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

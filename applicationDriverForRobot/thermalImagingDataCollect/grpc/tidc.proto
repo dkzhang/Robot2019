@@ -15,8 +15,17 @@ message ThermalImagingDataCollectRequest {
 
 // The response message containing the dataArray, and the errorMesage if any.
 message ThermalImagingDataCollectReply {
-    repeated double dataArray = 1;
+    repeated ModelData mdata = 1;
     string errorMessage = 2;
+}
+
+message ModelData{
+    int32 name = 1;
+    repeated RowData rdata = 2;
+}
+
+message RowData{
+    repeated double data = 1;
 }
 
 // protoc -I grpc/ grpc/tidc.proto --go_out=plugins=grpc:grpc/
