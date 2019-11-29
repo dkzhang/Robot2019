@@ -6,6 +6,8 @@ RUN pip3 install RPi.GPIO
 
 WORKDIR /
 
-RUN git clone https://github.com/dkzhang/Robot2019.git
+RUN git clone https://github.com/dkzhang/Robot2019.git  #20191029-001
 
 CMD python3 /Robot2019/applicationDriverForRobot/thermalImagingDataCollect/server/server.py
+
+#docker run --privileged -p 50061:50061
