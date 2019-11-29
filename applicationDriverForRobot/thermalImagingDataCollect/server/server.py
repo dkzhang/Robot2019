@@ -20,8 +20,8 @@ class ThermalImagingDataCollectService(tidc_pb2_grpc.ThermalImagingDataCollectSe
 
     def CollectThermalImagingData(self, request, context):
         reply = tidc_pb2.ThermalImagingDataCollectReply(errorMessage="", mdata=[])
-        md68 = tidc_pb2.ModelData(name=0x68, data=[v for row in amg68.pixels for v in row])
-        md69 = tidc_pb2.ModelData(name=0x69, data=[v for row in amg69.pixels for v in row])
+        md68 = tidc_pb2.ModelData(id=0x68, data=[v for row in amg68.pixels for v in row])
+        md69 = tidc_pb2.ModelData(id=0x69, data=[v for row in amg69.pixels for v in row])
         reply.mdata.append(md68)
         reply.mdata.append(md69)
         return reply
