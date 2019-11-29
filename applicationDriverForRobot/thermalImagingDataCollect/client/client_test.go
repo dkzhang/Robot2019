@@ -6,7 +6,7 @@ func TestCollectThermalImagingData(t *testing.T) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "192.168.1.109:50061"
+	address := "192.168.10.25:50061"
 
 	dataArray, err := CollectThermalImagingData(address)
 

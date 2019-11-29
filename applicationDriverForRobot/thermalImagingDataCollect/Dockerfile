@@ -4,8 +4,6 @@ RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple/  adafruit-circuitp
 
 RUN pip3 install RPi.GPIO
 
-RUN apt-get install i2c-tools
-
 WORKDIR /
 
 RUN git clone https://github.com/dkzhang/Robot2019.git

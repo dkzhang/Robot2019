@@ -7,11 +7,19 @@ import grpc
 import tidc_pb2
 import tidc_pb2_grpc
 
+import busio
+import board
+import adafruit_amg88xx
+
+i2c = busio.I2C(board.SCL, board.SDA)
+amg68 = adafruit_amg88xx.AMG88XX(i2c, addr=0x68)
+amg69 = adafruit_amg88xx.AMG88XX(i2c, addr=0x69)
+
 class ThermalImagingDataCollectService(tidc_pb2_grpc.ThermalImagingDataCollectServiceServicer):
 
     def CollectThermalImagingData(self, request, context):
 
-        return tidc_pb2.ThermalImagingDataCollectReply(errorMessage="")
+        return tidc_pb2.ThermalImagingDataCollectReply(errorMessage="", dataArray = amg69.pixels + amg68.pixels)
 
 
 def serve():
