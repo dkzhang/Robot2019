@@ -81,3 +81,17 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
+
+func MergeThermalArray(a1, a2, a3, a4 []float64, w, h int) (r []float64, newWidth, newHeight int, err error) {
+
+	if len(a1) != w*h || len(a1) != w*h || len(a1) != w*h || len(a1) != w*h {
+		return nil, -1, -1, fmt.Errorf("illegal array length")
+	}
+
+	r = make([]float64, w*h*4)
+	//横向合并
+	newWidth = w * 4
+	newHeight = h
+
+	return
+}
