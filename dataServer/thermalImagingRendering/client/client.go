@@ -31,7 +31,7 @@ func ThermalImagingRender(address string, dataArray []float64, width, height int
 		DataArray: dataArray,
 		Height:    int32(height),
 		Width:     int32(width),
-		Filepath:  "/ThermalImages/testTir/",
+		Filepath:  "/ThermalImages/",
 		Filename:  myUtil.FormatTime(time.Now()),
 	})
 
@@ -42,3 +42,5 @@ func ThermalImagingRender(address string, dataArray []float64, width, height int
 	log.Printf("reply = %v", r)
 	return filepath, filename, nil
 }
+
+//docker run -p 50061:50061 -v /home/dkzhang/tirImages:/ThermalImages -d registry.cn-beijing.aliyuncs.com/dkzhang/robot2019-dataserver-tir:3.0
