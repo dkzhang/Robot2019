@@ -47,7 +47,7 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 	if mdata1[0].Id == 0x69 {
 		a1 = mdata1[0].Data
 		a2 = mdata1[1].Data
-	}else{
+	} else {
 		a1 = mdata1[1].Data
 		a2 = mdata1[0].Data
 	}
@@ -55,7 +55,7 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 	if mdata2[0].Id == 0x69 {
 		a3 = mdata2[0].Data
 		a4 = mdata2[1].Data
-	}else{
+	} else {
 		a3 = mdata2[1].Data
 		a4 = mdata2[0].Data
 	}
@@ -66,7 +66,7 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 		return nil, fmt.Errorf("MergeThermalArray error: %v", err)
 	}
 
-	fmt.Printf("dataArray(%d,%d) = %v", newWidth, newHeight,dataArray)
+	fmt.Printf("dataArray(%d,%d) = %v", newWidth, newHeight, dataArray)
 	//调用绘图服务绘图
 	filepath, filename, err := imageRender.ThermalImagingRender("localhost:50061", dataArray, newWidth, newHeight)
 	if err != nil {
@@ -120,30 +120,4 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-}
-
-func MergeThermalArray(a1, a2, a3, a4 []float64, w, h int) (r []float64, newWidth, newHeight int, err error) {
-
-	if len(a1) != w*h || len(a1) != w*h || len(a1) != w*h || len(a1) != w*h {
-		return nil, -1, -1,
-			fmt.Errorf("illegal array length: %d,%d,%d,%d <=> %d, %d", len(a1), len(a2), len(a3), len(a4), w, h)
-	}
-
-	fmt.Printf("a1,a2,a3,a4: %d,%d,%d,%d <=> %d, %d \n", len(a1), len(a2), len(a3), len(a4), w, h)
-
-	r = make([]float64, w*h*4)
-	//横向合并
-	newWidth = w * 4
-	newHeight = h
-
-	for i := 0; i < h; i++ {
-		iw := i * w
-		iwn := i * newWidth
-		copy(r[iwn+0*w:iwn+1*w], a1[iw:iw+w])
-		copy(r[iwn+1*w:iwn+2*w], a2[iw:iw+w])
-		copy(r[iwn+2*w:iwn+3*w], a3[iw:iw+w])
-		copy(r[iwn+3*w:iwn+4*w], a4[iw:iw+w])
-	}
-
-	return
 }
