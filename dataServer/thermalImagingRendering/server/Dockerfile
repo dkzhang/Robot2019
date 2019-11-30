@@ -6,6 +6,6 @@ RUN python -m pip install matplotlib
 
 WORKDIR /myApp
 
-RUN git clone https://github.com/dkzhang/Robot2019.git #20191114-009
+RUN git clone https://github.com/dkzhang/Robot2019.git #20191130-001
 
 CMD python /myApp/Robot2019/dataServer/thermalImagingRendering/server/server.py

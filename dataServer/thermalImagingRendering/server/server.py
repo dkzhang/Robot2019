@@ -11,7 +11,7 @@ import numpy as np
 from scipy import interpolate
 import pylab as pl
 import matplotlib as mpl
-
+from mpl_toolkits.mplot3d import Axes3D
 
 class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingServiceServicer):
 
@@ -19,34 +19,37 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
         if not os.path.exists(request.filepath):
             os.makedirs(request.filepath)
 
-        # X-Y轴分为width*height的网格
-        y, x = np.mgrid[-1:1:1j * request.height, \
-               -1 * (request.width / request.height):1 * (request.width / request.height): 1j * request.width]
-
+        x = np.linspace(-1, 1, request.width)  # x
+        y = np.linspace(-1, 1, request.height)  # y
         z = np.array(request.dataArray).reshape((request.height, request.width))
 
         # 三次样条二维插值
         newfunc = interpolate.interp2d(x, y, z, kind='cubic')
 
         # 原来是计算100*100的网格上的插值，先改为放大20倍的网格
-        xnew = np.linspace(-1, 1, request.width * 20)  # x
-        ynew = np.linspace(-1 * (request.width / request.height), 1 * (request.width / request.height), request.height * 20)  # y
+        xnew = np.linspace(-1, 1, request.width * 10)  # x
+        ynew = np.linspace(-1, 1, request.height * 10)  # y
         fnew = newfunc(xnew, ynew)
 
         # 绘图
         # 为了更明显地比较插值前后的区别，使用关键字参数interpolation='nearest'
         # 关闭imshow()内置的插值运算。
         # cm = pl.cm.get_cmap('Spectral_r')
-        pl.subplot(211)
+        pl.subplot(311)
         im1 = pl.imshow(z, extent=[-1 * (request.width / request.height), 1 * (request.width / request.height), -1, 1],
                         cmap=mpl.cm.rainbow, interpolation='nearest', origin="lower")
         #               cmap = mpl.cm.hot,
         pl.colorbar(im1)
 
-        pl.subplot(212)
+        pl.subplot(312)
         im2 = pl.imshow(fnew, extent=[-1 * (request.width / request.height), 1 * (request.width / request.height), -1, 1],
                         cmap=mpl.cm.rainbow, interpolation='nearest', origin="lower")
         pl.colorbar(im2)
+
+        xn, yn = np.meshgrid(xnew, ynew)
+        ax = pl.subplot(313,projection='3d')
+        surf = ax.plot_surface(xn, yn, fnew, rstride=2, cstride=2, cmap=mpl.cm.rainbow,linewidth=0.5, antialiased=True)
+        pl.colorbar(surf)
 
         pl.savefig(request.filepath + request.filename + '.png')
         pl.clf()
