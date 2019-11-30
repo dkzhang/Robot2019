@@ -2,6 +2,51 @@ package server
 
 import "fmt"
 
+func MoveMergeThermalArray(a1, a2, a3, a4 []float64, offset [4]int, w, h int) (r []float64, newWidth, newHeight int, err error) {
+
+	//for example:
+	//offset := [4]int{0,6,10,16}
+
+	if len(a1) != w*h || len(a1) != w*h || len(a1) != w*h || len(a1) != w*h {
+		return nil, -1, -1,
+			fmt.Errorf("illegal array length: %d,%d,%d,%d <=> %d, %d", len(a1), len(a2), len(a3), len(a4), w, h)
+	}
+
+	fmt.Printf("a1,a2,a3,a4: %d,%d,%d,%d <=> %d, %d \n", len(a1), len(a2), len(a3), len(a4), w, h)
+
+	//默认最后一个矩阵的偏移量最大，即offset[3]最大
+	newWidth = offset[3] + w
+	newHeight = h
+
+	r = make([]float64, newWidth*h)
+	r1 := make([]float64, newWidth*h)
+	r2 := make([]float64, newWidth*h)
+	r3 := make([]float64, newWidth*h)
+	r4 := make([]float64, newWidth*h)
+
+	factor := make([]float64, newWidth*h)
+
+	for i := 0; i < h; i++ {
+		iw := i * w
+		iwn := i * newWidth
+		copy(r1[iwn+offset[0]:iwn+offset[0]+w], a1[iw:iw+w])
+		copy(r2[iwn+offset[1]:iwn+offset[1]+w], a1[iw:iw+w])
+		copy(r3[iwn+offset[2]:iwn+offset[2]+w], a1[iw:iw+w])
+		copy(r4[iwn+offset[3]:iwn+offset[3]+w], a1[iw:iw+w])
+
+		for m := 0; m < 4; m++ {
+			for n := 0; n < w; n++ {
+				factor[iwn+offset[m]+n] += 1.0
+			}
+		}
+	}
+
+	for i := 0; i < len(r); i++ {
+		r[i] = (r1[i] + r2[i] + r3[i] + r4[i]) / factor[i]
+	}
+	return
+}
+
 func MergeThermalArray(a1, a2, a3, a4 []float64, w, h int) (r []float64, newWidth, newHeight int, err error) {
 
 	if len(a1) != w*h || len(a1) != w*h || len(a1) != w*h || len(a1) != w*h {

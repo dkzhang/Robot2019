@@ -61,7 +61,8 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 	}
 
 	//合成数值数组
-	dataArray, newWidth, newHeight, err := MergeThermalArray(a1, a2, a3, a4, w, h)
+	dataArray, newWidth, newHeight, err := MoveMergeThermalArray(a1, a2, a3, a4, [4]int{0, 6, 10, 16}, w, h)
+	//dataArray, newWidth, newHeight, err := MergeThermalArray(a1, a2, a3, a4, w, h)
 	if err != nil {
 		return nil, fmt.Errorf("MergeThermalArray error: %v", err)
 	}
