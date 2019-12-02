@@ -3,11 +3,11 @@ package cache
 import (
 	"encoding/json"
 	"time"
-
-	"github.com/garyburd/redigo/redis"
 )
 
-//Redis redis cache
+import "github.com/gomodule/redigo/redis"
+
+//Redis redis cacheOldVersion
 type Redis struct {
 	conn *redis.Pool
 }
