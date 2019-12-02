@@ -64,7 +64,7 @@ func (r *Redis) Get(key string) interface{} {
 }
 
 //Set 设置一个值
-func (r *Redis) Set(key string, val interface{}, timeout time.Duration) (err error) {
+func (r *Redis) SetEX(key string, val interface{}, timeout time.Duration) (err error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
@@ -74,6 +74,20 @@ func (r *Redis) Set(key string, val interface{}, timeout time.Duration) (err err
 	}
 
 	_, err = conn.Do("SETEX", key, int64(timeout/time.Second), data)
+
+	return
+}
+
+func (r *Redis) Set(key string, val interface{}, timeout time.Duration) (err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+
+	var data []byte
+	if data, err = json.Marshal(val); err != nil {
+		return
+	}
+
+	_, err = conn.Do("SET", key, data)
 
 	return
 }

@@ -2,6 +2,7 @@ package client
 
 import (
 	"Robot2019/myUtil"
+	"Robot2019/webServer/inspectionRecord/realtimeRecord"
 	"context"
 	"fmt"
 	"log"
@@ -11,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ThermalImaging(address string) (err error) {
+func ThermalImaging(address string, inspectionID, recordID int) (err error) {
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
@@ -36,7 +37,16 @@ func ThermalImaging(address string) (err error) {
 	}
 	log.Printf("reply = %v", r)
 
+	const URL = "http://inspection-robot.gribgp.com:9981/cambrian001/static"
 	//将结果写入redis
+	rtr := realtimeRecord.RealTimeInfo{
+		InspectionID: inspectionID,
+		RecordID:     recordID,
+		DateTime:     myUtil.FormatTime(time.Now()),
+		Level:        r.Level,
+		TextContent:  r.AnalysisReport,
+		ImageUrl:     URL + r.Filepath + r.Filename,
+	}
 
 	return nil
 }
