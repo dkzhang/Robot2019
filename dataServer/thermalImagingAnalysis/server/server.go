@@ -24,7 +24,16 @@ type server struct {
 func (s *server) AnalyzeThermalImaging(ctx context.Context, in *pb.ThermalImagingAnalysisRequest) (*pb.ThermalImagingAnalysisReply, error) {
 	log.Printf("Received: %v", *in)
 
-	return &pb.ThermalImagingAnalysisReply{}, nil
+	level, report, err := AnalyzeThermalImaging(in.DataArray)
+
+	if err != nil {
+		return nil, fmt.Errorf("AnalyzeThermalImaging error: %v", err)
+	} else {
+		return &pb.ThermalImagingAnalysisReply{
+			AnalysisReport: report,
+			Level:          level,
+		}, nil
+	}
 }
 
 func AnalyzeThermalImaging(dataArray []float64) (level, report string, err error) {
