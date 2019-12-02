@@ -136,7 +136,7 @@ func (r *Redis) GetAllStream(key string) (interface{}, error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
-	if result, err := conn.Do("XRANGE", key, "- +"); err != nil {
+	if result, err := conn.Do("XRANGE", key, "-", "+"); err != nil {
 		return nil, err
 	} else {
 		return result, nil
