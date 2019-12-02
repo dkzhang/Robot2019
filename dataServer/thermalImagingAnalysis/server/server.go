@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"Robot2019/myUtil"
@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	port = ":50061"
+	port = ":50071"
 )
 
 type server struct {

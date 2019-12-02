@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"Robot2019/myUtil"
@@ -10,6 +10,7 @@ import (
 
 	dataCollect "Robot2019/applicationDriverForRobot/thermalImagingDataCollect/client"
 	pb "Robot2019/dataServer/thermalImaging/grpc"
+	dataAnalysis "Robot2019/dataServer/thermalImagingAnalysis/client"
 	imageRender "Robot2019/dataServer/thermalImagingRendering/client"
 
 	"google.golang.org/grpc"
@@ -77,38 +78,19 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 		return nil, fmt.Errorf("ThermalImagingRender error: %v", err)
 	}
 
-	fmt.Printf("%s \n", filepath)
-	fmt.Printf("%s \n", filename)
+	level, report, err := dataAnalysis.ThermalImagingAnalyze("localhost:50071", dataArray)
+	if err != nil {
+		return nil, fmt.Errorf("dataAnalysis error: %v", err)
+	}
 
-	/*
-		//调用分析服务进行热点分析
-		analysisReport, err := dataAnalysis.ThermalImagingAnalyze("", &dataAnalysis.ThermalImagingDataStruct{
-			DataArray: dataArray,
-			Height:    height,
-			Width:     width,
-		})
-		if err != nil {
-			return nil, fmt.Errorf("dataAnalysis error: %v", err)
-		}
-
-		return &pb.ThermalImagingReply{
-			Filepath:       filepath,
-			Filename:       filename,
-			DataArray:      dataArray,
-			Height:         height,
-			Width:          width,
-			AnalysisReport: analysisReport,
-			ErrorMessage:   "",
-		}, nil
-
-	*/
 	return &pb.ThermalImagingReply{
 		Filepath:       filepath,
 		Filename:       filename,
 		DataArray:      dataArray,
 		Height:         int32(newHeight),
 		Width:          int32(newWidth),
-		AnalysisReport: "analysisReport",
+		Level:          level,
+		AnalysisReport: report,
 		ErrorMessage:   "",
 	}, nil
 }
