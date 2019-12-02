@@ -116,3 +116,38 @@ func (r *Redis) Delete(key string) error {
 
 	return nil
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+func (r *Redis) SetStream(key string, pRti *RealTimeInfo) error {
+	conn := r.conn.Get()
+	defer conn.Close()
+
+	if _, err := conn.Do("XADD", key, "*", "InspectionID", pRti.InspectionID,
+		"Level", pRti.Level, "DateTime", pRti.DateTime,
+		"TextContent", pRti.TextContent, "ImageUrl", pRti.ImageUrl); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *Redis) GetAllStream(key string) (interface{}, error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+
+	if result, err := conn.Do("XRANGE", key, "- +"); err != nil {
+		return nil, err
+	} else {
+		return result, nil
+	}
+}
+
+type RealTimeInfo struct {
+	InspectionID int
+	RecordID     string
+	Level        string
+	DateTime     string
+	TextContent  string
+	ImageUrl     string
+}

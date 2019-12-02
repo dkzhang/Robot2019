@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"Robot2019/myUtil"
 	"testing"
 	"time"
 )
@@ -28,5 +29,24 @@ func TestRedis(t *testing.T) {
 
 	if err = redis.Delete("username"); err != nil {
 		t.Errorf("delete Error , err=%v", err)
+	}
+
+	rti := RealTimeInfo{
+		InspectionID: 1,
+		RecordID:     "",
+		Level:        "Info",
+		DateTime:     myUtil.FormatTime(time.Now()),
+		TextContent:  "test",
+		ImageUrl:     "image url",
+	}
+	if err = redis.SetStream("test", &rti); err != nil {
+		t.Errorf("SetStream Error , err=%v", err)
+	}
+
+	getRti, err := redis.GetAllStream("test")
+	if err != nil {
+		t.Errorf("GetAllStream error, err=%v", err)
+	} else {
+		t.Logf("GetAllStream replay = %v", getRti)
 	}
 }
