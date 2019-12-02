@@ -132,7 +132,7 @@ func (r *Redis) SetStream(key string, pRti *RealTimeInfo) error {
 	return nil
 }
 
-func (r *Redis) GetAllStream(key string) ([]RealTimeRecord, error) {
+func (r *Redis) GetAllStream(key string) ([]interface{}, error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
@@ -143,7 +143,7 @@ func (r *Redis) GetAllStream(key string) ([]RealTimeRecord, error) {
 		rtrs := []RealTimeRecord{}
 
 		redis.ScanSlice(result, rtrs)
-		return rtrs, nil
+		return result, nil
 	}
 }
 
