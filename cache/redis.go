@@ -132,22 +132,31 @@ func (r *Redis) SetStream(key string, pRti *RealTimeInfo) error {
 	return nil
 }
 
-func (r *Redis) GetAllStream(key string) (interface{}, error) {
+func (r *Redis) GetAllStream(key string) ([]RealTimeRecord, error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
-	if result, err := conn.Do("XRANGE", key, "-", "+"); err != nil {
+	if result, err := redis.Values(conn.Do("XRANGE", key, "-", "+")); err != nil {
 		return nil, err
 	} else {
-		return result, nil
+
+		rtrs := []RealTimeRecord{}
+
+		redis.ScanSlice(result, rtrs)
+		return rtrs, nil
 	}
 }
 
 type RealTimeInfo struct {
 	InspectionID int
-	RecordID     string
-	Level        string
-	DateTime     string
-	TextContent  string
-	ImageUrl     string
+
+	Level       string
+	DateTime    string
+	TextContent string
+	ImageUrl    string
+}
+
+type RealTimeRecord struct {
+	RecordID string
+	Info     RealTimeInfo
 }
