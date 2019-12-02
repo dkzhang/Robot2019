@@ -118,45 +118,56 @@ func (r *Redis) Delete(key string) error {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-func (r *Redis) SetStream(key string, pRti *RealTimeInfo) error {
+func (r *Redis) ListRPush(key string, val interface{}) (err error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
-	if _, err := conn.Do("XADD", key, "*", "InspectionID", pRti.InspectionID,
-		"Level", pRti.Level, "DateTime", pRti.DateTime,
-		"TextContent", pRti.TextContent, "ImageUrl", pRti.ImageUrl); err != nil {
+	var data []byte
+	if data, err = json.Marshal(val); err != nil {
+		return
+	}
+
+	_, err = conn.Do("RPUSH", key, data)
+
+	return
+}
+
+func (r *Redis) ListMaxLenRPush(key string, val interface{}, maxLen int) (err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+
+	//RPush
+	var data []byte
+	if data, err = json.Marshal(val); err != nil {
 		return err
+	}
+
+	if length, err := redis.Int(conn.Do("RPUSH", key, data)); err != nil {
+		return err
+	} else {
+		//check length
+		if length > maxLen {
+			//从右向左保留，删除左边多余的元素
+			_, err = conn.Do("LTRIM", key, -maxLen, -1)
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (r *Redis) GetAllStream(key string) ([]interface{}, error) {
+func (r *Redis) ListLRange(key string, start, end int) (strArray []string, err error) {
 	conn := r.conn.Get()
 	defer conn.Close()
 
-	if result, err := redis.Values(conn.Do("XRANGE", key, "-", "+")); err != nil {
-		return nil, err
-	} else {
-
-		rtrs := []RealTimeRecord{}
-
-		redis.ScanSlice(result, rtrs)
-		return result, nil
-	}
+	strArray, err = redis.Strings(conn.Do("LRANGE", key, start, end))
+	return strArray, err
 }
 
-type RealTimeInfo struct {
-	InspectionID int
+func (r *Redis) ListLen(key string) (length int, err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
 
-	Level       string
-	DateTime    string
-	TextContent string
-	ImageUrl    string
-}
-
-type RealTimeRecord struct {
-	RecordID string
-	Info     RealTimeInfo
+	length, err = redis.Int(conn.Do("LLEN", key))
+	return length, err
 }
