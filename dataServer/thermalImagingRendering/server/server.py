@@ -51,7 +51,7 @@ class ThermalImagingRenderingService(tir_pb2_grpc.ThermalImagingRenderingService
         surf = ax.plot_surface(xn, yn, fnew, rstride=2, cstride=2, cmap=mpl.cm.rainbow,linewidth=0.5, antialiased=True)
         pl.colorbar(surf)
 
-        pl.savefig(request.filepath + request.filename + '.png')
+        pl.savefig(request.filepath + request.filename + '.png', dpi=256)
         pl.clf()
 
         print(request.dataArray)
