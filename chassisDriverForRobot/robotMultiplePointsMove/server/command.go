@@ -9,7 +9,7 @@ import (
 )
 
 func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (cmd string, uuid string) {
-	cmd = "/api/move?"
+	cmd = "/api/move?markers="
 
 	cmd += mpi.Markers[0]
 
