@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 
@@ -36,5 +37,6 @@ func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (cmd string, uuid string) {
 	uuid = fmt.Sprintf("%X", rand.Uint32())
 	cmd += fmt.Sprintf("&uuid=%s", uuid)
 
+	log.Printf("cmd = %s", cmd)
 	return cmd, uuid
 }
