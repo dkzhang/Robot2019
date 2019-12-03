@@ -39,14 +39,14 @@ func (nmp *NotificationMainProcessor) run() {
 		resultType, err := auxiliary.UnmarshalJSON(resultMsg)
 
 		if err != nil {
-			log.Fatalf("auxiliary.UnmarshalJSON <%s> error: %v", resultMsg, err)
+			log.Printf(" fatal error! auxiliary.UnmarshalJSON <%s> error: %v", resultMsg, err)
 			continue
 		}
 
 		if resultType.Type == "notification" {
 			notificationOutputChan <- resultMsg
 		} else {
-			log.Fatalf("unexpected resultMsg type <%s> : %s", resultType.Type, resultMsg)
+			log.Printf(" fatal error! unexpected resultMsg type <%s> : %s", resultType.Type, resultMsg)
 		}
 	}
 

@@ -24,12 +24,12 @@ type server struct {
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Printf(" fatal error! failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterSinglePointMoveServer(s, &server{})
 	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Printf(" fatal error! failed to serve: %v", err)
 	}
 }

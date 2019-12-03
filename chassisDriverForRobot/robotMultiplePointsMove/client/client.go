@@ -13,12 +13,12 @@ func MMove(markers []string) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "192.168.10.28:50072"
+	address := "192.168.10.27:50072"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -35,7 +35,7 @@ func MMove(markers []string) {
 		Markers:  markers,
 	})
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 }

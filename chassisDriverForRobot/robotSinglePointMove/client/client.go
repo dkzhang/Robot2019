@@ -18,7 +18,7 @@ func MoveAndWaitForArrival(marker string) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -36,7 +36,7 @@ func MoveAndWaitForArrival(marker string) {
 	})
 
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 }
@@ -50,7 +50,7 @@ func Move(marker string) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -68,7 +68,7 @@ func Move(marker string) {
 	})
 
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 }

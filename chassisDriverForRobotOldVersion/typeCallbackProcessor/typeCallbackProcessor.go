@@ -47,7 +47,7 @@ func (proc *TypeCallbackProcessor) run() {
 
 		ct, err := typeCallbackStructure.UnmarshalJSON(topicMessage)
 		if err != nil {
-			log.Fatalf("UnmarshalJSON Callback Topic error: %v", err)
+			log.Printf(" fatal error! UnmarshalJSON Callback Topic error: %v", err)
 			continue
 		} else {
 			log.Printf("UnmarshalJSON Callback Topic success: %v", ct)
@@ -56,7 +56,7 @@ func (proc *TypeCallbackProcessor) run() {
 		if ct.Topic == "robot_status" {
 			ctrs, err := robotStatus.UnmarshalJSON(topicMessage)
 			if err != nil {
-				log.Fatalf("UnmarshalJSON Callback Topic RobotStatus error: %v", err)
+				log.Printf(" fatal error! UnmarshalJSON Callback Topic RobotStatus error: %v", err)
 				continue
 			} else {
 				log.Printf("UnmarshalJSON Callback Topic RobotStatus success: %v", ctrs)
@@ -68,7 +68,7 @@ func (proc *TypeCallbackProcessor) run() {
 					case theChan <- ctrs:
 						//Do nothing
 					case <-time.After(timeout):
-						log.Fatalf("Send Callback Topic RobotStatus to Listener %s timeout: %s", name, topicMessage)
+						log.Printf(" fatal error! Send Callback Topic RobotStatus to Listener %s timeout: %s", name, topicMessage)
 						continue
 					}
 				}

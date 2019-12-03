@@ -48,7 +48,7 @@ func (proc *TypeNotificationProcessor) run() {
 
 		nf, err := typeNotificationStructure.UnmarshalJSON(notificationMessage)
 		if err != nil {
-			log.Fatalf("UnmarshalJSON Notification error: %v", err)
+			log.Printf(" fatal error! UnmarshalJSON Notification error: %v", err)
 			continue
 		} else {
 			log.Printf("UnmarshalJSON Notification success: %v", nf)
@@ -61,7 +61,7 @@ func (proc *TypeNotificationProcessor) run() {
 			case theChan <- nf:
 				//Do nothing
 			case <-time.After(timeout):
-				log.Fatalf("Send Callback Topic RobotStatus to Listener %s timeout: %s", name, notificationMessage)
+				log.Printf(" fatal error! Send Callback Topic RobotStatus to Listener %s timeout: %s", name, notificationMessage)
 				continue
 			}
 		}

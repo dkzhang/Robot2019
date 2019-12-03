@@ -15,7 +15,7 @@ const (
 func main() {
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	defer conn.Close()
 	c := robotMove.NewRobotMoveClient(conn)
@@ -28,7 +28,7 @@ func main() {
 		Marker:   "2",
 	})
 	if err != nil {
-		log.Fatalf("could not single point move: %v", err)
+		log.Printf(" fatal error! could not single point move: %v", err)
 	}
 	log.Printf("get response: %v", r)
 }

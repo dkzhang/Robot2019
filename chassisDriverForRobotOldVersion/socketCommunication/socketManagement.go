@@ -74,13 +74,13 @@ func (sm *SocketManagement) run() {
 	for {
 		tcpAddr, err := net.ResolveTCPAddr("tcp4", sm.ServerIPandPort)
 		if err != nil {
-			log.Fatalf("net.ResolveTCPAddr error: %v", err)
+			log.Printf(" fatal error! net.ResolveTCPAddr error: %v", err)
 			continue
 		}
 
 		conn, err := net.DialTCP("tcp", nil, tcpAddr)
 		if err != nil {
-			log.Fatalf("net.DialTCP error: %v", err)
+			log.Printf(" fatal error! net.DialTCP error: %v", err)
 			continue
 		}
 
@@ -91,9 +91,9 @@ func (sm *SocketManagement) run() {
 		for {
 			pcs, err = SocketSend(conn, sm.CommandChan, errorChan, sm.cancelChan, pcs)
 			if err != nil {
-				log.Fatalf("SocketSend error: %v", err)
+				log.Printf(" fatal error! SocketSend error: %v", err)
 				if errClose := conn.Close(); errClose != nil {
-					log.Fatalf("conn.Close() in SocketSend error: %v", errClose)
+					log.Printf(" fatal error! conn.Close() in SocketSend error: %v", errClose)
 				}
 
 				if err.Error() == "cancel" {

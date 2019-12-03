@@ -25,11 +25,11 @@ func (s *server) SinglePointMove(ctx context.Context, in *robotMove.SinglePointI
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Printf(" fatal error! failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 	robotMove.RegisterRobotMoveServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Printf(" fatal error! failed to serve: %v", err)
 	}
 }

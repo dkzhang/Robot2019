@@ -29,7 +29,7 @@ func main() {
 			case "Lifter":
 				para, err := strconv.ParseInt(sm.Para, 10, 64)
 				if err != nil {
-					log.Fatalf("ParseInt error: %v", err)
+					log.Printf(" fatal error! ParseInt error: %v", err)
 				} else {
 					lifter.LifterControl(para)
 				}

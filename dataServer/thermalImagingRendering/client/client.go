@@ -15,7 +15,7 @@ func ThermalImagingRender(address string, dataArray []float64, width, height int
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 		return "", "", fmt.Errorf("grpc.Dial error: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
@@ -36,7 +36,7 @@ func ThermalImagingRender(address string, dataArray []float64, width, height int
 	})
 
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 		return "", "", fmt.Errorf("ThermalImagingRender reply error: %v", err)
 	}
 	log.Printf("reply = %v", r)

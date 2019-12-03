@@ -18,7 +18,7 @@ func SwitchLaserLight(turnOn bool) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -31,7 +31,7 @@ func SwitchLaserLight(turnOn bool) {
 	defer cancel()
 	r, err := c.SwitchLaserLight(ctx, &pb.LaserLightRequest{TurnOn: turnOn})
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 }

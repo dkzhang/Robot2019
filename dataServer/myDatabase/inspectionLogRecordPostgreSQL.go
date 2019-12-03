@@ -10,7 +10,7 @@ import (
 func InsertInspectionLogRecordPostgreSQL(ilr structure.InspectionLogRecord) error {
 	db, err := ConnectToDatabase(GetPostgreSQLContext())
 	if err != nil {
-		log.Fatalf("database.ConnectToDatabase error: %v", err)
+		log.Printf(" fatal error! database.ConnectToDatabase error: %v", err)
 	}
 	defer db.Close()
 

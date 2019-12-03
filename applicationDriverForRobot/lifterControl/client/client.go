@@ -18,7 +18,7 @@ func LifterControl(para int64) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -32,7 +32,7 @@ func LifterControl(para int64) {
 	defer cancel()
 	r, err := c.ControlTheLifter(ctx, &pb.LifterControlRequest{Para: para})
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 }

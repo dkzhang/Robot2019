@@ -14,7 +14,7 @@ func GetTemperatureAndHumidity() ([]*TemperatureAndHumidityInfo, error) {
 	const address = "localhost:50051"
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	defer conn.Close()
 
@@ -25,7 +25,7 @@ func GetTemperatureAndHumidity() ([]*TemperatureAndHumidityInfo, error) {
 	r, err := c.GetTemperatureAndHumidity(ctx,
 		&pb.TemperatureAndHumidityRequest{Datetime: myUtil.FormatTime(time.Now())})
 	if err != nil {
-		log.Fatalf("could not get correct reply: %v", err)
+		log.Printf(" fatal error! could not get correct reply: %v", err)
 		return nil, err
 	}
 

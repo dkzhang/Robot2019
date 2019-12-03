@@ -24,7 +24,7 @@ func SocketReceive(conn *net.TCPConn, resultChan chan string, errorChan chan err
 
 		select {
 		case errMsg := <-errorChan:
-			log.Fatalf("SocketReceive will return because of revicing message from errorChan: %v .", errMsg)
+			log.Printf(" fatal error! SocketReceive will return because of revicing message from errorChan: %v .", errMsg)
 			return
 		default:
 			continue

@@ -15,7 +15,7 @@ func CollectThermalImagingData(address string) (data []ThermalModelData, err err
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 		return nil, fmt.Errorf("grpc CollectThermalImagingData grpc.Dial error: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
@@ -30,7 +30,7 @@ func CollectThermalImagingData(address string) (data []ThermalModelData, err err
 
 	r, err := c.CollectThermalImagingData(ctx, &pb.ThermalImagingDataCollectRequest{Tag: myUtil.FormatTime(time.Now())})
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 		return nil, fmt.Errorf("grpc CollectThermalImagingData Reply error: %v", err)
 	}
 	log.Printf("reply = %v", r)

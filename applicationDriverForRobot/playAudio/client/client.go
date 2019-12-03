@@ -18,7 +18,7 @@ func main() {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -32,7 +32,7 @@ func main() {
 
 	r, err := c.ControlTheLifter(ctx, &pb.PlayAudioRequest{AudioName: "BGPsong"})
 	if err != nil {
-		log.Fatalf("could not reply: %v", err)
+		log.Printf(" fatal error! could not reply: %v", err)
 	}
 	log.Printf("reply = %v", r)
 

@@ -61,7 +61,7 @@ func TestServer_GetRobotStatus2(t *testing.T) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf(" fatal error! did not connect: %v", err)
 	}
 	t.Logf("grpc.Dial OK!")
 	defer conn.Close()
