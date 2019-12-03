@@ -26,7 +26,7 @@ func MMove(markers []string) {
 	c := pb.NewMultiplePointsMoveClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*3)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 
