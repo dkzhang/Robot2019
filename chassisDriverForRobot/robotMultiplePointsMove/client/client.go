@@ -13,7 +13,7 @@ func Move(marker string) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "localhost:50051"
+	address := "192.168.10.27:50072"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
