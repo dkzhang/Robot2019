@@ -4,4 +4,7 @@ WORKDIR /go/src
 
 RUN git clone https://github.com/dkzhang/Robot2019.git #20191203-001
 
-CMD go run /chassisDriverForRobot/robotMultiplePointsMove/server/server.go
+WORKDIR /go/src/Robot2019/chassisDriverForRobot/robotMultiplePointsMove/server
+
+CMD go run ./server.go
+

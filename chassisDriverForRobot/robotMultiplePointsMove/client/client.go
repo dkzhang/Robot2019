@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func Move(marker string) {
+func MMove(markers []string) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
@@ -26,13 +26,13 @@ func Move(marker string) {
 	c := pb.NewMultiplePointsMoveClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*3)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 
 	r, err := c.Move(ctx, &pb.MultiplePointsInfo{
 		InfoMask: 0,
-		Markers:  []string{},
+		Markers:  markers,
 	})
 	if err != nil {
 		log.Fatalf("could not reply: %v", err)

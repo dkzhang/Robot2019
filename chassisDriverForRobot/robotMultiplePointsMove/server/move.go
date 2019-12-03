@@ -18,8 +18,8 @@ func (s *server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveR
 	psm := socketCommunication.SocketManagementFactory(serverIPandPort)
 	defer psm.Cancel()
 
-	//构造单点移动命令（附随机数）并发送
-	cmdStruct := socketCommunication.CommandStruct{Name: "Single Move"}
+	//构造多点移动命令（附随机数）并发送
+	cmdStruct := socketCommunication.CommandStruct{Name: "Multiple Move"}
 	cmdStruct.Command, cmdStruct.UUID = GenerateMoveCommand(in)
 	psm.CommandChan <- &cmdStruct
 
