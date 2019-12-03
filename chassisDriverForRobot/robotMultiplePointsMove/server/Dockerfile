@@ -1,4 +1,4 @@
-FROM dkzhang007/golang_protobuf_grpc-x86
+FROM dkzhang007/golang_protobuf_grpc-x86:my1.0
 
 WORKDIR /go/src
 
