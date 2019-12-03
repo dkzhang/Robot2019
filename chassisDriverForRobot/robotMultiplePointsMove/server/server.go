@@ -1,42 +1,19 @@
-package main
+package server
 
 import (
 	"Robot2019/chassisDriverForRobot/common"
+	pb "Robot2019/chassisDriverForRobot/robotMultiplePointsMove/grpc"
 	"Robot2019/chassisDriverForRobot/socketCommunication"
-	"Robot2019/myUtil"
-
 	"context"
 	"fmt"
 	"log"
-	"net"
-	"time"
-
-	pb "Robot2019/chassisDriverForRobot/robotMultiplePointsMove/grpc"
-	"google.golang.org/grpc"
 )
 
-const (
-	port = ":50072"
-)
-
-type server struct {
+type Server struct {
 	pb.UnimplementedMultiplePointsMoveServer
 }
 
-func main() {
-	lis, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterMultiplePointsMoveServer(s, &server{})
-	fmt.Printf("Begin to serve %s", myUtil.FormatTime(time.Now()))
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-}
-
-func (s *server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveResponse, error) {
+func (s *Server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveResponse, error) {
 	log.Printf("Received: %v", *in)
 
 	//实例化一个通信模块
@@ -96,7 +73,7 @@ func (s *server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveR
 	//return &pb.MoveResponse{}, nil
 }
 
-func (s *server) MoveAndWaitForArrival(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveAndWaitForArrivalResponse, error) {
+func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveAndWaitForArrivalResponse, error) {
 	// 暂时不启用该函数
 	return &pb.MoveAndWaitForArrivalResponse{}, nil
 }
