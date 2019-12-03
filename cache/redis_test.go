@@ -2,6 +2,7 @@ package cache
 
 import (
 	"Robot2019/myUtil"
+	"Robot2019/webServer/inspectionRecord/realtimeRecord"
 	"testing"
 	"time"
 )
@@ -31,22 +32,32 @@ func TestRedis(t *testing.T) {
 		t.Errorf("delete Error , err=%v", err)
 	}
 
-	rti := RealTimeInfo{
-		InspectionID: 1,
-		Level:        "Info",
-		DateTime:     myUtil.FormatTime(time.Now()),
-		TextContent:  "test",
-		ImageUrl:     "image url",
-	}
-	if err = theRedis.SetStream("test", &rti); err != nil {
-		t.Errorf("SetStream Error , err=%v", err)
+	////////////////////////////////////////////////////////
+
+	for i := 0; i < 5; i++ {
+		rti := realtimeRecord.RealTimeInfo{
+			InspectionID: i,
+			RecordID:     i * 10,
+			Level:        "Info",
+			DateTime:     myUtil.FormatTime(time.Now()),
+			TextContent:  "test",
+			ImageUrl:     "image url",
+		}
+		if err = theRedis.ListMaxLenRPush("testList", rti, 3); err != nil {
+			t.Error("ListMaxLenRPush Error", err)
+		}
+
+		if length, err := theRedis.ListLen("testList"); err != nil {
+			t.Error("ListLen Error", err)
+		} else {
+			t.Logf("list length = %d", length)
+		}
+
+		if strArray, err := theRedis.ListLRange("testList", 0, -1); err != nil {
+			t.Error("ListLRange Error", err)
+		} else {
+			t.Logf("string array = %s", strArray)
+		}
 	}
 
-	getRti, err := theRedis.GetAllStream("test")
-	if err != nil {
-		t.Errorf("GetAllStream error, err=%v", err)
-	} else {
-		t.Logf("GetAllStream replay = %v", getRti)
-
-	}
 }
