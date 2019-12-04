@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"Robot2019/chassisDriverForRobot/common"
@@ -11,7 +11,7 @@ import (
 	pb "Robot2019/chassisDriverForRobot/robotSinglePointMove/grpc"
 )
 
-func (s *server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveAndWaitForArrivalResponse, error) {
+func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveAndWaitForArrivalResponse, error) {
 	//实例化一个通信模块
 	log.Printf("Received: %v", *in)
 

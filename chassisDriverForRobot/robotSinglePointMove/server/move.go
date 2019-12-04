@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"Robot2019/chassisDriverForRobot/common"
@@ -10,7 +10,7 @@ import (
 	pb "Robot2019/chassisDriverForRobot/robotSinglePointMove/grpc"
 )
 
-func (s *server) Move(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveResponse, error) {
+func (s *Server) Move(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveResponse, error) {
 	log.Printf("Received: %v", *in)
 
 	//实例化一个通信模块
