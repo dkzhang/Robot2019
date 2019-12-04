@@ -27,7 +27,7 @@ func TestServer_Move(t *testing.T) {
 	spi := &robotSinglePointMove.SinglePointInfo{
 		InfoMask: 16,
 		Marker:   "charger",
-		//Marker:               "R7x1",
+		//Marker:               "R7x9",
 		LocationX:            1.1,
 		LocationY:            2.2,
 		LocationTheta:        3.3,
