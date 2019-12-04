@@ -71,7 +71,9 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 				//检查是否为订阅消息，且完成移动
 				//如果是，则返回成功
 				//如果尚在移动，则继续循环；如果移动出错，则返回错误
+				log.Printf("check for subscribe: %s", result)
 				if SubscribeResponseParse(result) == true {
+					log.Printf("accomplish move: %s", result)
 					return &pb.MoveAndWaitForArrivalResponse{
 						ErrorMessage: "",
 					}, nil

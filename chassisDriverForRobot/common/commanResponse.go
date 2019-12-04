@@ -27,7 +27,7 @@ func CommandDetection(strJSON string, uuid string) (pcr *CommandResponse, err er
 	rt := ResultType{}
 	err = json.Unmarshal([]byte(strJSON), &rt)
 	if err != nil {
-		return nil, fmt.Errorf("result type json unmarshal error: %v", err)
+		return nil, fmt.Errorf("result type json unmarshal error, strJSON = %s, err = %v", strJSON, err)
 	}
 
 	//判断消息类型是否为response
