@@ -24,7 +24,7 @@ func ThermalImagingRender(address string, dataArray []float64, width, height int
 	c := pb.NewThermalImagingRenderingServiceClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 	r, err := c.ThermalImagingRender(ctx, &pb.ThermalImagingRenderingRequest{

@@ -73,12 +73,12 @@ func CollectRenderAnalyze() (*pb.ThermalImagingReply, error) {
 
 	fmt.Printf("dataArray(%d,%d) = %v", newWidth, newHeight, dataArray)
 	//调用绘图服务绘图
-	filepath, filename, err := imageRender.ThermalImagingRender("localhost:50061", dataArray, newWidth, newHeight)
+	filepath, filename, err := imageRender.ThermalImagingRender("192.168.10.27:50061", dataArray, newWidth, newHeight)
 	if err != nil {
 		return nil, fmt.Errorf("ThermalImagingRender error: %v", err)
 	}
 
-	level, report, err := dataAnalysis.ThermalImagingAnalyze("localhost:50071", dataArray)
+	level, report, err := dataAnalysis.ThermalImagingAnalyze("192.168.10.27:50062", dataArray)
 	if err != nil {
 		return nil, fmt.Errorf("dataAnalysis error: %v", err)
 	}

@@ -24,7 +24,7 @@ func ThermalImagingAnalyze(address string, dataArray []float64) (level, analysis
 	c := pb.NewThermalImagingAnalysisServiceClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*3)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 
