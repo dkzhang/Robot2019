@@ -4,6 +4,7 @@ import (
 	"Robot2019/chassisDriverForRobot/common"
 	"Robot2019/chassisDriverForRobot/socketCommunication"
 	"Robot2019/chassisDriverForRobot/subscribeRobotStatus"
+	"Robot2019/myUtil"
 	"context"
 	"fmt"
 	"log"
@@ -37,46 +38,50 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 
 	for {
 		select {
-		case result := <-psm.ResultChan:
-			if cmdMoveFlag == false {
-				//命令解析
-				//检查是否为所发命令的回复
-				cmdMoveFlag, err = CmdResponseParse(result, cmdMoveStruct.UUID)
+		case strResult := <-psm.ResultChan:
 
-				if err != nil {
-					return &pb.MoveAndWaitForArrivalResponse{
-						ErrorMessage: fmt.Sprintf("Cmd Move Response Parse error: %v", err),
-					}, nil
-				} else if cmdMoveFlag == true {
-					continue
+			for _, strJSON := range myUtil.SplitJSON(strResult) {
+
+				if cmdMoveFlag == false {
+					//命令解析
+					//检查是否为所发命令的回复
+					cmdMoveFlag, err = CmdResponseParse(strJSON, cmdMoveStruct.UUID)
+
+					if err != nil {
+						return &pb.MoveAndWaitForArrivalResponse{
+							ErrorMessage: fmt.Sprintf("Cmd Move Response Parse error: %v", err),
+						}, nil
+					} else if cmdMoveFlag == true {
+						continue
+					}
 				}
-			}
 
-			if cmdSubscribeFlag == false {
-				//命令解析
-				//检查是否为所发命令的回复
-				cmdSubscribeFlag, err = CmdResponseParse(result, cmdSubscribeStruct.UUID)
+				if cmdSubscribeFlag == false {
+					//命令解析
+					//检查是否为所发命令的回复
+					cmdSubscribeFlag, err = CmdResponseParse(strJSON, cmdSubscribeStruct.UUID)
 
-				if err != nil {
-					return &pb.MoveAndWaitForArrivalResponse{
-						ErrorMessage: fmt.Sprintf("Cmd Subcrible Response Parse error: %v", err),
-					}, nil
-				} else if cmdSubscribeFlag == true {
-					continue
+					if err != nil {
+						return &pb.MoveAndWaitForArrivalResponse{
+							ErrorMessage: fmt.Sprintf("Cmd Subcrible Response Parse error: %v", err),
+						}, nil
+					} else if cmdSubscribeFlag == true {
+						continue
+					}
 				}
-			}
 
-			if cmdMoveFlag == true && cmdSubscribeFlag == true {
-				//订阅消息解析
-				//检查是否为订阅消息，且完成移动
-				//如果是，则返回成功
-				//如果尚在移动，则继续循环；如果移动出错，则返回错误
-				log.Printf("check for subscribe: %s", result)
-				if SubscribeResponseParse(result) == true {
-					log.Printf("accomplish move: %s", result)
-					return &pb.MoveAndWaitForArrivalResponse{
-						ErrorMessage: "",
-					}, nil
+				if cmdMoveFlag == true && cmdSubscribeFlag == true {
+					//订阅消息解析
+					//检查是否为订阅消息，且完成移动
+					//如果是，则返回成功
+					//如果尚在移动，则继续循环；如果移动出错，则返回错误
+					log.Printf("check for subscribe: %s", strJSON)
+					if SubscribeResponseParse(strJSON) == true {
+						log.Printf("accomplish move: %s", strJSON)
+						return &pb.MoveAndWaitForArrivalResponse{
+							ErrorMessage: "",
+						}, nil
+					}
 				}
 			}
 
