@@ -8,4 +8,4 @@ WORKDIR /go/src/Robot2019/dataServer/thermalImaging/server
 
 CMD go run ./server.go
 
-#50063
+#50062
