@@ -1,6 +1,6 @@
 FROM dkzhang007/golang_protobuf_grpc-x86:my1.0
 
-RUN got get github.com/gomodule/redigo/redis
+RUN go get github.com/gomodule/redigo/redis
 
 WORKDIR /go/src
 RUN git clone https://github.com/dkzhang/Robot2019.git #20191206-001
