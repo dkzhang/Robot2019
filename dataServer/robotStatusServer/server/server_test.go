@@ -1,57 +1,24 @@
 package server
 
 import (
-	"Robot2019/myUtil"
-	"context"
-
 	_ "encoding/json"
-	"log"
-	"testing"
-	"time"
-
-	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	_ "github.com/gomodule/redigo/redis"
-	"google.golang.org/grpc"
+	"testing"
 )
 
-/*
 func TestServer_GetRobotStatus(t *testing.T) {
-	//连接redis容器，读取相关状态信息
-	redisConn, err := redis.Dial("tcp", "myRedis001:6379")
+
+	server := server{}
+
+	reply, err := server.GetRobotStatus(nil, nil)
 	if err != nil {
-		t.Fatalf("redis dial error: %v", err)
-		return
+		t.Errorf("GetRobotStatus error: %v", err)
+	} else {
+		t.Logf("GetRobotStatus reply = %v", *reply)
 	}
-	defer redisConn.Close()
+}
 
-	theStatus := pb.RobotStatusReply{
-		MoveStatus:      "Running",
-		ChargeStatus:    false,
-		SoftEstopStatus: false,
-		HardEstopStatus: false,
-		PowerPercent:    99,
-		X:               1.1,
-		Y:               2.2,
-		Theta:           3.3,
-		Datetime:        myUtil.FormatTime(time.Now()),
-		ErrorMessage:    "",
-	}
-
-	theJSON, err := json.Marshal(theStatus)
-	if err != nil {
-		t.Fatalf("json marshal error: %v", theStatus)
-	}
-
-	result, err := redis.String(redisConn.Do("SET", "CurrentRobotStatus", theJSON))
-	if err != nil {
-		t.Fatalf("Set CurrentRobotStatus error: %v", err)
-		return
-	}
-	t.Logf("SET result = %v", result)
-
-
-}*/
-
+/*
 func TestServer_GetRobotStatus2(t *testing.T) {
 	/////////////////////////////////
 	// Set up a connection to the server.
@@ -78,4 +45,4 @@ func TestServer_GetRobotStatus2(t *testing.T) {
 		t.Fatalf("could not reply: %v", err)
 	}
 	t.Logf("reply = %v", r)
-}
+}*/
