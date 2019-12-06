@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"Robot2019/cache"
