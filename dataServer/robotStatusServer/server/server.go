@@ -12,6 +12,8 @@ import (
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	"google.golang.org/grpc"
+
+	robotStatusWriter "Robot2019/chassisDriverForRobot/subscribeRobotStatusWriter/server"
 )
 
 const (
@@ -35,12 +37,23 @@ func (s *server) GetRobotStatus(ctx context.Context, in *pb.RobotStatusRequest) 
 		return nil, fmt.Errorf("theRedis.ListIndex: %v", err)
 	}
 
-	theReply := pb.RobotStatusReply{}
-	err = json.Unmarshal([]byte(result), &theReply)
+	robotStatus := robotStatusWriter.RobotStatusTopic{}
+	err = json.Unmarshal([]byte(result), &robotStatus)
 	if err != nil {
 		return nil, fmt.Errorf("json.Unmarshal error: %v", err)
 	} else {
-		return &theReply, nil
+		return &pb.RobotStatusReply{
+			MoveStatus:      robotStatus.Results.MoveStatus,
+			ChargeStatus:    robotStatus.Results.ChargeState,
+			SoftEstopStatus: robotStatus.Results.SoftEStopState,
+			HardEstopStatus: robotStatus.Results.HardEStopState,
+			PowerPercent:    int64(robotStatus.Results.PowerPercent),
+			X:               robotStatus.Results.CurrentPose.X,
+			Y:               robotStatus.Results.CurrentPose.Y,
+			Theta:           robotStatus.Results.CurrentPose.Theta,
+			Datetime:        robotStatus.TimeStamp,
+			ErrorMessage:    "",
+		}, nil
 	}
 }
 
