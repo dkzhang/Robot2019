@@ -13,7 +13,7 @@ func SwitchLaserLight(turnOn bool) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "192.168.1.109:50051"
+	address := "192.168.10.23:50051"
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 

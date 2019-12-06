@@ -24,7 +24,7 @@ type server struct {
 	pb.UnimplementedLaserLightServiceServer
 }
 
-func (s *server) ControlTheLifter(ctx context.Context, in *pb.LaserLightRequest) (*pb.LaserLightReply, error) {
+func (s *server) SwitchLaserLight(ctx context.Context, in *pb.LaserLightRequest) (*pb.LaserLightReply, error) {
 	log.Printf("Received: %v", in.GetTurnOn())
 
 	//use go-rpio
