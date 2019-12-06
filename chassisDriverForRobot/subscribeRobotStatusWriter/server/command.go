@@ -1,4 +1,4 @@
-package subscribeRobotStatus
+package server
 
 import (
 	"fmt"

@@ -3,7 +3,7 @@ package server
 import (
 	"Robot2019/chassisDriverForRobot/common"
 	"Robot2019/chassisDriverForRobot/socketCommunication"
-	"Robot2019/chassisDriverForRobot/subscribeRobotStatus"
+	"Robot2019/chassisDriverForRobot/subscribeRobotStatusWriter/server"
 	"Robot2019/myUtil"
 	"context"
 	"fmt"
@@ -28,7 +28,7 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 
 	//构造定期获取机器人状态命令（附随机数）并发送
 	cmdSubscribeStruct := socketCommunication.CommandStruct{Name: "Subscribe Robot Status"}
-	cmdSubscribeStruct.Command, cmdSubscribeStruct.UUID = subscribeRobotStatus.GenerateSubscribeRobotStatusCommand(nil)
+	cmdSubscribeStruct.Command, cmdSubscribeStruct.UUID = server.GenerateSubscribeRobotStatusCommand(nil)
 	psm.CommandChan <- &cmdSubscribeStruct
 
 	//循环接收传回的消息
@@ -143,7 +143,7 @@ func SubscribeResponseParse(result string) bool {
 	} else {
 		if pct != nil {
 			//是robot status的订阅消息,则进一步解析
-			robotStatus := subscribeRobotStatus.RobotStatusTopic{}
+			robotStatus := server.RobotStatusTopic{}
 			err = robotStatus.UnmarshalJSON(result)
 			if err != nil {
 				return false

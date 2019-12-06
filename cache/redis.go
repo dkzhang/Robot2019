@@ -7,7 +7,7 @@ import (
 
 import "github.com/gomodule/redigo/redis"
 
-//Redis redis cacheOldVersion
+//Redis redis
 type Redis struct {
 	conn *redis.Pool
 }
