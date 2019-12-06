@@ -7,6 +7,7 @@ import (
 	"Robot2019/myUtil"
 	"fmt"
 	"log"
+	"time"
 )
 
 func RobotStatusWriterForever() {
@@ -108,6 +109,7 @@ func SubscribeResponseParse(theRedis *cache.Redis, result string) error {
 			if err != nil {
 				return fmt.Errorf("robotStatus.UnmarshalJSON error: %v", err)
 			} else {
+				robotStatus.TimeStamp = myUtil.FormatTime(time.Now())
 				//write to redis
 				theRedis.ListMaxLenRPush("RobotStatus", robotStatus, 256)
 			}
