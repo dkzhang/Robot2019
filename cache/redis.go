@@ -164,6 +164,14 @@ func (r *Redis) ListLRange(key string, start, end int) (strArray []string, err e
 	return strArray, err
 }
 
+func (r *Redis) ListIndex(key string, index int) (item string, err error) {
+	conn := r.conn.Get()
+	defer conn.Close()
+
+	item, err = redis.String(conn.Do("LINDEX", key, index))
+	return item, err
+}
+
 func (r *Redis) ListLen(key string) (length int, err error) {
 	conn := r.conn.Get()
 	defer conn.Close()

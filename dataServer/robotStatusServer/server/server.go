@@ -1,6 +1,7 @@
 package server
 
 import (
+	"Robot2019/cache"
 	"Robot2019/myUtil"
 	"context"
 	"encoding/json"
@@ -11,12 +12,10 @@ import (
 
 	pb "Robot2019/dataServer/robotStatusServer/grpc"
 	"google.golang.org/grpc"
-
-	"github.com/gomodule/redigo/redis"
 )
 
 const (
-	port = ":50061"
+	port = ":50071"
 )
 
 type server struct {
@@ -25,16 +24,15 @@ type server struct {
 
 func (s *server) GetRobotStatus(ctx context.Context, in *pb.RobotStatusRequest) (*pb.RobotStatusReply, error) {
 	log.Printf("Received: %v", in.GetTag())
-	//连接redis容器，读取相关状态信息
-	c, err := redis.Dial("tcp", "myRedis001:6379")
-	if err != nil {
-		return nil, fmt.Errorf("redis dial error: %v", err)
-	}
-	defer c.Close()
 
-	result, err := redis.String(c.Do("GET", "CurrentRobotStatus"))
+	opts := &cache.RedisOpts{
+		Host: cache.RedisHost,
+	}
+	theRedis := cache.NewRedis(opts)
+
+	result, err := theRedis.ListIndex("RobotStatus", -1)
 	if err != nil {
-		return nil, fmt.Errorf("Get CurrentRobotStatus error: %v", err)
+		return nil, fmt.Errorf("theRedis.ListIndex: %v", err)
 	}
 
 	theReply := pb.RobotStatusReply{}
