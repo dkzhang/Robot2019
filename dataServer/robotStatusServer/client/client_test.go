@@ -7,6 +7,7 @@ func TestGetRobotStatus(t *testing.T) {
 	if err != nil {
 		t.Errorf("GetRobotStatus error: %v", err)
 	} else {
-		t.Logf("GetRobotStatus reply = %v", *reply)
+		t.Logf("GetRobotStatus reply = %v", reply)
+		t.Logf("timestamp=%s", reply.Datetime)
 	}
 }

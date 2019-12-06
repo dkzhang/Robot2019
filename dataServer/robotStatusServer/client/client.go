@@ -32,10 +32,7 @@ func GetRobotStatus() (reply *pb.RobotStatusReply, err error) {
 	defer cancel()
 
 	r, err := c.GetRobotStatus(ctx, &pb.RobotStatusRequest{
-		Tag:                  myUtil.FormatTime(time.Now()),
-		XXX_NoUnkeyedLiteral: struct{}{},
-		XXX_unrecognized:     nil,
-		XXX_sizecache:        0,
+		Tag: myUtil.FormatTime(time.Now()),
 	})
 
 	if err != nil {
@@ -49,5 +46,5 @@ func GetRobotStatus() (reply *pb.RobotStatusReply, err error) {
 		return nil, fmt.Errorf("grpc GetRobotStatus Reply error message = : %v", err)
 	}
 
-	return reply, nil
+	return r, nil
 }
