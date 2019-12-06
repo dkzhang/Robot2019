@@ -9,7 +9,7 @@ import (
 type RobotStatusTopic struct {
 	common.CallbackTopic
 	Results   Result `json:"results"`
-	TimeStamp string `json:"-"`
+	TimeStamp string
 }
 
 type Result struct {
