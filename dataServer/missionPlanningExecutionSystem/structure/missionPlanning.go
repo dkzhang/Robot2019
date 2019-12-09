@@ -10,10 +10,17 @@ type MissionPlanning struct {
 	Missions []Mission `json:"missions"`
 }
 
-// 前往指定位置，执行指定的一系列子任务（如果有）
+// 每个任务由一个主任务和一组子任务组成。
+// 主任务有且只有一个，子任务有0个到多个。
 type Mission struct {
-	MoveMarker  string       `json:"move_marker"`
-	SubMissions []SubMission `json:"submissions"`
+	TheMainMission MainMission  `json:"mainMissions"`
+	TheSubMissions []SubMission `json:"submissions"`
+}
+
+// 主任务
+type MainMission struct {
+	Name string `json:"name"`
+	Para string `json:"para"`
 }
 
 // 机器人到达指定位置后，执行的子任务
@@ -31,3 +38,12 @@ func (mp *MissionPlanning) UnmarshalJSON(strJSON string) (err error) {
 		return nil
 	}
 }
+
+const (
+	SUB_MISSION_LifterControl  = "Lifter"
+	SUB_MISSION_ThermalImaging = "Thermal"
+)
+const (
+	MAIN_MISSION_sMoveWF = "sMoveWF"
+	MAIN_MISSION_Move    = "Move"
+)

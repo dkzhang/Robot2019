@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func MoveAndWaitForArrival(marker string) {
+func MoveAndWaitForArrival(marker string) (err error) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
@@ -18,7 +19,7 @@ func MoveAndWaitForArrival(marker string) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
-		log.Printf(" fatal error! did not connect: %v", err)
+		return fmt.Errorf(" fatal error! MoveAndWaitForArrival did not connect: %v", err)
 	}
 	log.Printf("grpc.Dial OK!")
 	defer conn.Close()
@@ -36,9 +37,13 @@ func MoveAndWaitForArrival(marker string) {
 	})
 
 	if err != nil {
-		log.Printf(" fatal error! could not reply: %v", err)
+		return fmt.Errorf(" fatal error! MoveAndWaitForArrival could not reply: %v", err)
+	} else if len(r.ErrorMessage) != 0 {
+		return fmt.Errorf(" MoveAndWaitForArrival reply Error Message: %s", r.ErrorMessage)
+	} else {
+		log.Printf("MoveAndWaitForArrival reply = %v", r)
+		return nil
 	}
-	log.Printf("reply = %v", r)
 }
 
 func Move(marker string) {
