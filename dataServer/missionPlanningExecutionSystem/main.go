@@ -34,28 +34,30 @@ func main() {
 		mp.UnmarshalJSON(strJSON)
 	}
 
-	//逐条执行计划
-	for i, mission := range mp.Missions {
-		log.Printf("Main Mission %d : (%s: %s) is about to be executed!",
-			i, mission.TheMainMission.Name, mission.TheMainMission.Para)
+	for { //无限循环执行
+		//逐条执行计划
+		for i, mission := range mp.Missions {
+			log.Printf("Main Mission %d : (%s: %s) is about to be executed!",
+				i, mission.TheMainMission.Name, mission.TheMainMission.Para)
 
-		err := ExecuteMainMission(mission.TheMainMission)
-		if err != nil {
-			log.Printf("fatal error! ExecuteMainMission error: %v", err)
-			continue
-		}
-
-		for j, sm := range mission.TheSubMissions {
-			log.Printf("SubMission %d : %s is about to be executed!", j, sm.Name)
-			err := ExecuteSubMission(sm)
+			err := ExecuteMainMission(mission.TheMainMission)
 			if err != nil {
-				log.Printf("fatal error! ExecuteSubMission error: %v", err)
+				log.Printf("fatal error! ExecuteMainMission error: %v", err)
 				continue
 			}
-			log.Printf("SubMission %d : %s is accomplished!", j, sm.Name)
-		}
 
-		log.Printf("Mission %d : %s is accomplished!", i, mission.TheMainMission.Name)
+			for j, sm := range mission.TheSubMissions {
+				log.Printf("SubMission %d : %s is about to be executed!", j, sm.Name)
+				err := ExecuteSubMission(sm)
+				if err != nil {
+					log.Printf("fatal error! ExecuteSubMission error: %v", err)
+					continue
+				}
+				log.Printf("SubMission %d : %s is accomplished!", j, sm.Name)
+			}
+
+			log.Printf("Mission %d : %s is accomplished!", i, mission.TheMainMission.Name)
+		}
 	}
 }
 
