@@ -76,11 +76,20 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 					//如果是，则返回成功
 					//如果尚在移动，则继续循环；如果移动出错，则返回错误
 					log.Printf("check for subscribe: %s", strJSON)
-					if SubscribeResponseParse(strJSON) == true {
-						log.Printf("accomplish move: %s", strJSON)
-						return &pb.MoveAndWaitForArrivalResponse{
-							ErrorMessage: "",
-						}, nil
+					if r, err := SubscribeResponseParse(strJSON); r == true {
+						if err != nil {
+							log.Printf("SubscribeResponseParse(true) error: %v", err)
+							return &pb.MoveAndWaitForArrivalResponse{
+								ErrorMessage: err.Error(),
+							}, nil
+						} else {
+							log.Printf("accomplish move: %s", strJSON)
+							return &pb.MoveAndWaitForArrivalResponse{
+								ErrorMessage: "",
+							}, nil
+						}
+					} else if err != nil {
+						log.Printf("SubscribeResponseParse(false) error: %v", err)
 					}
 				}
 			}
@@ -132,27 +141,31 @@ func CmdResponseParse(result string, uuid string) (bool, error) {
 // 如果收到的不是callback消息订阅，或者不是robot_status主题，或者运动没有完成，返回false
 // 如果是对应的响应报文，且指示移动命令已完成，返回true
 // 如果出错，由于订阅消息的可重复性，直接忽略，返回false
-func SubscribeResponseParse(result string) bool {
+func SubscribeResponseParse(result string) (bool, error) {
 
 	pct, err := common.CallbackTopicDetection(result, "robot_status")
 
 	//检查是否出错
 	if err != nil {
-		log.Printf("CallbackTopicDetection error: %v", err)
-		return false
+		return false, fmt.Errorf("SubscribeResponseParse CallbackTopicDetection error: %v", err)
 	} else {
 		if pct != nil {
 			//是robot status的订阅消息,则进一步解析
 			robotStatus := server.RobotStatusTopic{}
 			err = robotStatus.UnmarshalJSON(result)
 			if err != nil {
-				return false
+				return false, fmt.Errorf("SubscribeResponseParse robotStatus.UnmarshalJSON error: %v", err)
 			} else {
-				if robotStatus.Results.MoveStatus == "succeeded" {
-					return true
+				switch robotStatus.Results.MoveStatus {
+				case "succeeded":
+					return true, nil
+				case "failed":
+					return true, fmt.Errorf("move mission failed: robotStatus MoveStatus = failed")
+				case "canceled":
+					return true, fmt.Errorf("move mission canceled: robotStatus MoveStatus = canceled")
 				}
 			}
 		}
 	}
-	return false
+	return false, nil
 }

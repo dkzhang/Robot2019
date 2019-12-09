@@ -1,11 +1,13 @@
 package main
 
 import (
+	laserLight "Robot2019/applicationDriverForRobot/laserLight/client"
 	lifter "Robot2019/applicationDriverForRobot/lifterControl/client"
 	singleMove "Robot2019/chassisDriverForRobot/robotSinglePointMove/client"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"Robot2019/dataServer/missionPlanningExecutionSystem/structure"
 
@@ -81,6 +83,25 @@ func ExecuteSubMission(sm structure.SubMission) (err error) {
 		//调用服务生成图像
 
 		//根据图像名，生成一条记录写入redis数据库
+	case structure.SUB_MISSION_LaserLight:
+		paraBool, err := strconv.ParseBool(sm.Para)
+		if err != nil {
+			log.Printf(" fatal error! paraBool error: %v", err)
+			return fmt.Errorf("fatal error! SUB_MISSION_LaserLight ParseBool error: %s, %v", sm.Para, err)
+		} else {
+			laserLight.SwitchLaserLight(paraBool)
+			return nil
+		}
+	case structure.SUB_MISSION_Wait:
+		paraInt, err := strconv.ParseInt(sm.Para, 10, 64)
+		if err != nil {
+			log.Printf(" fatal error! ParseInt error: %v", err)
+			return fmt.Errorf("fatal error! SUB_MISSION_Wait ParseInt error: %s, %v", sm.Para, err)
+		} else {
+			time.Sleep(time.Second * time.Duration(paraInt))
+			return nil
+		}
+
 	default:
 		return fmt.Errorf("unsupported Main Mission Name: %s", sm.Name)
 	}

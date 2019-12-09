@@ -8,23 +8,47 @@ import (
 func TestMissionPlanning_MarshalJSON(t *testing.T) {
 	mp := MissionPlanning{}
 
-	mission1 := Mission{
+	mp.Missions = append(mp.Missions, Mission{
 		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x1"},
 		TheSubMissions: []SubMission{},
-	}
-	mp.Missions = append(mp.Missions, mission1)
+	})
 
-	mission2 := Mission{
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x2"},
+		TheSubMissions: []SubMission{
+			{
+				Name: SUB_MISSION_LaserLight,
+				Para: "true",
+			},
+			{
+				Name: SUB_MISSION_LifterControl,
+				Para: "15000",
+			},
+			{
+				Name: SUB_MISSION_LifterControl,
+				Para: "-16000",
+			},
+			{
+				Name: SUB_MISSION_LaserLight,
+				Para: "false",
+			},
+		},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
 		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
 		TheSubMissions: []SubMission{},
-	}
-	mp.Missions = append(mp.Missions, mission2)
+	})
 
-	mission3 := Mission{
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R7x1"},
+		TheSubMissions: []SubMission{},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
 		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "charger"},
 		TheSubMissions: []SubMission{},
-	}
-	mp.Missions = append(mp.Missions, mission3)
+	})
 
 	strJSON, err := mp.MarshalJSON()
 	if err != nil {

@@ -2,6 +2,7 @@ package structure
 
 const (
 	SUB_MISSION_LifterControl  = "Lifter"
+	SUB_MISSION_LaserLight     = "LaserLight"
 	SUB_MISSION_ThermalImaging = "Thermal"
 	SUB_MISSION_Wait           = "Wait"
 )
