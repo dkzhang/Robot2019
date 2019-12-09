@@ -63,6 +63,15 @@ func ExecuteMainMission(mm structure.MainMission) (err error) {
 	switch mm.Name {
 	case structure.MAIN_MISSION_sMoveWF:
 		return singleMove.MoveAndWaitForArrival(mm.Para)
+	case structure.MAIN_MISSION_Wait:
+		paraInt, err := strconv.ParseInt(mm.Para, 10, 64)
+		if err != nil {
+			log.Printf(" fatal error! ParseInt error: %v", err)
+			return fmt.Errorf("fatal error! MAIN_MISSION_Wait ParseInt error: %s, %v", mm.Para, err)
+		} else {
+			time.Sleep(time.Second * time.Duration(paraInt))
+			return nil
+		}
 	default:
 		return fmt.Errorf("unsupported Main Mission Name: %s", mm.Name)
 	}
