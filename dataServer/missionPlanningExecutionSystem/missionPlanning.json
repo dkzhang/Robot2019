@@ -2,21 +2,21 @@
     "missions": [
         {
             "mainMissions": {
-                "name": "Move",
+                "name": "sMoveWF",
                 "para": "R1x1"
             },
             "submissions": []
         },
         {
             "mainMissions": {
-                "name": "Move",
+                "name": "sMoveWF",
                 "para": "R1x9"
             },
             "submissions": []
         },
         {
             "mainMissions": {
-                "name": "Move",
+                "name": "sMoveWF",
                 "para": "charger"
             },
             "submissions": []

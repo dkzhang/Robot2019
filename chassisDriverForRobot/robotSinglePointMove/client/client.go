@@ -14,7 +14,6 @@ import (
 func MoveAndWaitForArrival(marker string) (err error) {
 	/////////////////////////////////
 	// Set up a connection to the server.
-	//address := "localhost:50061"
 	address := configuration.SinglePointMove_ADDRESS
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
@@ -28,7 +27,7 @@ func MoveAndWaitForArrival(marker string) (err error) {
 	c := pb.NewSinglePointMoveClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*3)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 
@@ -50,8 +49,7 @@ func MoveAndWaitForArrival(marker string) (err error) {
 func Move(marker string) {
 	/////////////////////////////////
 	// Set up a connection to the server.
-	//address := "localhost:50061"
-	address := "localhost:50051"
+	address := configuration.SinglePointMove_ADDRESS
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
@@ -64,7 +62,7 @@ func Move(marker string) {
 	c := pb.NewSinglePointMoveClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	log.Printf("context.WithTimeout() OK!")
 	defer cancel()
 

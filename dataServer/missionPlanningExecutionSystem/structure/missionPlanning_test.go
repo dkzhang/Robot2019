@@ -9,19 +9,19 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 	mp := MissionPlanning{}
 
 	mission1 := Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_Move, Para: "R1x1"},
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x1"},
 		TheSubMissions: []SubMission{},
 	}
 	mp.Missions = append(mp.Missions, mission1)
 
 	mission2 := Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_Move, Para: "R1x9"},
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
 		TheSubMissions: []SubMission{},
 	}
 	mp.Missions = append(mp.Missions, mission2)
 
 	mission3 := Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_Move, Para: "charger"},
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "charger"},
 		TheSubMissions: []SubMission{},
 	}
 	mp.Missions = append(mp.Missions, mission3)

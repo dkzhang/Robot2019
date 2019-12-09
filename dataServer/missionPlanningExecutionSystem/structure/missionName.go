@@ -7,6 +7,6 @@ const (
 )
 const (
 	MAIN_MISSION_sMoveWF = "sMoveWF"
-	MAIN_MISSION_Move    = "Move"
+	MAIN_MISSION_sMove   = "sMove"
 	MAIN_MISSION_Wait    = "Wait"
 )
