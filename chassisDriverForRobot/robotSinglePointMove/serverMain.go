@@ -1,7 +1,6 @@
 package main
 
 import (
-	MMoveServer "Robot2019/chassisDriverForRobot/robotMultiplePointsMove/server"
 	pb "Robot2019/chassisDriverForRobot/robotSinglePointMove/grpc"
 	SMoveServer "Robot2019/chassisDriverForRobot/robotSinglePointMove/server"
 	"Robot2019/myUtil"
