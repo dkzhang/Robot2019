@@ -1,6 +1,7 @@
 package client
 
 import (
+	"Robot2019/chassisDriverForRobot/configuration"
 	pb "Robot2019/chassisDriverForRobot/robotMultiplePointsMove/grpc"
 	"google.golang.org/grpc"
 
@@ -13,7 +14,7 @@ func MMove(markers []string) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "192.168.10.27:50072"
+	address := configuration.MultiplePointsMove_ADDRESS
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 

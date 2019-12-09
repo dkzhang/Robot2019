@@ -4,6 +4,8 @@ import (
 	lifter "Robot2019/applicationDriverForRobot/lifterControl/client"
 	singleMove "Robot2019/chassisDriverForRobot/robotSinglePointMove/client"
 	"fmt"
+	"io/ioutil"
+	"os"
 
 	"Robot2019/dataServer/missionPlanningExecutionSystem/structure"
 
@@ -15,37 +17,43 @@ func main() {
 	mp := structure.MissionPlanning{}
 
 	//读取任务计划
-	mp.UnmarshalJSON("")
+	f, err := os.OpenFile("missionPlanning.json", os.O_RDONLY, 0600)
+	defer f.Close()
+	if err != nil {
+		log.Printf("fatal error! Open JSON file error: %v", err)
+		return
+	} else {
+		contentByte, err := ioutil.ReadAll(f)
+		if err != nil {
+			log.Printf("fatal error! Read JSON file ioutil.ReadAll error: %v", err)
+			return
+		}
+		strJSON := string(contentByte)
+		mp.UnmarshalJSON(strJSON)
+	}
 
 	//逐条执行计划
 	for i, mission := range mp.Missions {
 		log.Printf("Main Mission %d : (%s: %s) is about to be executed!",
 			i, mission.TheMainMission.Name, mission.TheMainMission.Para)
 
-		ExecuteMainMission(mission.TheMainMission)
+		err := ExecuteMainMission(mission.TheMainMission)
+		if err != nil {
+			log.Printf("fatal error! ExecuteMainMission error: %v", err)
+			continue
+		}
 
 		for j, sm := range mission.TheSubMissions {
 			log.Printf("SubMission %d : %s is about to be executed!", j, sm.Name)
-
-			switch sm.Name {
-			case structure.MISSION_LifterControl:
-				para, err := strconv.ParseInt(sm.Para, 10, 64)
-				if err != nil {
-					log.Printf(" fatal error! ParseInt error: %v", err)
-				} else {
-					lifter.LifterControl(para)
-				}
-			case structure.MISSION_ThermalImaging:
-				//调用服务生成图像
-
-				//根据图像名，生成一条记录写入redis数据库
-
+			err := ExecuteSubMission(sm)
+			if err != nil {
+				log.Printf("fatal error! ExecuteSubMission error: %v", err)
+				continue
 			}
-
-			log.Printf("SubMission %d : %s is accomplished!", j, mission.MoveMarker)
+			log.Printf("SubMission %d : %s is accomplished!", j, sm.Name)
 		}
 
-		log.Printf("Mission %d : %s is accomplished!", i, mission.MoveMarker)
+		log.Printf("Mission %d : %s is accomplished!", i, mission.TheMainMission.Name)
 	}
 }
 

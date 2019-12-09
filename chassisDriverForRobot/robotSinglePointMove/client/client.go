@@ -1,6 +1,7 @@
 package client
 
 import (
+	"Robot2019/chassisDriverForRobot/configuration"
 	"context"
 	"fmt"
 	"log"
@@ -14,7 +15,7 @@ func MoveAndWaitForArrival(marker string) (err error) {
 	/////////////////////////////////
 	// Set up a connection to the server.
 	//address := "localhost:50061"
-	address := "localhost:50051"
+	address := configuration.SinglePointMove_ADDRESS
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 

@@ -39,11 +39,12 @@ func (mp *MissionPlanning) UnmarshalJSON(strJSON string) (err error) {
 	}
 }
 
-const (
-	SUB_MISSION_LifterControl  = "Lifter"
-	SUB_MISSION_ThermalImaging = "Thermal"
-)
-const (
-	MAIN_MISSION_sMoveWF = "sMoveWF"
-	MAIN_MISSION_Move    = "Move"
-)
+func (mp *MissionPlanning) MarshalJSON() (strJSON string, err error) {
+	data, err := json.MarshalIndent(mp, "", "    ")
+	if err != nil {
+		return "", fmt.Errorf("MissionPlanning MarshalJSON error: %v", err)
+	} else {
+		strJSON = string(data)
+		return strJSON, nil
+	}
+}
