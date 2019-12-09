@@ -19,7 +19,8 @@ func main() {
 	mp := structure.MissionPlanning{}
 
 	//读取任务计划
-	f, err := os.OpenFile("./missionPlanning.json", os.O_RDONLY, 0600)
+	f, err := os.OpenFile("./missionPlanningExecutionSystem/missionPlanning.json", os.O_RDONLY, 0600)
+	//f, err := os.OpenFile("./missionPlanning.json", os.O_RDONLY, 0600)
 	defer f.Close()
 	if err != nil {
 		log.Printf("fatal error! Open JSON file error: %v", err)
