@@ -6,7 +6,7 @@ import (
 )
 
 func UpOrDown(para int64) {
-	//use go-rpio
+	//use gitcode_go-rpio
 	err := rpio.Open()
 	if err != nil {
 		return

@@ -32,7 +32,7 @@ func (s *server) ControlTheLifter(ctx context.Context, in *pb.LifterControlReque
 	//cmd.Stdout = os.Stdout
 	//err := cmd.Run()
 
-	//use go-rpio
+	//use gitcode_go-rpio
 	err := rpio.Open()
 	if err != nil {
 		return &pb.LifterControlReply{

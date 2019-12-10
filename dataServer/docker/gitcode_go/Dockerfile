@@ -11,7 +11,7 @@ WORKDIR /go/src/Robot2019/dataServer/
 
 EXPOSE 50071
 
-ENV theApp "./docker/go/main.go"
+ENV theApp "./docker/gitcode_go/main.go"
 CMD go run $theApp
 
 

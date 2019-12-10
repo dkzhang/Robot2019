@@ -27,7 +27,7 @@ type server struct {
 func (s *server) SwitchLaserLight(ctx context.Context, in *pb.LaserLightRequest) (*pb.LaserLightReply, error) {
 	log.Printf("Received: %v", in.GetTurnOn())
 
-	//use go-rpio
+	//use gitcode_go-rpio
 	err := rpio.Open()
 	if err != nil {
 		return &pb.LaserLightReply{
