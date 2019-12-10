@@ -19,7 +19,7 @@ type MainProcessor struct {
 func (mp *MainProcessor) run() {
 	go socketCommunication.SocketManagementRun(mp.serverIPandPort, mp.commandChan, mp.resultChan, mp.cancelChan)
 
-	//gitcode_go PrintResultChan(resultChan)
+	//go PrintResultChan(resultChan)
 }
 
 var ptr *MainProcessor = nil
