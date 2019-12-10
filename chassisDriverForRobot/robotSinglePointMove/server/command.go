@@ -8,7 +8,8 @@ import (
 	pb "Robot2019/chassisDriverForRobot/robotSinglePointMove/grpc"
 )
 
-func GenerateMoveCommand(spi *pb.SinglePointInfo) (cmd string, uuid string) {
+func GenerateMoveCommand(spi *pb.SinglePointInfo) (name, cmd string, uuid string) {
+	name = "/api/move"
 	cmd = "/api/move?"
 
 	if spi.InfoMask&16 != 0 {
@@ -38,5 +39,5 @@ func GenerateMoveCommand(spi *pb.SinglePointInfo) (cmd string, uuid string) {
 	uuid = fmt.Sprintf("%X", rand.Uint32())
 	cmd += fmt.Sprintf("&uuid=%s", uuid)
 
-	return cmd, uuid
+	return name, cmd, uuid
 }

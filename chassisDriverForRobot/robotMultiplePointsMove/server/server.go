@@ -22,8 +22,8 @@ func (s *Server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveR
 	defer psm.Cancel()
 
 	//构造多点移动命令（附随机数）并发送
-	cmdStruct := socketCommunication.CommandStruct{Name: "Multiple Move"}
-	cmdStruct.Command, cmdStruct.UUID = GenerateMoveCommand(in)
+	cmdStruct := socketCommunication.CommandStruct{}
+	cmdStruct.Name, cmdStruct.Command, cmdStruct.UUID = GenerateMoveCommand(in)
 	psm.CommandChan <- &cmdStruct
 
 	//循环接收传回的消息
@@ -33,7 +33,7 @@ func (s *Server) Move(ctx context.Context, in *pb.MultiplePointsInfo) (*pb.MoveR
 		select {
 		case result := <-psm.ResultChan:
 			// 检查是否为所发命令的回复
-			pcr, err := common.CommandDetection(result, cmdStruct.UUID)
+			pcr, err := common.CommandDetection(result, cmdStruct.Name, cmdStruct.UUID)
 
 			//检查是否出错并计数
 			if err != nil {

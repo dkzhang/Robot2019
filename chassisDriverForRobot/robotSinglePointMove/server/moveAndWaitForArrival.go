@@ -22,13 +22,13 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 	defer psm.Cancel()
 
 	//构造单点移动命令（附随机数）并发送
-	cmdMoveStruct := socketCommunication.CommandStruct{Name: "Single Move"}
-	cmdMoveStruct.Command, cmdMoveStruct.UUID = GenerateMoveCommand(in)
+	cmdMoveStruct := socketCommunication.CommandStruct{}
+	cmdMoveStruct.Name, cmdMoveStruct.Command, cmdMoveStruct.UUID = GenerateMoveCommand(in)
 	psm.CommandChan <- &cmdMoveStruct
 
 	//构造定期获取机器人状态命令（附随机数）并发送
-	cmdSubscribeStruct := socketCommunication.CommandStruct{Name: "Subscribe Robot Status"}
-	cmdSubscribeStruct.Command, cmdSubscribeStruct.UUID = server.GenerateSubscribeRobotStatusCommand(nil)
+	cmdSubscribeStruct := socketCommunication.CommandStruct{}
+	cmdSubscribeStruct.Name, cmdSubscribeStruct.Command, cmdSubscribeStruct.UUID = server.GenerateSubscribeRobotStatusCommand(nil)
 	psm.CommandChan <- &cmdSubscribeStruct
 
 	//循环接收传回的消息
@@ -45,7 +45,7 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 				if cmdMoveFlag == false {
 					//命令解析
 					//检查是否为所发命令的回复
-					cmdMoveFlag, err = CmdResponseParse(strJSON, cmdMoveStruct.UUID)
+					cmdMoveFlag, err = CmdResponseParse(strJSON, cmdMoveStruct.Name, cmdMoveStruct.UUID)
 
 					if err != nil {
 						return &pb.MoveAndWaitForArrivalResponse{
@@ -59,7 +59,7 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 				if cmdSubscribeFlag == false {
 					//命令解析
 					//检查是否为所发命令的回复
-					cmdSubscribeFlag, err = CmdResponseParse(strJSON, cmdSubscribeStruct.UUID)
+					cmdSubscribeFlag, err = CmdResponseParse(strJSON, cmdSubscribeStruct.Name, cmdSubscribeStruct.UUID)
 
 					if err != nil {
 						return &pb.MoveAndWaitForArrivalResponse{
@@ -106,9 +106,9 @@ func (s *Server) MoveAndWaitForArrival(ctx context.Context, in *pb.SinglePointIn
 // 如果收到的不是所发命令对应的响应报文，且没有出错，返回false，nil
 // 如果是对应的响应报文，且状态正确，返回true，nil
 // 如果出错，返回error
-func CmdResponseParse(result string, uuid string) (bool, error) {
+func CmdResponseParse(result string, name, uuid string) (bool, error) {
 	// 检查是否为所发命令的回复
-	pcr, err := common.CommandDetection(result, uuid)
+	pcr, err := common.CommandDetection(result, name, uuid)
 	//检查是否出错
 	if err != nil {
 		return false, fmt.Errorf("CommandDetection error: %v", err)

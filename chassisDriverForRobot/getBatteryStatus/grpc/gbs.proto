@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package getBatteryStatus;
+
+service BatteryStatus {
+    rpc GetBatteryStatus (BatteryStatusRequest) returns (BatteryStatusResponse) {}
+}
+
+message BatteryStatusRequest{
+    string tag = 1;
+}
+
+message BatteryStatusResponse {
+    int32 battery_capacity = 1;
+    float battery_current = 2;
+    float battery_voltage = 3;
+    float charge_voltage = 4;
+    bool charge_connected_notice = 5;
+    float head_current = 6;
+}
+
+
+//protoc -I grpc/ grpc/gbs.proto --go_out=plugins=grpc:grpc/

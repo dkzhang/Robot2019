@@ -22,7 +22,7 @@ type CommandResponse struct {
 //	StrJSON   string
 //}
 
-func CommandDetection(strJSON string, uuid string) (pcr *CommandResponse, err error) {
+func CommandDetection(strJSON string, name, uuid string) (pcr *CommandResponse, err error) {
 	//先解析消息类型
 	rt := ResultType{}
 	err = json.Unmarshal([]byte(strJSON), &rt)
@@ -43,8 +43,7 @@ func CommandDetection(strJSON string, uuid string) (pcr *CommandResponse, err er
 	}
 
 	//判断是否所发命令
-	command := ""
-	if cr.Command != command {
+	if cr.Command != name {
 		return nil, nil
 	}
 

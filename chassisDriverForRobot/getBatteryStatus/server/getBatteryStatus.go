@@ -29,7 +29,7 @@ func GetBatteryStatus(ctx context.Context, in *pb.SinglePointInfo) (*pb.MoveResp
 		case result := <-psm.ResultChan:
 			fmt.Printf("receive from socker: %s", result)
 			// 检查是否为所发命令的回复
-			pcr, err := common.CommandDetection(result, cmdStruct.UUID)
+			pcr, err := common.CommandDetection(result, cmdStruct.Name, cmdStruct.UUID)
 
 			//检查是否出错并计数
 			if err != nil {

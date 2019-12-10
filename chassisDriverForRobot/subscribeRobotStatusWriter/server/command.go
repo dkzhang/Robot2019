@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-func GenerateSubscribeRobotStatusCommand(pFrequency *float64) (cmd string, uuid string) {
+func GenerateSubscribeRobotStatusCommand(pFrequency *float64) (name, cmd string, uuid string) {
+	name = "/api/request_data"
 	cmd = "/api/request_data?topic=robot_status"
 
 	if pFrequency != nil {
@@ -17,5 +18,5 @@ func GenerateSubscribeRobotStatusCommand(pFrequency *float64) (cmd string, uuid 
 	uuid = fmt.Sprintf("%X", rand.Uint32())
 	cmd += fmt.Sprintf("&uuid=%s", uuid)
 
-	return cmd, uuid
+	return name, cmd, uuid
 }

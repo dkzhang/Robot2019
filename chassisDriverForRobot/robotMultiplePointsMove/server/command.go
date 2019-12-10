@@ -9,7 +9,8 @@ import (
 	pb "Robot2019/chassisDriverForRobot/robotMultiplePointsMove/grpc"
 )
 
-func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (cmd string, uuid string) {
+func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (name, cmd string, uuid string) {
+	name = "/api/move"
 	cmd = "/api/move?markers="
 
 	cmd += mpi.Markers[0]
@@ -38,5 +39,5 @@ func GenerateMoveCommand(mpi *pb.MultiplePointsInfo) (cmd string, uuid string) {
 	cmd += fmt.Sprintf("&uuid=%s", uuid)
 
 	log.Printf("cmd = %s", cmd)
-	return cmd, uuid
+	return name, cmd, uuid
 }
