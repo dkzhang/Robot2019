@@ -7,5 +7,5 @@ RUN git clone https://github.com/dkzhang/Robot2019.git #20191206-001
 
 WORKDIR /go/src/Robot2019/chassisDriverForRobot/
 
-ENV theApp "./docker/go/main.go"
+ENV theApp "./docker/gitcode_go/main.go"
 CMD go run $theApp
