@@ -42,8 +42,14 @@ func CommandDetection(strJSON string, uuid string) (pcr *CommandResponse, err er
 		return nil, fmt.Errorf("CommandResponse json unmarshal error: %v", err)
 	}
 
-	//判断uuid是否相符
-	if cr.UUID != uuid {
+	//判断是否所发命令
+	command := ""
+	if cr.Command != command {
+		return nil, nil
+	}
+
+	//判断是否给定uuid。如果给定，判断uuid是否相符
+	if len(uuid) != 0 && cr.UUID != uuid {
 		return nil, nil
 	}
 
