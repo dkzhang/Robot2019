@@ -14,7 +14,17 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 	})
 
 	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x2"},
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
+		TheSubMissions: []SubMission{},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x9"},
+		TheSubMissions: []SubMission{},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x2"},
 		TheSubMissions: []SubMission{
 			{
 				Name: SUB_MISSION_LaserLight,
@@ -25,6 +35,10 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 				Para: "15000",
 			},
 			{
+				Name: SUB_MISSION_Wait,
+				Para: "3",
+			},
+			{
 				Name: SUB_MISSION_LifterControl,
 				Para: "-16000",
 			},
@@ -33,16 +47,6 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 				Para: "false",
 			},
 		},
-	})
-
-	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
-		TheSubMissions: []SubMission{},
-	})
-
-	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R7x1"},
-		TheSubMissions: []SubMission{},
 	})
 
 	mp.Missions = append(mp.Missions, Mission{
