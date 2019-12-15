@@ -10,21 +10,14 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 
 	mp.Missions = append(mp.Missions, Mission{
 		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x1"},
-		TheSubMissions: []SubMission{},
+		TheSubMissions: []SubMission{{
+			Name: SUB_MISSION_Wait,
+			Para: "5",
+		}},
 	})
 
 	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
-		TheSubMissions: []SubMission{},
-	})
-
-	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x9"},
-		TheSubMissions: []SubMission{},
-	})
-
-	mp.Missions = append(mp.Missions, Mission{
-		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x2"},
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x8"},
 		TheSubMissions: []SubMission{
 			{
 				Name: SUB_MISSION_LaserLight,
@@ -49,6 +42,38 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 		},
 	})
 
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R1x9"},
+		TheSubMissions: []SubMission{},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x9"},
+		TheSubMissions: []SubMission{},
+	})
+
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x2"},
+		TheSubMissions: []SubMission{},
+	})
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R2x1"},
+		TheSubMissions: []SubMission{},
+	})
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R3x1"},
+		TheSubMissions: []SubMission{},
+	})
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R3x8"},
+		TheSubMissions: []SubMission{},
+	})
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "R3x9"},
+		TheSubMissions: []SubMission{},
+	})
+
+	///////////////////////////////////////////////////////////////////////////
 	mp.Missions = append(mp.Missions, Mission{
 		TheMainMission: MainMission{Name: MAIN_MISSION_sMoveWF, Para: "charger"},
 		TheSubMissions: []SubMission{},
