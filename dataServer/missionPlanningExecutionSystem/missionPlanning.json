@@ -55,6 +55,13 @@
                 "para": "charger"
             },
             "submissions": []
+        },
+        {
+            "mainMissions": {
+                "name": "Wait",
+                "para": "1800"
+            },
+            "submissions": []
         }
     ]
 }

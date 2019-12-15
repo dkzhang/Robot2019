@@ -54,6 +54,11 @@ func TestMissionPlanning_MarshalJSON(t *testing.T) {
 		TheSubMissions: []SubMission{},
 	})
 
+	mp.Missions = append(mp.Missions, Mission{
+		TheMainMission: MainMission{Name: MAIN_MISSION_Wait, Para: "1800"},
+		TheSubMissions: []SubMission{},
+	})
+
 	strJSON, err := mp.MarshalJSON()
 	if err != nil {
 		t.Fatalf("mp.MarshalJSON error: %v", err)
