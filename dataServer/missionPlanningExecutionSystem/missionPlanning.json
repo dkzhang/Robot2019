@@ -202,7 +202,7 @@
         {
             "mainMissions": {
                 "name": "Wait",
-                "para": "1800"
+                "para": "3600"
             },
             "submissions": []
         }
