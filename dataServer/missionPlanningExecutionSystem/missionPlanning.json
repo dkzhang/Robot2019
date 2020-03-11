@@ -5,17 +5,12 @@
                 "name": "sMoveWF",
                 "para": "R1x1"
             },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
+            "submissions": []
         },
         {
             "mainMissions": {
                 "name": "sMoveWF",
-                "para": "R1x8"
+                "para": "R1x2"
             },
             "submissions": [
                 {
@@ -24,7 +19,7 @@
                 },
                 {
                     "name": "Lifter",
-                    "para": "15000"
+                    "para": "10000"
                 },
                 {
                     "name": "Wait",
@@ -32,13 +27,20 @@
                 },
                 {
                     "name": "Lifter",
-                    "para": "-16000"
+                    "para": "-11000"
                 },
                 {
                     "name": "LaserLight",
                     "para": "false"
                 }
             ]
+        },
+        {
+            "mainMissions": {
+                "name": "sMoveWF",
+                "para": "R1x3"
+            },
+            "submissions": []
         },
         {
             "mainMissions": {
@@ -57,18 +59,6 @@
         {
             "mainMissions": {
                 "name": "sMoveWF",
-                "para": "R2x2"
-            },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
-        },
-        {
-            "mainMissions": {
-                "name": "sMoveWF",
                 "para": "R2x1"
             },
             "submissions": []
@@ -78,24 +68,7 @@
                 "name": "sMoveWF",
                 "para": "R3x1"
             },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
-        },
-        {
-            "mainMissions": {
-                "name": "sMoveWF",
-                "para": "R3x8"
-            },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
+            "submissions": []
         },
         {
             "mainMissions": {
@@ -109,24 +82,7 @@
                 "name": "sMoveWF",
                 "para": "R4x9"
             },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
-        },
-        {
-            "mainMissions": {
-                "name": "sMoveWF",
-                "para": "R4x2"
-            },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
+            "submissions": []
         },
         {
             "mainMissions": {
@@ -145,18 +101,6 @@
         {
             "mainMissions": {
                 "name": "sMoveWF",
-                "para": "R5x8"
-            },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
-        },
-        {
-            "mainMissions": {
-                "name": "sMoveWF",
                 "para": "R5x9"
             },
             "submissions": []
@@ -166,24 +110,14 @@
                 "name": "sMoveWF",
                 "para": "R6x9"
             },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
+            "submissions": []
         },
         {
             "mainMissions": {
                 "name": "sMoveWF",
-                "para": "R6x2"
+                "para": "R7x9"
             },
-            "submissions": [
-                {
-                    "name": "Wait",
-                    "para": "5"
-                }
-            ]
+            "submissions": []
         },
         {
             "mainMissions": {
@@ -195,14 +129,7 @@
         {
             "mainMissions": {
                 "name": "sMoveWF",
-                "para": "charger"
-            },
-            "submissions": []
-        },
-        {
-            "mainMissions": {
-                "name": "Wait",
-                "para": "3600"
+                "para": "R7x1"
             },
             "submissions": []
         }
