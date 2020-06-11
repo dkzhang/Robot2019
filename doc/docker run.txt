@@ -1,0 +1,1 @@
+ sudo docker run --rm --name missionPlan   -e theApp="./missionPlanningExecutionSystem/main.go" registry.cn-beijing.aliyuncs.com/dkzhang/robot2019-dataserver-go:gitcode
